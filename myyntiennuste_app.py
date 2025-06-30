@@ -1,0 +1,122 @@
+import streamlit as st
+import json
+import os
+from datetime import date
+
+# Polut tiedostoille
+SOPIMUKSET_FILE = "asiakkaat_sopimus.json"
+ENNUSTE_FILE = "asiakkaat_ennuste.json"
+
+# Funktiot tiedostojen lataukseen ja tallennukseen
+def load_data(file):
+    if os.path.exists(file):
+        with open(file, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+def save_data(file, data):
+    with open(file, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+# Ladataan tiedot sessioon tai tiedostosta
+if "asiakkaat_sopimus" not in st.session_state:
+    st.session_state.asiakkaat_sopimus = load_data(SOPIMUKSET_FILE)
+if "asiakkaat_ennuste" not in st.session_state:
+    st.session_state.asiakkaat_ennuste = load_data(ENNUSTE_FILE)
+
+st.set_page_config(page_title="Myyntiennuste", layout="centered")
+st.title("Myyntiennuste ja sopimusten hallinta")
+
+tab1, tab2 = st.tabs(["Sopimukset", "Myyntiennuste"])
+
+with tab1:
+    st.write("Syötä asiakkaat, joiden kanssa sinulla on jo myyntiä. Voit antaa jokaiselle asiakkaalle oman hinnan ja kappalemäärän tilikautena.")
+
+    with st.form("uusi_asiakas_sopimus"):
+        nimi = st.text_input("Asiakkaan nimi", value=st.session_state.get("nimi_sopimus", ""), key="nimi_sopimus")
+        tuote = st.text_input("Tuote", value=st.session_state.get("tuote_sopimus", ""), key="tuote_sopimus")
+        sopimus = st.date_input("Sopimuksen päättymispäivä", value=st.session_state.get("sopimus_sopimus", date.today()), key="sopimus_sopimus")
+        a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ei sisällä alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_sopimus", 0.0), key="a_hinta_sopimus")
+        maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=st.session_state.get("maara_sopimus", 1), key="maara_sopimus")
+        lisaus = st.form_submit_button("Lisää asiakas")
+
+    if lisaus and nimi:
+        kokonaisarvo = a_hinta * maara
+        uusi_asiakas = {
+            "nimi": nimi,
+            "tuote": tuote,
+            "sopimus": sopimus.isoformat(),
+            "a_hinta": a_hinta,
+            "maara": maara,
+            "kokonaisarvo": kokonaisarvo
+        }
+        st.session_state.asiakkaat_sopimus.append(uusi_asiakas)
+        save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
+        st.success(f"Asiakas '{nimi}' lisätty sopimuksiin.")
+
+    # Asiakaslistan näyttö ja poisto
+    st.subheader("Sopimukset")
+    if st.session_state.asiakkaat_sopimus:
+        poistettava = st.selectbox("Valitse poistettava asiakas", [a["nimi"] for a in st.session_state.asiakkaat_sopimus] + ["-"], index=len(st.session_state.asiakkaat_sopimus))
+        if poistettava != "-":
+            if st.button("Poista valittu asiakas"):
+                st.session_state.asiakkaat_sopimus = [a for a in st.session_state.asiakkaat_sopimus if a["nimi"] != poistettava]
+                save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
+                st.success(f"Asiakas '{poistettava}' poistettu sopimuksista.")
+        st.write("### Sopimukset ja myynnit:")
+        for a in st.session_state.asiakkaat_sopimus:
+            st.write(f"- {a['nimi']} (sopimus päättyy {a['sopimus']}): {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €")
+    else:
+        st.info("Ei vielä sopimuksia lisättynä.")
+
+    # Summa
+    total_sopimus = sum(a["kokonaisarvo"] for a in st.session_state.asiakkaat_sopimus) if st.session_state.asiakkaat_sopimus else 0
+    st.write(f"**Sopimusten kokonaisarvo yhteensä:** {total_sopimus:.2f} €")
+
+with tab2:
+    st.write("Ennusta ja suunnittele tähän tilikautesi tulevat asiakkaat tai tuotteet. Suunnittele siis tarvittava lisämyynti!")
+
+    with st.form("uusi_asiakas_ennuste"):
+        nimi = st.text_input("Asiakkaan nimi", value=st.session_state.get("nimi_ennuste", ""), key="nimi_ennuste")
+        tuote = st.text_input("Tuote", value=st.session_state.get("tuote_ennuste", ""), key="tuote_ennuste")
+        sopimus = st.date_input("Sopimuksen päättymispäivä", value=st.session_state.get("sopimus_ennuste", date.today()), key="sopimus_ennuste")
+        a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ei sisällä alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_ennuste", 0.0), key="a_hinta_ennuste")
+        maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=st.session_state.get("maara_ennuste", 1), key="maara_ennuste")
+        lisaus = st.form_submit_button("Lisää asiakas")
+
+    if lisaus and nimi:
+        kokonaisarvo = a_hinta * maara
+        uusi_asiakas = {
+            "nimi": nimi,
+            "tuote": tuote,
+            "sopimus": sopimus.isoformat(),
+            "a_hinta": a_hinta,
+            "maara": maara,
+            "kokonaisarvo": kokonaisarvo
+        }
+        st.session_state.asiakkaat_ennuste.append(uusi_asiakas)
+        save_data(ENNUSTE_FILE, st.session_state.asiakkaat_ennuste)
+        st.success(f"Asiakas '{nimi}' lisätty myyntiennusteeseen.")
+
+    # Asiakaslistan näyttö ja poisto
+    st.subheader("Myyntiennuste")
+    if st.session_state.asiakkaat_ennuste:
+        poistettava = st.selectbox("Valitse poistettava asiakas", [a["nimi"] for a in st.session_state.asiakkaat_ennuste] + ["-"], index=len(st.session_state.asiakkaat_ennuste))
+        if poistettava != "-":
+            if st.button("Poista valittu asiakas", key="poista_ennuste"):
+                st.session_state.asiakkaat_ennuste = [a for a in st.session_state.asiakkaat_ennuste if a["nimi"] != poistettava]
+                save_data(ENNUSTE_FILE, st.session_state.asiakkaat_ennuste)
+                st.success(f"Asiakas '{poistettava}' poistettu myyntiennusteesta.")
+        st.write("### Ennustetut asiakkaat ja myynnit:")
+        for a in st.session_state.asiakkaat_ennuste:
+            st.write(f"- {a['nimi']} (sopimus päättyy {a['sopimus']}): {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €")
+    else:
+        st.info("Ei vielä ennustettuja asiakkaita.")
+
+    # Summa
+    total_ennuste = sum(a["kokonaisarvo"] for a in st.session_state.asiakkaat_ennuste) if st.session_state.asiakkaat_ennuste else 0
+    st.write(f"**Myyntiennusteen kokonaisarvo yhteensä:** {total_ennuste:.2f} €")
+
+# Näytetään molempien välilehtien yhteissumma sivun alaosassa
+st.markdown("---")
+st.write(f"### Kokonaisarvo (sopimukset + ennuste): {total_sopimus + total_ennuste:.2f} €")

@@ -172,7 +172,7 @@ with tab3:
 
     # Lasketaan kulujen summa
     kulujen_summa = sum(k['kokonaisarvo'] for k in kelvolliset_kulut)
-    kulut = st.number_input("Liiketoiminnan kulut yhteensä (€)", min_value=0.0, step=100.0, format="%.2f", value=kulujen_summa, key="kulut")
+    kulut = st.number_input("Liiketoiminnan kulut yhteensä (€)", min_value=0.0, step=100.0, format="%.2f", value=float (kulujen_summa), key="kulut")
     vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
 
     # Palkkalaskelmat

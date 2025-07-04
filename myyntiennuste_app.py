@@ -30,15 +30,20 @@ if "asiakkaat_palkkaennuste" not in st.session_state:
 st.set_page_config(page_title="Myyntiennuste", layout="centered")
 st.title("Myyntiennuste ja sopimusten hallinta")
 
-tab1, tab2, tab3 = st.tabs(["Sopimukset", "Myyntiennuste", "Arvio tulevasta palkasta"])
+tab1, tab3, tab2, tab_summary = st.tabs(["Sopimukset", "Arvio tulevasta palkasta", "Myyntiennuste", "Yhteenveto keskeisistä luvuista"])
 
+st.subheader("Lisää sopimus")
 with tab1:
-    st.write("Syötä asiakkaat, joiden kanssa sinulla on jo myyntiä. Voit antaa jokaiselle asiakkaalle oman hinnan ja kappalemäärän tilikautena.")
+    
+    st.write("Syötä asiakkaat, joiden kanssa sinulla on jo sopimus. Voit antaa jokaiselle asiakkaalle oman hinnan ja kappalemäärän tilikautena.")
+    st.write(f" <span style='color:red; font-style: italic;'>Jos sopimus on päättynyt, näkyy se allaolevassa listassa punaisella. Poista sopimus listasta tai uusi sopimus ja vaihda uusi päättymispäivä.</span>", unsafe_allow_html=True)
+    st.write(f" <span style='color:red; font-style: italic;'>Laskuri laskee mukaan kaikki listalle tallennetut sopimukset, vaikka sopimus olisikin päättynyt.</span>", unsafe_allow_html=True)
 
     with st.form("uusi_asiakas_sopimus"):
         nimi = st.text_input("Asiakkaan nimi", value=st.session_state.get("nimi_sopimus", ""), key="nimi_sopimus")
         tuote = st.text_input("Tuote", value=st.session_state.get("tuote_sopimus", ""), key="tuote_sopimus")
         sopimus = st.date_input("Sopimuksen päättymispäivä", value=st.session_state.get("sopimus_sopimus", date.today()), key="sopimus_sopimus")
+        sijainti = st.text_input("Sopimuksen sijainti (onedrive-osoite, verkkolevy tms.)", value=st.session_state.get("sijainti_sopimus", ""), key="sijainti_sopimus")
         a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ei sisällä alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_sopimus", 0.0), key="a_hinta_sopimus")
         maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=st.session_state.get("maara_sopimus", 1), key="maara_sopimus")
         lisaus = st.form_submit_button("Lisää asiakas")

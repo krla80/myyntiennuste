@@ -306,41 +306,41 @@ with tab3:
         save_data(PALKKAENNUSTE_FILE, kulutiedot)
         st.success("Kulut tallennettu onnistuneesti.")
 
-st.subheader("Tallennetut kulut:")
-if st.session_state.asiakkaat_palkkaennuste:
-    for k in st.session_state.asiakkaat_palkkaennuste:
-        st.write(f"- {k['kulu']}: {k['a_hinta']:.2f} € × {k['maara']} kpl = {k['kokonaisarvo']:.2f} €")
-    else:
-        st.info("Ei tallennettuja kuluja.")
+    st.subheader("Tallennetut kulut:")
+    if st.session_state.asiakkaat_palkkaennuste:
+        for k in st.session_state.asiakkaat_palkkaennuste:
+            st.write(f"- {k['kulu']}: {k['a_hinta']:.2f} € × {k['maara']} kpl = {k['kokonaisarvo']:.2f} €")
+        else:
+            st.info("Ei tallennettuja kuluja.")
 
 # Lasketaan yhteissumma
-kulut_yhteensa = 0.0
-if st.session_state.get("asiakkaat_palkkaennuste"):
-    kulut_yhteensa = sum(float(k.get("kokonaisarvo", 0.0)) if isinstance(k, dict) else 0.0
-	for k in st.session_state.asiakkaat_palkkaennuste
+    kulut_yhteensa = 0.0
+    if st.session_state.get("asiakkaat_palkkaennuste"):
+        kulut_yhteensa = sum(float(k.get("kokonaisarvo", 0.0)) if isinstance(k, dict) else 0.0
+	    for k in st.session_state.asiakkaat_palkkaennuste
     )
-st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
+    st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
 
-    # Veroprosentti
-vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
+# Veroprosentti
+    vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
 
     # Palkkalaskelmat
-kokonaismyynti = (total_sopimus + total_ennuste) / 12
-bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
-verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
-nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
-tavoitepalkka = st.text_input("Nettopalkka tavoite", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka")
+    kokonaismyynti = (total_sopimus + total_ennuste) / 12
+    bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
+    verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
+    nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
+    tavoitepalkka = st.text_input("Nettopalkka tavoite", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka")
 
-try:
-    tavoitepalkka = float(st.session_state["tavoite_palkka"]) if st.session_state["tavoite_palkka"].strip() else 0
-except ValueError:
-        st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
-        tavoitepalkka = 0
+    try:
+        tavoitepalkka = float(st.session_state["tavoite_palkka"]) if st.session_state["tavoite_palkka"].strip() else 0
+    except ValueError:
+            st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
+            tavoitepalkka = 0
 
-myyntikuilu = (bruttopalkka - tavoitepalkka) * 12 if tavoitepalkka > 0 else 0
+    myyntikuilu = (bruttopalkka - tavoitepalkka) * 12 if tavoitepalkka > 0 else 0
 
 
-    # Tulokset näkyviin
+# Tulokset näkyviin
     st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin ja ennusteeseen: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)
     st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
     st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa: {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)

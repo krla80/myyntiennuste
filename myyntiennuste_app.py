@@ -315,17 +315,35 @@ with tab3:
         save_data(PALKKAENNUSTE_FILE, kulutiedot)
         st.success("Kulut tallennettu onnistuneesti.")
 
-    # Näytetään tallennetut kulut
     st.subheader("Tallennetut kulut:")
-    if st.session_state.asiakkaat_palkkaennuste:
-        for k in st.session_state.asiakkaat_palkkaennuste:
-            st.write(f"- {k['kulu']}: {k['a_hinta']:.2f} € × {k['maara']} kpl = {k['kokonaisarvo']:.2f} €")
-    else:
-        st.info("Ei tallennettuja kuluja.")
+if st.session_state.asiakkaat_palkkaennuste:
+    for k in st.session_state.asiakkaat_palkkaennuste:
+        try:
+            a_hinta = float(k.get('a_hinta', 0) or 0)
+        except (ValueError, TypeError):
+            a_hinta = 0.0
+        try:
+            maara = int(k.get('maara', 0) or 0)
+        except (ValueError, TypeError):
+            maara = 0
+        try:
+            kokonaisarvo = float(k.get('kokonaisarvo', 0) or 0)
+        except (ValueError, TypeError):
+            kokonaisarvo = 0.0
+        
+        st.write(f"- {k.get('kulu', '?')}: {a_hinta:.2f} € × {maara} kpl = {kokonaisarvo:.2f} €")
+else:
+    st.info("Ei tallennettuja kuluja.")
 
-    # Lasketaan yhteissumma
-    kulut_yhteensa = sum(k["kokonaisarvo"] for k in st.session_state.asiakkaat_palkkaennuste)
-    st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
+# Lasketaan yhteissumma turvaten
+kulut_yhteensa = 0
+for k in st.session_state.asiakkaat_palkkaennuste or []:
+    try:
+        kulut_yhteensa += float(k.get("kokonaisarvo", 0) or 0)
+    except (ValueError, TypeError):
+        pass
+
+st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
 
     # Veroprosentti
     vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))

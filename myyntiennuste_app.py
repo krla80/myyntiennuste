@@ -19,6 +19,9 @@ def save_data(file, data):
     with open(file, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
+# Lataa palkkaennustedata
+palkkadata = load_data(PALKKAENNUSTE_FILE)
+
 # Ladataan tiedot sessioon tai tiedostosta
 if "asiakkaat_sopimus" not in st.session_state:
     st.session_state.asiakkaat_sopimus = load_data(SOPIMUKSET_FILE)
@@ -271,6 +274,9 @@ with tab3:
 
     if "asiakkaat_palkkaennuste" not in st.session_state:
         st.session_state.asiakkaat_palkkaennuste = []
+
+    if "tavoite_palkka" not in st.session_state:
+        st.session_state["tavoite_palkka"] = palkkadata.get("palkkatavoite", "")
 
     with st.form("valmiit_kulut_lomake"):
         kulutiedot = []

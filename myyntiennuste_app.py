@@ -346,7 +346,7 @@ for k in st.session_state.asiakkaat_palkkaennuste or []:
 st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
 
     # Veroprosentti
-    vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
+vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
 
     # Palkkalaskelmat
     kokonaismyynti = (total_sopimus + total_ennuste) / 12

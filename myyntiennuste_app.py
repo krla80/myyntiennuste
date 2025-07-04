@@ -355,9 +355,9 @@ verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
 nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
     
 st.subheader("Nettopalkkatavoite")
-    tavoite_input = st.text_input("Syötä nettopalkkatavoite €/kk", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka_input")
+tavoite_input = st.text_input("Syötä nettopalkkatavoite €/kk", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka_input")
 
-    tavoitepalkka = 0.0	
+tavoitepalkka = 0.0	
 	
     if st.button("Tallenna nettopalkkatavoite"):
         try:

@@ -122,7 +122,7 @@ with tab1:
                     "nimi": nimi,
                     "tuote": tuote,
                     "sopimus": sopimus.isoformat(),
-		    "sijainti": sijainti	
+		    "sijainti": sijainti,	
                     "a_hinta": a_hinta,
                     "maara": maara,
                     "kokonaisarvo": a_hinta * maara,

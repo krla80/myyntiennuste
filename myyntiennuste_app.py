@@ -336,16 +336,16 @@ with tab3:
     verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
     nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
     
-    # Tämä kenttä ottaa käyttäjän syötteen ja tallentaa sen session_stateen
-    tavoite_input = st.text_input("Nettopalkka tavoite", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka")
-
-    # Varmistetaan, että string muutetaan numeroksi ja virhe käsitellään
+    st.subheader("Nettopalkkatavoite")
+    tavoite_input = st.text_input("Syötä nettopalkkatavoite €/kk", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka_input")
+    if st.button("Tallenna nettopalkkatavoite"):
     try:
-        tavoitepalkka = float(tavoite_input.strip()) if tavoite_input.strip() else 0
+        tavoite_float = float(tavoite_input.replace(",", "."))
+        st.session_state["tavoite_palkka"] = tavoite_input  # päivittyy myös input-kenttään
+        save_data(PALKKAENNUSTE_FILE, {"palkkatavoite": tavoite_input})
+        st.success("Nettopalkkatavoite tallennettu.")
     except ValueError:
-        st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
-        tavoitepalkka = 0
-
+        st.error("Syötä palkkatavoite numerona (esim. 2500).")
 myyntikuilu = (bruttopalkka - tavoitepalkka) * 12 if tavoitepalkka > 0 else 0
 
 # Tulokset näkyviin

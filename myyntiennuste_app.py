@@ -235,6 +235,7 @@ with tab2:
                     "tuote": tuote,
                     "a_hinta": a_hinta,
                     "maara": maara,
+	            "sijainti": sijainti,		
                     "kokonaisarvo": kokonaisarvo,
                     "aktiivinen": aktiivinen
                     
@@ -307,31 +308,17 @@ with tab3:
         save_data(PALKKAENNUSTE_FILE, kulutiedot)
         st.success("Kulut tallennettu onnistuneesti.")
 
-    st.subheader("Tallennetut kulut:")
-
+st.subheader("Tallennetut kulut:")
 if st.session_state.asiakkaat_palkkaennuste:
     for k in st.session_state.asiakkaat_palkkaennuste:
-        kulu = k.get('kulu', 'Tuntematon kulu')
-        a_hinta = k.get('a_hinta')
-        maara = k.get('maara')
-        kokonaisarvo = k.get('kokonaisarvo')
-
-        if (isinstance(a_hinta, (int, float)) and
-            isinstance(maara, (int, float)) and
-            isinstance(kokonaisarvo, (int, float))):
-            st.write(f"- {kulu}: {a_hinta:.2f} € × {maara} kpl = {kokonaisarvo:.2f} €")
-        else:
-            st.write(f"- {kulu}: Arvot puuttuvat tai ovat virheellisiä")
-else:
-    st.info("Ei tallennettuja kuluja.")
+        st.write(f"- {k['kulu']}: {k['a_hinta']:.2f} € × {k['maara']} kpl = {k['kokonaisarvo']:.2f} €")
+    else:
+        st.info("Ei tallennettuja kuluja.")
 
 # Lasketaan yhteissumma
 kulut_yhteensa = sum(
-    k.get("kokonaisarvo", 0) if isinstance(k.get("kokonaisarvo"), (int, float)) else 0
-    for k in st.session_state.asiakkaat_palkkaennuste
-)
-
-st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
+    kulut_yhteensa = sum(k["kokonaisarvo"] for k in st.session_state.asiakkaat_palkkaennuste)
+    st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
 
     # Veroprosentti
 vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
@@ -341,7 +328,7 @@ kokonaismyynti = (total_sopimus + total_ennuste) / 12
 bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
 verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
 nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
-st.text_input("Nettopalkka tavoite", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka")
+tavoitepalkka = st.text_input("Nettopalkka tavoite", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka")
 
 try:
     tavoitepalkka = float(st.session_state["tavoite_palkka"]) if st.session_state["tavoite_palkka"].strip() else 0

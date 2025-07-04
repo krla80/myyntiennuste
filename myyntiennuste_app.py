@@ -30,7 +30,7 @@ if "asiakkaat_palkkaennuste" not in st.session_state:
 st.set_page_config(page_title="Myyntiennuste", layout="centered")
 st.markdown('<h1 style="color:#4EA72E;">Myyntiennuste ja sopimusten hallinta</h1>', unsafe_allow_html=True)
 
-tab1, tab2, tab3, tab_summary = st.tabs(["Sopimukset", "Myyntiennuste", "Arvio tulevasta palkasta", "Yhteenveto keskeisistä luvuista"])
+tab1, tab3, tab2, tab_summary = st.tabs(["Sopimukset", "Arvio tulevasta palkasta", "Myyntiennuste",  "Yhteenveto keskeisistä luvuista"])
 
 from datetime import date, datetime
 
@@ -116,6 +116,7 @@ with tab1:
                 nimi = st.text_input("Asiakkaan nimi", value=valittu_sopimus["nimi"])
                 tuote = st.text_input("Tuote", value=valittu_sopimus["tuote"])
                 sopimus = st.date_input("Sopimuksen päättymispäivä", value=datetime.fromisoformat(valittu_sopimus["sopimus"]).date())
+		sijainti = st.text_input("Sopimuksen sijainti", value=valittu_sopimus["sijainti"])    
                 a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=valittu_sopimus["a_hinta"])
                 maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=valittu_sopimus["maara"])
                 tallenna = st.form_submit_button("Tallenna muutokset")
@@ -126,6 +127,7 @@ with tab1:
                     "nimi": nimi,
                     "tuote": tuote,
                     "sopimus": sopimus.isoformat(),
+	            "sijainti": sijainti,		
                     "a_hinta": a_hinta,
                     "maara": maara,
                     "kokonaisarvo": a_hinta * maara,
@@ -152,6 +154,7 @@ with tab2:
         tuote = st.text_input("Tuote", value=st.session_state.get("tuote_ennuste", ""), key="tuote_ennuste")
         a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_ennuste", 0.0), key="a_hinta_ennuste")
         maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=st.session_state.get("maara_ennuste", 1), key="maara_ennuste")
+	sijainti = st.text_input("Tarjousdokumenttien sijainti", value=st.session_state.get("sijainti_ennuste", ""), key="sijainti_ennuste")    
         aktiivinen = st.checkbox("Aktiivinen", value=True)
         lisaus = st.form_submit_button("Lisää asiakas")
 
@@ -162,6 +165,7 @@ with tab2:
             "tuote": tuote,
             "a_hinta": a_hinta,
             "maara": maara,
+            "sijainti": sijainti,		
             "kokonaisarvo": kokonaisarvo,
             "aktiivinen": aktiivinen
         }
@@ -174,10 +178,10 @@ with tab2:
         st.write("### Ennustetut asiakkaat ja myynnit:")
         for a in st.session_state.asiakkaat_ennuste:
             aktiivinen = a.get("aktiivinen", True)
-            teksti = f"- {a['nimi']}: {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €"
+            teksti = f"- {a['nimi']}: {a['tuote']}: {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €"
             if not aktiivinen:
                 teksti += " (ei aktiivinen)"
-                st.markdown(f"- <span style='color: red;'>{a['nimi']}: {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €</span>", unsafe_allow_html=True)
+                st.markdown(f"- <span style='color: red;'>{a['nimi']}: {a['tuote']}: {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €</span>", unsafe_allow_html=True)
             else:
                 st.write(teksti)
     else:
@@ -215,10 +219,11 @@ with tab2:
 
             # Näytetään lomake valitun asiakkaan tietojen muokkaamiseksi
             with st.form("muokkaa_sopimus"):
-                nimi = st.text_input("Asiakkaan nimi", value=st.session_state.get("valittu_ennuste", ""), key="valittu_ennuste")
-                tuote = st.text_input("Tuote", value=st.session_state.get("tuote", ""), key="tuote")
-                a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_ennuste", 0.0), key="a_hinta_ennuste")
-                maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=st.session_state.get("maara_ennuste", 1), key="maara_ennuste")
+                nimi = st.text_input("Asiakkaan nimi", value=valittu_ennuste["nimi"])
+                tuote = st.text_input("Tuote", value=valittu_ennuste["tuote"])
+                a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=valittu_ennuste["a_hinta"])
+                maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=valittu_ennuste["maara"])
+		sijainti = st.text_input("Ennusteen sijainti", value=valittu_ennuste["sijainti"])    
                 aktiivinen = st.checkbox("Aktiivinen", value=True)
                 tallenna = st.form_submit_button("Tallenna muutokset")
             

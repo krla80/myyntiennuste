@@ -27,33 +27,27 @@ if "asiakkaat_ennuste" not in st.session_state:
 if "asiakkaat_palkkaennuste" not in st.session_state:
     st.session_state.asiakkaat_palkkaennuste = load_data(PALKKAENNUSTE_FILE)
 
-# Ladataan nettopalkkatavoite erikseen session stateen
-palkkadata = st.session_state.asiakkaat_palkkaennuste
-
-if not isinstance(palkkadata, dict):
-    palkkadata = {}
-
-if "tavoite_palkka" not in st.session_state:
-    st.session_state["tavoite_palkka"] = palkkadata.get("palkkatavoite", "")
-
 st.set_page_config(page_title="Myyntiennuste", layout="centered")
-st.title("Myyntiennuste ja sopimusten hallinta")
+st.markdown('<h1 style="color:#4EA72E;">Myyntiennuste ja sopimusten hallinta</h1>', unsafe_allow_html=True)
 
-tab1, tab3, tab2, tab_summary = st.tabs(["Sopimukset", "Arvio tulevasta palkasta", "Myyntiennuste", "Yhteenveto keskeisistä luvuista"])
+tab1, tab2, tab3, tab_summary = st.tabs(["Sopimukset", "Myyntiennuste", "Arvio tulevasta palkasta", "Yhteenveto keskeisistä luvuista"])
 
-st.subheader("Lisää sopimus")
+from datetime import date, datetime
+
 with tab1:
-    
     st.write("Syötä asiakkaat, joiden kanssa sinulla on jo sopimus. Voit antaa jokaiselle asiakkaalle oman hinnan ja kappalemäärän tilikautena.")
+
     st.write(f" <span style='color:red; font-style: italic;'>Jos sopimus on päättynyt, näkyy se allaolevassa listassa punaisella. Poista sopimus listasta tai uusi sopimus ja vaihda uusi päättymispäivä.</span>", unsafe_allow_html=True)
+
     st.write(f" <span style='color:red; font-style: italic;'>Laskuri laskee mukaan kaikki listalle tallennetut sopimukset, vaikka sopimus olisikin päättynyt.</span>", unsafe_allow_html=True)
 
+    st.subheader("Lisää sopimus")
     with st.form("uusi_asiakas_sopimus"):
         nimi = st.text_input("Asiakkaan nimi", value=st.session_state.get("nimi_sopimus", ""), key="nimi_sopimus")
         tuote = st.text_input("Tuote", value=st.session_state.get("tuote_sopimus", ""), key="tuote_sopimus")
         sopimus = st.date_input("Sopimuksen päättymispäivä", value=st.session_state.get("sopimus_sopimus", date.today()), key="sopimus_sopimus")
         sijainti = st.text_input("Sopimuksen sijainti (onedrive-osoite, verkkolevy tms.)", value=st.session_state.get("sijainti_sopimus", ""), key="sijainti_sopimus")
-        a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ei sisällä alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_sopimus", 0.0), key="a_hinta_sopimus")
+        a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_sopimus", 0.0), key="a_hinta_sopimus")
         maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=st.session_state.get("maara_sopimus", 1), key="maara_sopimus")
         lisaus = st.form_submit_button("Lisää asiakas")
 
@@ -70,7 +64,8 @@ with tab1:
         }
         st.session_state.asiakkaat_sopimus.append(uusi_asiakas)
         save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
-        st.success(f"Sopimus '{nimi}' lisätty.")
+        st.success(f"Asiakas '{nimi}' lisätty sopimuksiin.")
+
 
     if "asiakkaat_sopimus" in st.session_state:
         st.write("### Sopimukset ja myynnit:")
@@ -89,7 +84,7 @@ with tab1:
     if st.session_state.asiakkaat_sopimus:
         poistettavat = ["- Valitse sopimus -"] + [a["nimi"] for a in st.session_state.asiakkaat_sopimus]
         poistettava = st.selectbox("Valitse poistettava sopimus", poistettavat)
-        
+
         if poistettava != "- Valitse sopimus -":
             if st.button("Poista valittu sopimus"):
                 st.session_state.asiakkaat_sopimus = [
@@ -97,7 +92,7 @@ with tab1:
                 ]
                 save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
                 st.success(f"Sopimus '{poistettava}' poistettu.")
-
+    
     # Lomake olemassa olevan sopimuksen muokkaamiseksi
 
     st.subheader("Muokkaa olemassa olevaa sopimusta")
@@ -119,19 +114,18 @@ with tab1:
             # Näytetään lomake valitun asiakkaan tietojen muokkaamiseksi
             with st.form("muokkaa_sopimus"):
                 nimi = st.text_input("Asiakkaan nimi", value=valittu_sopimus["nimi"])
-                tuote = st.text_input("Tuote", value=valittu_sopimus["tuote"])    
+                tuote = st.text_input("Tuote", value=valittu_sopimus["tuote"])
                 sopimus = st.date_input("Sopimuksen päättymispäivä", value=datetime.fromisoformat(valittu_sopimus["sopimus"]).date())
-                sijainti = st.text_input("Sopimuksen sijainti (onedrive-osoite, verkkolevy tms.)", value=valittu_sopimus["sijainti"])     
                 a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=valittu_sopimus["a_hinta"])
                 maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=valittu_sopimus["maara"])
                 tallenna = st.form_submit_button("Tallenna muutokset")
-
+            
+            
             if tallenna:
                 st.session_state.asiakkaat_sopimus[valittu_index] = {
                     "nimi": nimi,
                     "tuote": tuote,
                     "sopimus": sopimus.isoformat(),
-		    "sijainti": sijainti,	
                     "a_hinta": a_hinta,
                     "maara": maara,
                     "kokonaisarvo": a_hinta * maara,
@@ -145,11 +139,11 @@ with tab1:
     total_sopimus = sum(a["kokonaisarvo"] for a in st.session_state.asiakkaat_sopimus) if st.session_state.asiakkaat_sopimus else 0
     st.write(f"<h3 style='color:#4EA72E;'>Jo tehtyjen sopimusten arvo yhteensä:{total_sopimus:.2f} €</h3>", unsafe_allow_html=True)
 
-#Myyntiennuste-välilehti
-
 with tab2:
     st.write("Ennusta ja suunnittele tähän tilikautesi tulevat asiakkaat, palvelut ja tuotteet. Suunnittele siis tarvittava lisämyynti!")
+
     st.write("Voit suunnitella kenelle aiot myydä, mitä palveluita tai tuotteita aiot myydä. Ennustetut myynnit siirtyvät suoraan Arvio tulevasta palkka lehdestä, jolloin näet tavoitemyyntisi vaikutuksen kuukausipalkkaan.")
+
     st.markdown("<span style='color:red; font-style: italic;'>Jos ennustettu myyntisi ei ole aktiivinen, ei ennustetta lasketa jo tehtyjen sopimusten ja ennustetun myynnin kokonaisarvoon. Voit siis valintasi mukaan jättää \"hävityn\" kaupan listalle ei-aktiiviseksi tai poistaa sen kokonaan. Ei aktiiviset ennusteet näkyvät punaisella allaolevalla listalla.</span>", unsafe_allow_html=True)
 
     st.subheader("Lisää uusi ennuste")
@@ -158,7 +152,6 @@ with tab2:
         tuote = st.text_input("Tuote", value=st.session_state.get("tuote_ennuste", ""), key="tuote_ennuste")
         a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_ennuste", 0.0), key="a_hinta_ennuste")
         maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=st.session_state.get("maara_ennuste", 1), key="maara_ennuste")
-        sijainti = st.text_input("Tarjouksen sijainti (onedrive-osoite, verkkolevy tms.)", value=st.session_state.get("sijainti_ennuste", ""), key="sijainti_ennuste")
         aktiivinen = st.checkbox("Aktiivinen", value=True)
         lisaus = st.form_submit_button("Lisää asiakas")
 
@@ -170,13 +163,11 @@ with tab2:
             "a_hinta": a_hinta,
             "maara": maara,
             "kokonaisarvo": kokonaisarvo,
-            "sijainti": sijainti,
             "aktiivinen": aktiivinen
-
         }
         st.session_state.asiakkaat_ennuste.append(uusi_asiakas)
         save_data(ENNUSTE_FILE, st.session_state.asiakkaat_ennuste)
-        st.success(f"Ennuste '{nimi}' lisätty.")
+        st.success(f"Asiakas '{nimi}' lisätty myyntiennusteeseen.")
 
     #Näytä ennusteet
     if "asiakkaat_ennuste" in st.session_state and st.session_state.asiakkaat_ennuste:
@@ -204,7 +195,7 @@ with tab2:
                 save_data(ENNUSTE_FILE, st.session_state.asiakkaat_ennuste)
                 st.success(f"Asiakas '{poistettava}' poistettu myyntiennusteesta.")
 
-    # Lomake olemassa olevan ennusteen muokkaamiseksi
+     # Lomake olemassa olevan ennusteen muokkaamiseksi
 
     st.subheader("Muokkaa olemassa olevaa ennustetta")
 
@@ -245,13 +236,12 @@ with tab2:
             }
             save_data(ENNUSTE_FILE, st.session_state.asiakkaat_sopimus)
             st.success(f"Ennuste '{nimi}' (tuote {a['tuote']}) päivitetty onnistuneesti.")
-    
+
     # Summa
     total_ennuste = sum(a["kokonaisarvo"] for a in st.session_state.asiakkaat_ennuste if a.get("aktiivinen", True))
     st.write(f"<h3>Aktiivisten ennustettujen myyntien arvo yhteensä: {total_ennuste:.2f} €</h3>", unsafe_allow_html=True)
     st.write(f"<h3 style='color:#4EA72E;'> Kokonaisarvo (sopimukset + myyntiennuste): {total_sopimus + total_ennuste:.2f} €</h3>", unsafe_allow_html=True)
 
-#Palkkaennuste välilehti
 with tab3:
 
     st.write("Täytä yrityskulut (ilman ALV:tä) syöttämällä á-hinta ja kappalemäärä kullekin valmiiksi nimetylle kululle. Voit myös lisätä puuttuvan kulun.")
@@ -281,9 +271,6 @@ with tab3:
     if "asiakkaat_palkkaennuste" not in st.session_state:
         st.session_state.asiakkaat_palkkaennuste = []
 
-    if "tavoite_palkka" not in st.session_state:
-        st.session_state["tavoite_palkka"] = palkkadata.get("palkkatavoite", "")
-
     with st.form("valmiit_kulut_lomake"):
         kulutiedot = []
         st.markdown("### Liiketoiminnan vuosittaiset kulut")
@@ -302,7 +289,7 @@ with tab3:
 
             if a_hinta > 0 and maara > 0:
                 kulutiedot.append({
-                    "kulu": kulu,
+                    "kulu": kulunimi,
                     "a_hinta": a_hinta,
                     "maara": maara,
                     "kokonaisarvo": summa
@@ -315,70 +302,42 @@ with tab3:
         save_data(PALKKAENNUSTE_FILE, kulutiedot)
         st.success("Kulut tallennettu onnistuneesti.")
 
+    # Näytetään tallennetut kulut
     st.subheader("Tallennetut kulut:")
-if st.session_state.asiakkaat_palkkaennuste:
-    for k in st.session_state.asiakkaat_palkkaennuste:
-        try:
-            a_hinta = float(k.get('a_hinta', 0) or 0)
-        except (ValueError, TypeError):
-            a_hinta = 0.0
-        try:
-            maara = int(k.get('maara', 0) or 0)
-        except (ValueError, TypeError):
-            maara = 0
-        try:
-            kokonaisarvo = float(k.get('kokonaisarvo', 0) or 0)
-        except (ValueError, TypeError):
-            kokonaisarvo = 0.0
-        
-        st.write(f"- {k.get('kulu', '?')}: {a_hinta:.2f} € × {maara} kpl = {kokonaisarvo:.2f} €")
-else:
-    st.info("Ei tallennettuja kuluja.")
+    if st.session_state.asiakkaat_palkkaennuste:
+        for k in st.session_state.asiakkaat_palkkaennuste:
+            st.write(f"- {k['kulu']}: {k['a_hinta']:.2f} € × {k['maara']} kpl = {k['kokonaisarvo']:.2f} €")
+    else:
+        st.info("Ei tallennettuja kuluja.")
 
-# Lasketaan yhteissumma turvaten
-kulut_yhteensa = 0
-for k in st.session_state.asiakkaat_palkkaennuste or []:
-    try:
-        kulut_yhteensa += float(k.get("kokonaisarvo", 0) or 0)
-    except (ValueError, TypeError):
-        pass
-
-st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
+    # Lasketaan yhteissumma
+    kulut_yhteensa = sum(k["kokonaisarvo"] for k in st.session_state.asiakkaat_palkkaennuste)
+    st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
 
     # Veroprosentti
-vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
+    vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
 
     # Palkkalaskelmat
-kokonaismyynti = (total_sopimus + total_ennuste) / 12
-bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
-verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
-nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
-    
-st.subheader("Nettopalkkatavoite")
-tavoite_input = st.text_input("Syötä nettopalkkatavoite €/kk", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka_input")
+    kokonaismyynti = (total_sopimus + total_ennuste) / 12
+    bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
+    verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
+    nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
+    st.text_input("Nettopalkka tavoite", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka")
 
-tavoitepalkka = 0.0	
-	
-if st.button("Tallenna nettopalkkatavoite"):
     try:
-        tavoitepalkka = float(tavoite_input.replace(",", "."))
-        st.session_state["tavoite_palkka"] = tavoite_input  # päivitetään sessioon
-        save_data(PALKKAENNUSTE_FILE, {"palkkatavoite": tavoite_input})
-        st.success("Nettopalkkatavoite tallennettu.")
+        tavoitepalkka = float(st.session_state["tavoite_palkka"]) if st.session_state["tavoite_palkka"].strip() else 0
     except ValueError:
-        st.error("Syötä palkkatavoite numerona (esim. 2500).")
+        st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
+        tavoitepalkka = 0
+
+    myyntikuilu = (bruttopalkka - tavoitepalkka) * 12 if tavoitepalkka > 0 else 0
 
 
-myyntikuilu = (bruttopalkka - tavoitepalkka) * 12 if tavoitepalkka > 0 else 0
-
-# Tulokset näkyviin
-st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin ja ennusteeseen: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)
-st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
-st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa: {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)
-st.markdown(f"<h2 style='color:#4EA72E;'>Tavoite nettopalkka kuukaudessa: {tavoitepalkka:.2f} €</h2>", unsafe_allow_html=True)
-st.markdown(f"<h2 style='color:red;'>Myyntikuilu vuodessa: {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
-
-#Yhteenveto keskeisistä luvuista- välilehti
+    # Tulokset näkyviin
+    st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin ja ennusteeseen: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)
+    st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa: {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color:red;'>Myyntikuilu vuodessa: {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
 
 with tab_summary:
     st.header("Yhteenveto keskeisistä luvuista")

@@ -325,7 +325,7 @@ with tab3:
     vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
 
     # Palkkalaskelmat
-    kokonaismyynti = (total_sopimus + total_ennuste) / 12
+    kokonaismyynti = (total_sopimus) / 12
     bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
     verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
     nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0

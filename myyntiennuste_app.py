@@ -19,9 +19,6 @@ def save_data(file, data):
     with open(file, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-# Lataa palkkaennustedata
-palkkadata = load_data(PALKKAENNUSTE_FILE)
-
 # Ladataan tiedot sessioon tai tiedostosta
 if "asiakkaat_sopimus" not in st.session_state:
     st.session_state.asiakkaat_sopimus = load_data(SOPIMUKSET_FILE)
@@ -29,6 +26,15 @@ if "asiakkaat_ennuste" not in st.session_state:
     st.session_state.asiakkaat_ennuste = load_data(ENNUSTE_FILE)
 if "asiakkaat_palkkaennuste" not in st.session_state:
     st.session_state.asiakkaat_palkkaennuste = load_data(PALKKAENNUSTE_FILE)
+
+# Ladataan nettopalkkatavoite erikseen session stateen
+palkkadata = st.session_state.asiakkaat_palkkaennuste
+
+if not isinstance(palkkadata, dict):
+    palkkadata = {}
+
+if "tavoite_palkka" not in st.session_state:
+    st.session_state["tavoite_palkka"] = palkkadata.get("palkkatavoite", "")
 
 st.set_page_config(page_title="Myyntiennuste", layout="centered")
 st.title("Myyntiennuste ja sopimusten hallinta")

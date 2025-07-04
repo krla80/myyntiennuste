@@ -223,7 +223,7 @@ with tab2:
                 tuote = st.text_input("Tuote", value=valittu_ennuste["tuote"])
                 a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=valittu_ennuste["a_hinta"])
                 maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=valittu_ennuste["maara"])
-		sijainti = st.text_input("Ennusteen sijainti", value=valittu_ennuste["sijainti"])    
+                sijainti = st.text_input("Ennusteen sijainti", value=valittu_ennuste["sijainti"])    
                 aktiivinen = st.checkbox("Aktiivinen", value=True)
                 tallenna = st.form_submit_button("Tallenna muutokset")
             

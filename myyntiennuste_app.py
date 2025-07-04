@@ -116,6 +116,7 @@ with tab1:
                 nimi = st.text_input("Asiakkaan nimi", value=valittu_sopimus["nimi"])
                 tuote = st.text_input("Tuote", value=valittu_sopimus["tuote"])
                 sopimus = st.date_input("Sopimuksen päättymispäivä", value=datetime.fromisoformat(valittu_sopimus["sopimus"]).date())
+                sijainti = st.text_input("Sopimuksen sijainti (onedrive-osoite, verkkolevy tms.)", value=valittu_sopimus["sijainti"])
                 a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=valittu_sopimus["a_hinta"])
                 maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=valittu_sopimus["maara"])
                 tallenna = st.form_submit_button("Tallenna muutokset")
@@ -126,6 +127,7 @@ with tab1:
                     "nimi": nimi,
                     "tuote": tuote,
                     "sopimus": sopimus.isoformat(),
+                    "sijainti": sijainti,
                     "a_hinta": a_hinta,
                     "maara": maara,
                     "kokonaisarvo": a_hinta * maara,
@@ -152,8 +154,9 @@ with tab2:
         tuote = st.text_input("Tuote", value=st.session_state.get("tuote_ennuste", ""), key="tuote_ennuste")
         a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_ennuste", 0.0), key="a_hinta_ennuste")
         maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=st.session_state.get("maara_ennuste", 1), key="maara_ennuste")
+        sijainti = st.text_input("Tarjousdokumenttien sijainti", value=st.session.get("sijainti_ennuste", ""), key="sijainti_ennuste")
         aktiivinen = st.checkbox("Aktiivinen", value=True)
-        lisaus = st.form_submit_button("Lisää asiakas")
+        lisaus = st.form_submit_button("Lisää ennuste")
 
     if lisaus and nimi:
         kokonaisarvo = a_hinta * maara
@@ -162,12 +165,13 @@ with tab2:
             "tuote": tuote,
             "a_hinta": a_hinta,
             "maara": maara,
+            "sijainti": sijainti,
             "kokonaisarvo": kokonaisarvo,
             "aktiivinen": aktiivinen
         }
         st.session_state.asiakkaat_ennuste.append(uusi_asiakas)
         save_data(ENNUSTE_FILE, st.session_state.asiakkaat_ennuste)
-        st.success(f"Asiakas '{nimi}' lisätty myyntiennusteeseen.")
+        st.success(f"Ennuste '{nimi}' lisätty.")
 
     #Näytä ennusteet
     if "asiakkaat_ennuste" in st.session_state and st.session_state.asiakkaat_ennuste:
@@ -215,10 +219,11 @@ with tab2:
 
             # Näytetään lomake valitun asiakkaan tietojen muokkaamiseksi
             with st.form("muokkaa_sopimus"):
-                nimi = st.text_input("Asiakkaan nimi", value=st.session_state.get("valittu_ennuste", ""), key="valittu_ennuste")
-                tuote = st.text_input("Tuote", value=st.session_state.get("tuote", ""), key="tuote")
-                a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_ennuste", 0.0), key="a_hinta_ennuste")
-                maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=st.session_state.get("maara_ennuste", 1), key="maara_ennuste")
+                nimi = st.text_input("Asiakkaan nimi", value=valittu_sopimus["nimi"])
+                tuote = st.text_input("Tuote", value=valittu_sopimus["tuote"])
+                a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=valittu_sopimus["a_hinta"])
+                maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=valittu_ennuste["maara"]
+                sijainti = st.text_input("Tarjousdokumenttien sijainti", value=valittu_ennuste["sijainti"])
                 aktiivinen = st.checkbox("Aktiivinen", value=True)
                 tallenna = st.form_submit_button("Tallenna muutokset")
             

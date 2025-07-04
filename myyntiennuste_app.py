@@ -314,8 +314,12 @@ if st.session_state.asiakkaat_palkkaennuste:
         st.info("Ei tallennettuja kuluja.")
 
 # Lasketaan yhteissumma
-    kulut_yhteensa = sum(k.get("kokonaisarvo", 0.0) for k in st.session_state.get("asiakkaat_palkkaennuste", []))
-    st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
+kulut_yhteensa = 0.0
+if st.session_state.get("asiakkaat_palkkaennuste"):
+    kulut_yhteensa = sum(float(k.get("kokonaisarvo", 0.0)) if isinstance(k, dict) else 0.0
+	for k in st.session_state.asiakkaat_palkkaennuste
+    )
+st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
 
     # Veroprosentti
 vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))

@@ -329,17 +329,17 @@ kulut_yhteensa = sum(
 st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
 
     # Veroprosentti
-    vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
+vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
 
     # Palkkalaskelmat
-    kokonaismyynti = (total_sopimus + total_ennuste) / 12
-    bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
-    verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
-    nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
-    st.text_input("Nettopalkka tavoite", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka")
+kokonaismyynti = (total_sopimus + total_ennuste) / 12
+bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
+verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
+nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
+st.text_input("Nettopalkka tavoite", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka")
 
-    try:
-        tavoitepalkka = float(st.session_state["tavoite_palkka"]) if st.session_state["tavoite_palkka"].strip() else 0
+try:
+    tavoitepalkka = float(st.session_state["tavoite_palkka"]) if st.session_state["tavoite_palkka"].strip() else 0
     except ValueError:
         st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
         tavoitepalkka = 0

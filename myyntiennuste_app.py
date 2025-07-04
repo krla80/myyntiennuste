@@ -339,13 +339,13 @@ with tab3:
     st.subheader("Nettopalkkatavoite")
     tavoite_input = st.text_input("Syötä nettopalkkatavoite €/kk", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka_input")
     if st.button("Tallenna nettopalkkatavoite"):
-    try:
-        tavoite_float = float(tavoite_input.replace(",", "."))
-        st.session_state["tavoite_palkka"] = tavoite_input  # päivittyy myös input-kenttään
-        save_data(PALKKAENNUSTE_FILE, {"palkkatavoite": tavoite_input})
-        st.success("Nettopalkkatavoite tallennettu.")
-    except ValueError:
-        st.error("Syötä palkkatavoite numerona (esim. 2500).")
+        try:
+            tavoite_float = float(tavoite_input.replace(",", "."))
+            st.session_state["tavoite_palkka"] = tavoite_input  # päivittyy myös input-kenttään
+            save_data(PALKKAENNUSTE_FILE, {"palkkatavoite": tavoite_input})
+            st.success("Nettopalkkatavoite tallennettu.")
+        except ValueError:
+            st.error("Syötä palkkatavoite numerona (esim. 2500).")
 myyntikuilu = (bruttopalkka - tavoitepalkka) * 12 if tavoitepalkka > 0 else 0
 
 # Tulokset näkyviin

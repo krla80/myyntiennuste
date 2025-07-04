@@ -323,16 +323,18 @@ with tab3:
     bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
     verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
     nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
-    st.text_input("Nettopalkka tavoite", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka")
+    
+    # Tämä kenttä ottaa käyttäjän syötteen ja tallentaa sen session_stateen
+    tavoite_input = st.text_input("Nettopalkka tavoite", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka")
 
+    # Varmistetaan, että string muutetaan numeroksi ja virhe käsitellään
     try:
-        tavoitepalkka = float(st.session_state["tavoite_palkka"]) if st.session_state["tavoite_palkka"].strip() else 0
+        tavoitepalkka = float(tavoite_input.strip()) if tavoite_input.strip() else 0
     except ValueError:
         st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
         tavoitepalkka = 0
 
-    myyntikuilu = (bruttopalkka - tavoitepalkka) * 12 if tavoitepalkka > 0 else 0
-
+myyntikuilu = (bruttopalkka - tavoitepalkka) * 12 if tavoitepalkka > 0 else 0
 
     # Tulokset näkyviin
     st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin ja ennusteeseen: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)

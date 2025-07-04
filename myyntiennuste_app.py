@@ -112,6 +112,7 @@ with tab1:
                 nimi = st.text_input("Asiakkaan nimi", value=valittu_sopimus["nimi"])
                 tuote = st.text_input("Tuote", value=valittu_sopimus["tuote"])
                 sopimus = st.date_input("Sopimuksen päättymispäivä", value=datetime.fromisoformat(valittu_sopimus["sopimus"]).date())
+		sijainti = st.text_input("Sopimuksen sijainti (onedrive-osoite, verkkolevy tms.)", value=st.session_state.get("sijainti_sopimus", ""), key="sijainti_sopimus")
                 a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=valittu_sopimus["a_hinta"])
                 maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=valittu_sopimus["maara"])
                 tallenna = st.form_submit_button("Tallenna muutokset")
@@ -147,7 +148,7 @@ with tab2:
         tuote = st.text_input("Tuote", value=st.session_state.get("tuote_ennuste", ""), key="tuote_ennuste")
         a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_ennuste", 0.0), key="a_hinta_ennuste")
         maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=st.session_state.get("maara_ennuste", 1), key="maara_ennuste")
-        dokumentti= st.text.input("Tarjous dokumenttien sijainti", value=st.session_state.get("tuote_dokumentti", ""), key="tuote_dokumentti")
+        sijainti = st.text_input("Tarjouksen sijainti (onedrive-osoite, verkkolevy tms.)", value=st.session_state.get("sijainti_ennuste", ""), key="sijainti_ennuste")
         aktiivinen = st.checkbox("Aktiivinen", value=True)
         lisaus = st.form_submit_button("Lisää asiakas")
 
@@ -159,7 +160,7 @@ with tab2:
             "a_hinta": a_hinta,
             "maara": maara,
             "kokonaisarvo": kokonaisarvo,
-            "dokumentti": dokumentti,
+            "sijainti": sijainti,
             "aktiivinen": aktiivinen
 
         }

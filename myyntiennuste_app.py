@@ -365,7 +365,7 @@ if st.button("Tallenna nettopalkkatavoite"):
         st.session_state["tavoite_palkka"] = tavoite_input  # päivitetään sessioon
         save_data(PALKKAENNUSTE_FILE, {"palkkatavoite": tavoite_input})
         st.success("Nettopalkkatavoite tallennettu.")
-except ValueError:
+    except ValueError:
         st.error("Syötä palkkatavoite numerona (esim. 2500).")
 
 

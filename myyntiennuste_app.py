@@ -314,7 +314,6 @@ if st.session_state.asiakkaat_palkkaennuste:
         st.info("Ei tallennettuja kuluja.")
 
 # Lasketaan yhteissumma
-kulut_yhteensa = sum(
     kulut_yhteensa = sum(k["kokonaisarvo"] for k in st.session_state.asiakkaat_palkkaennuste)
     st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
 

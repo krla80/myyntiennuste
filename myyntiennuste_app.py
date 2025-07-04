@@ -340,7 +340,7 @@ st.text_input("Nettopalkka tavoite", value=st.session_state.get("tavoite_palkka"
 
 try:
     tavoitepalkka = float(st.session_state["tavoite_palkka"]) if st.session_state["tavoite_palkka"].strip() else 0
-    except ValueError:
+except ValueError:
         st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
         tavoitepalkka = 0
 

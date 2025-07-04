@@ -159,7 +159,7 @@ with tab2:
             "a_hinta": a_hinta,
             "maara": maara,
             "kokonaisarvo": kokonaisarvo,
-            "dokumentit": dokumentit
+            "dokumentit": dokumentit,
             "aktiivinen": aktiivinen
 
         }

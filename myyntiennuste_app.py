@@ -341,10 +341,10 @@ myyntikuilu = (bruttopalkka - tavoitepalkka) * 12 if tavoitepalkka > 0 else 0
 
 
     # Tulokset näkyviin
-st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin ja ennusteeseen: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)
-st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
-st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa: {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)
-st.markdown(f"<h2 style='color:red;'>Myyntikuilu vuodessa: {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin ja ennusteeseen: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)
+    st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa: {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color:red;'>Myyntikuilu vuodessa: {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
 
 with tab_summary:
     st.header("Yhteenveto keskeisistä luvuista")

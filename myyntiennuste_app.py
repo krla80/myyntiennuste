@@ -154,7 +154,7 @@ with tab2:
         tuote = st.text_input("Tuote", value=st.session_state.get("tuote_ennuste", ""), key="tuote_ennuste")
         a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_ennuste", 0.0), key="a_hinta_ennuste")
         maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=st.session_state.get("maara_ennuste", 1), key="maara_ennuste")
-	sijainti = st.text_input("Tarjousdokumenttien sijainti", value=st.session_state.get("sijainti_ennuste", ""), key="sijainti_ennuste")    
+        sijainti = st.text_input("Tarjousdokumenttien sijainti", value=st.session_state.get("sijainti_ennuste", ""), key="sijainti_ennuste")    
         aktiivinen = st.checkbox("Aktiivinen", value=True)
         lisaus = st.form_submit_button("Lisää asiakas")
 

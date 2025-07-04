@@ -337,7 +337,7 @@ with tab3:
             st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
             tavoitepalkka = 0
 
-    myyntikuilu = (kulut_yhteensa+tavoitepalkka/(1-vero_prosentti)-total_sopimus)
+    myyntikuilu = (kulut_yhteensa+tavoitepalkka*12/(1-vero_prosentti)-total_sopimus)
 
 
 # Tulokset näkyviin

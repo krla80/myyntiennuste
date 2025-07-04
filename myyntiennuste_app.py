@@ -302,7 +302,7 @@ with tab3:
 
             if a_hinta > 0 and maara > 0:
                 kulutiedot.append({
-                    "kulu": kulunimi,
+                    "kulu": kulu,
                     "a_hinta": a_hinta,
                     "maara": maara,
                     "kokonaisarvo": summa

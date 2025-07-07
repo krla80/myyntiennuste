@@ -2,11 +2,13 @@ import streamlit as st
 import json
 import os
 from datetime import date
+query_params = st.experimental_get_query_params()
+user_id = query_params.get("user", ["default_user"])[0]
 
 # Polut tiedostoille
-SOPIMUKSET_FILE = "asiakkaat_sopimus.json"
-ENNUSTE_FILE = "asiakkaat_ennuste.json"
-PALKKAENNUSTE_FILE = "asiakkaat_palkkaennuste.json"
+SOPIMUKSET_FILE = f"{user_id}_asiakkaat_sopimus.json"
+ENNUSTE_FILE = f"{user_id}_asiakkaat_ennuste.json"
+PALKKAENNUSTE_FILE = f"{user_id}_asiakkaat_palkkaennuste.json"
 
 # Funktiot tiedostojen lataukseen ja tallennukseen
 def load_data(file):

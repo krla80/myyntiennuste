@@ -372,7 +372,7 @@ with tab3:
 
 # Tulokset näkyviin
     st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)
-    st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa kulujen ja verojen jälkeen tämä näyttää 0.00€, mikäli nykyiset sopimukset eivät riitä kattamaan kuluja: {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa kulujen ja verojen jälkeen: {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)
     st.markdown(f"<h2 style='color:red;'>Näin paljon sinun pitää myydä jo tehtyjen sopimusten lisäksi saavuttaaksesi tavoitepalkkasi: {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
     #st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
 

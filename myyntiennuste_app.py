@@ -389,10 +389,29 @@ with tab_summary:
         overflow-x: auto; */">
         <h3 style='color:#4EA72E;'>Sopimusten kokonaisarvo yhteensä: {total_sopimus:.2f} €</h3>
         <h3 style='color:#4EA72E;'>Myyntiennusteen kokonaisarvo yhteensä: {total_ennuste:.2f} €</h3>
+	<h3 style='color:#4EA72E;'>Kokonaisarvo (sopimukset + myyntiennuste): {total_sopimus + total_ennuste:.2f} €</h3>
+ 
         <h3 style='color:#4EA72E;'>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h3>
-        <h3 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa: {nettopalkka:.2f} €</h3>
+        <h3 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa sopimusten perusteella: {nettopalkka:.2f} €</h3>
 	<h3 style='color:#D94D4D;'>Myyntikuilu (vuositasolla): {myyntikuilu:.2f} €</h3>
-        # Lisää tämä tarvittessa: <h3 style='color:#4EA72E;'>Kokonaisarvo (sopimukset + myyntiennuste): {total_sopimus + total_ennuste:.2f} €</h3>
+ 
+  # Myyntikuilun ja ennusteen vertailu
+    if myyntikuilu <= 0:
+        viesti = "Tavoite saavutettu! Ei myyntikuilua."
+        vari = "#4EA72E"  # vihreä
+    elif total_ennuste >= myyntikuilu:
+        viesti = "Myyntiennuste kattaa myyntikuilun!"
+        vari = "#4EA72E"  # vihreä
+    elif total_ennuste >= 0.75 * myyntikuilu:
+        viesti = "Myyntiennuste on lähellä kattamaan myyntikuilun."
+        vari = "#E6B800"  # keltainen
+    else:
+        viesti = "Myyntiennuste ei riitä kattamaan myyntikuilua."
+        vari = "#D94D4D"  # punainen
+
+st.markdown(f"<h3 style='color:{vari};'>{viesti}</h3>", unsafe_allow_html=True)
+ 
+        
 
 </div>
 """, unsafe_allow_html=True)

@@ -364,7 +364,7 @@ if st.button("Tallenna veroprosentti ja palkkatavoite"):
 
     st.markdown(f"**Nettopalkka-arvio:** {nettopalkka:.2f} € / kk")
     st.markdown(f"**Myyntikuilu (vuositasolla):** {myyntikuilu:.2f} €")
-except Exception as e:
+    except Exception as e:
     st.warning(f"Virhe palkkalaskennassa: {e}")
 
 # Tulokset näkyviin

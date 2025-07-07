@@ -108,7 +108,7 @@ with tab1:
     if st.session_state.asiakkaat_sopimus:
         # Rakennetaan valintalistan vaihtoehdot: ensin tyhjä, sitten asiakkaat
         valintaoptiot = ["- Valitse sopimus -"] + [
-            f"{a['nimi']} (sopimus päättyy {a['sopimus']})"
+            f"{a['nimi']} ({a["tuote"]} (sopimus päättyy {a['sopimus']})"
             for a in st.session_state.asiakkaat_sopimus
         ]
         valittu = st.selectbox("Valitse sopimus", options=valintaoptiot)

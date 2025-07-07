@@ -351,10 +351,10 @@ if st.button("Tallenna veroprosentti ja palkkatavoite"):
         tavoitepalkka = float(st.session_state.get("tavoite_palkka", 0))
         vero_prosentti = int(st.session_state.get("veroprosentti", 25))
 
-    kokonaismyynti = total_sopimus / 12
-    bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
-    verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
-    nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
+        kokonaismyynti = total_sopimus / 12
+        bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
+        verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
+        nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
 
     # Myyntikuilu (paljonko pitäisi vielä myydä vuodessa)
     try:

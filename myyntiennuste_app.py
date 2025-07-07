@@ -391,7 +391,6 @@ with tab_summary:
         <h3 style='color:#4EA72E;'>Sopimusten kokonaisarvo yhteensä: {total_sopimus:.2f} €</h3>
         <h3 style='color:#4EA72E;'>Myyntiennusteen kokonaisarvo yhteensä: {total_ennuste:.2f} €</h3>
 	<h3 style='color:#4EA72E;'>Kokonaisarvo (sopimukset + myyntiennuste): {total_sopimus + total_ennuste:.2f} €</h3>
- 
         <h3 style='color:#4EA72E;'>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h3>
         <h3 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa sopimusten perusteella: {nettopalkka:.2f} €</h3>
 	<h3 style='color:#D94D4D;'>Myyntikuilu (vuositasolla): {myyntikuilu:.2f} €</h3>

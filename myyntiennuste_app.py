@@ -8,6 +8,9 @@ from datetime import date
 query_params = st.query_params
 user_id = query_params.get("user", ["default_user"])[0]
 
+passwords_plain = ["salasana1", "salasana2", "salasana3"]
+hashed_passwords = stauth.Hasher(passwords_plain).generate()
+
 users = {
     "usernames": {
         "testaaja1": {"name": "Testaaja Yksi", "password": "salasana1"},
@@ -35,6 +38,10 @@ name, authentication_status, username = authenticator.login("Kirjaudu sisään",
 
 if authentication_status:
     st.write(f"Tervetuloa, {name}!")
+elif authentication_status is False:
+    st.error("Virheellinen käyttäjätunnus tai salasana")
+else:
+    st.info("Kirjaudu sisään jatkaaksesi")
 
 # Esimerkki käyttäjäkohtaisesta tiedon tallennuksesta tiedostoon
     filename = f"data_{username}.json"

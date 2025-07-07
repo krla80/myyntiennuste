@@ -89,7 +89,7 @@ with tab1:
     # Asiakaslistan näyttö ja poisto
     st.subheader("Poista olemassa oleva sopimus")
     if st.session_state.asiakkaat_sopimus:
-        poistettavat = ["- Valitse sopimus -"] + [f'{a["nimi"]} ({[tuote]})' for a in st.session_state.asiakkaat_sopimus]
+        poistettavat = ["- Valitse sopimus -"] + [f'{a["nimi"]} [tuote]' for a in st.session_state.asiakkaat_sopimus]
         poistettava = st.selectbox("Valitse poistettava sopimus", poistettavat)
 
         if poistettava != "- Valitse sopimus -":

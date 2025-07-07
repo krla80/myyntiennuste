@@ -8,30 +8,25 @@ from datetime import date
 query_params = st.query_params
 user_id = query_params.get("user", ["default_user"])[0]
 
-passwords_plain = ["salasana1", "salasana2", "salasana3"]
+passwords_plain = ["1234", "5678", "2345"]
 hashed_passwords = stauth.Hasher(passwords_plain).generate()
 
-users = {
+names = ["Testaaja Yksi", "Testaaja Kaksi", "Testaaja Kolme"]
+usernames = ["testaaja1", "testaaja2", "testaaja3"]
+
+credentials = {
     "usernames": {
-        "testaaja1": {"name": "Testaaja Yksi", "password": "salasana1"},
-        "testaaja2": {"name": "Testaaja Kaksi", "password": "salasana2"},
-        "testaaja3": {"name": "Testaaja Kolme", "password": "salasana3"},
+        usernames[i]: {"name": names[i], "password": hashed_passwords[i]}
+        for i in range(len(usernames))
     }
 }
 
-import hashlib
-def hash_password(password):
-    import bcrypt
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(password.encode(), salt).decode()
-
 # --- Luo autentikaattori ---
-names = [users["usernames"][u]["name"] for u in users["usernames"]]
-usernames = list(users["usernames"].keys())
-passwords = [users["usernames"][u]["password"] for u in users["usernames"]]
+names = [credentials["usernames"][u]["name"] for u in credentials["usernames"]]
+usernames = list(credentials["usernames"].keys())
+passwords = [cradentials["usernames"][u]["password"] for u in credentials["usernames"]]
 
-authenticator = stauth.Authenticate(names, usernames, passwords,
-                                    "some_cookie_name", "some_signature_key", cookie_expiry_days=1)
+authenticator = stauth.Authenticate(credentials, "some_cookie_name", "some_signature_key", cookie_expiry_days=1)
 
 # --- Kirjautuminen ---
 name, authentication_status, username = authenticator.login("Kirjaudu sisään", "main")

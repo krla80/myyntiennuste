@@ -311,7 +311,7 @@ with tab3:
 
         st.form_submit_button("Tallenna kulut")
         st.session_state.asiakkaat_palkkaennuste = kulutiedot
-            save_data(PALKKAENNUSTE_FILE, kulutiedot)
+        save_data(PALKKAENNUSTE_FILE, kulutiedot)
             st.success("Kulut tallennettu onnistuneesti.")
 
     st.subheader("Tallennetut kulut:")

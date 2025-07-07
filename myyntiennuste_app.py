@@ -2,7 +2,7 @@ import streamlit as st
 import json
 import os
 from datetime import date
-query_params = st.experimental_get_query_params()
+query_params = st.query_params
 user_id = query_params.get("user", ["default_user"])[0]
 
 # Polut tiedostoille

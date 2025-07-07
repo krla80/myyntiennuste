@@ -354,7 +354,7 @@ with tab3:
             st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
 
     # Palkkalaskelmat
-    st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)
+    
     try:
         tavoitepalkka = float(st.session_state.get("tavoite_palkka", 0))
         vero_prosentti = int(st.session_state.get("veroprosentti", 25))
@@ -365,9 +365,9 @@ with tab3:
         myyntikuilu = total_sopimus - (kulut_yhteensa + tavoitepalkka * 12 / (1 - vero_prosentti / 100))
 
         if myyntikuilu < 0:
-            st.markdown(f"<h2 style='color:red;'>Näin paljon sinun pitää myydä jo tehtyjen sopimusten tällä tilikaudella lisäksi saavuttaaksesi tavoitepalkkasi:<br> {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
+            st.markdown(f"<h2 style='color:red;'>Näin paljon sinun pitää myydä jo tehtyjen sopimusten lisäksi tällä tilikaudella lisäksi saavuttaaksesi tavoitepalkkasi:<br> {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
         else:
-            st.markdown("<h2 style='color:green;'>Olet saavuttanut tai ylittänyt nettopalkkatavoitteesi, upeaa!</h2>", unsafe_allow_html=True)
+            st.markdown("<h2 style='color:green;'>Olet saavuttanut tai ylittänyt nettopalkkatavoitteesi jo tekemilläsi sopimuksilla, upeaa!</h2>", unsafe_allow_html=True)
             
     except ZeroDivisionError:
         st.warning("Veroprosentti ei voi olla 100 %. Tarkista syöte.")
@@ -376,6 +376,7 @@ with tab3:
 
 # Tulokset näkyviin
     st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa kulujen ja verojen jälkeen: {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)
     # st.markdown(f"<h2 style='color:red;'>Näin paljon sinun pitää myydä jo tehtyjen sopimusten tällä tilikaudella lisäksi saavuttaaksesi tavoitepalkkasi:\n {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
     # st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
 

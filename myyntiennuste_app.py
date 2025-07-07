@@ -9,7 +9,7 @@ query_params = st.query_params
 user_id = query_params.get("user", ["default_user"])[0]
 
 passwords_plain = ["1234", "5678", "2345"]
-hashed_passwords = stauth.Hasher(passwords_plain).generate()
+hashed_passwords = [stauth.generate_password_hash(p) for p in passwords_plain]
 
 names = ["Testaaja Yksi", "Testaaja Kaksi", "Testaaja Kolme"]
 usernames = ["testaaja1", "testaaja2", "testaaja3"]
@@ -20,11 +20,6 @@ credentials = {
         for i in range(len(usernames))
     }
 }
-
-# --- Luo autentikaattori ---
-names = [credentials["usernames"][u]["name"] for u in credentials["usernames"]]
-usernames = list(credentials["usernames"].keys())
-passwords = [cradentials["usernames"][u]["password"] for u in credentials["usernames"]]
 
 authenticator = stauth.Authenticate(credentials, "some_cookie_name", "some_signature_key", cookie_expiry_days=1)
 

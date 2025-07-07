@@ -334,7 +334,7 @@ vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=
 
 # Tavoitepalkka (varmistetaan että merkkijono)
 tavoitepalkka_oletus = st.session_state.get("tavoite_palkka", "2500")
-tavoitepalkka_input = st.text_input("Nettopalkka tavoite (€ / kk)", value=str(tavoitepalkka_oletus)
+tavoitepalkka_input = st.text_input("Nettopalkka tavoite (€ / kk)", value=str(tavoitepalkka_oletus))
 
 # Tallennusnappi
 if st.button("Tallenna veroprosentti ja palkkatavoite"):

@@ -331,17 +331,31 @@ with tab3:
 
 # Veroprosentti ja palkkatavoite
 vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
-tavoitepalkka_input = st.text_input("Nettopalkka tavoite (€ / kk)", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka_input")
 
+# Tavoitepalkka (varmistetaan että merkkijono)
+tavoitepalkka_str = str(st.session_state.get("tavoite_palkka", ""))
+tavoitepalkka_input = st.text_input("Nettopalkka tavoite (€ / kk)", value=tavoitepalkka_str)
+
+# Tallennusnappi
 # Tallennusnappi
 if st.button("Tallenna veroprosentti ja palkkatavoite"):
     try:
-        tavoite_float = float(tavoitepalkka_input.replace(",", "."))
+        if tavoitepalkka_input.strip():
+            tavoite_float = float(tavoitepalkka_input.replace(",", "."))
+        else:
+            tavoite_float = 0.0
+
         veroprosentti_int = int(vero_prosentti)
 
-        st.session_state["tavoite_palkka"] = tavoite_float
+        # Tallennetaan merkkijonona, jotta käyttö text_inputissa ei kaadu
+        st.session_state["tavoite_palkka"] = str(tavoite_float)
         st.session_state["veroprosentti"] = veroprosentti_int
-        save_data(PALKKAENNUSTE_FILE, {"palkkatavoite": tavoite_float,"veroprosentti": veroprosentti_int})
+
+        save_data(PALKKAENNUSTE_FILE, {
+            "palkkatavoite": tavoite_float,
+            "veroprosentti": veroprosentti_int
+        })
+
         st.success("Veroprosentti ja palkkatavoite tallennettu.")
     except ValueError:
         st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")

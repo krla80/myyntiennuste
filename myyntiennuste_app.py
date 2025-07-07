@@ -340,8 +340,8 @@ with tab3:
             })
 
         st.success("Veroprosentti ja palkkatavoite tallennettu.")
-    except ValueError:
-        st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
+        except ValueError:
+            st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
 
     # Palkkalaskelmat
     try:

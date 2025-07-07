@@ -398,16 +398,16 @@ with tab_summary:
   # Myyntikuilun ja ennusteen vertailu
     if myyntikuilu <= 0:
         viesti = "Tavoite saavutettu! Ei myyntikuilua."
-        vari = "#4EA72E"  # vihreä
+        vari = "green"
     elif total_ennuste >= myyntikuilu:
         viesti = "Myyntiennuste kattaa myyntikuilun!"
-        vari = "#4EA72E"  # vihreä
+        vari = "green"
     elif total_ennuste >= 0.75 * myyntikuilu:
         viesti = "Myyntiennuste on lähellä kattamaan myyntikuilun."
-        vari = "#E6B800"  # keltainen
+        vari = "yellow"
     else:
         viesti = "Myyntiennuste ei riitä kattamaan myyntikuilua."
-        vari = "#D94D4D"  # punainen
+        vari = "red"
 
 st.markdown(f"<h3 style='color:{vari};'>{viesti}</h3>", unsafe_allow_html=True)
  

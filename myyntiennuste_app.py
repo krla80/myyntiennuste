@@ -329,9 +329,9 @@ with tab3:
     )
     st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
 
-# Veroprosentti
-    vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
-    tavoitepalkka_input = st.text_input("Nettopalkka tavoite (€ / kk)", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka")
+# Veroprosentti ja palkkatavoite
+vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
+tavoitepalkka_input = st.text_input("Nettopalkka tavoite (€ / kk)", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka_input")
 
 # Tallennusnappi
     if st.button("Tallenna veroprosentti ja palkkatavoite"):
@@ -339,23 +339,17 @@ with tab3:
             tavoite_float = float(tavoitepalkka_input.replace(",", "."))
             veroprosentti_int = int(vero_prosentti)
 
-            st.session_state["tavoite_palkka"] = str(tavoite_float)
+            st.session_state["tavoite_palkka"] = tavoite_float
             st.session_state["veroprosentti"] = veroprosentti_int
-
-            save_data(PALKKAENNUSTE_FILE, {
-                "palkkatavoite": tavoite_float,
-                "veroprosentti": veroprosentti_int
-            })
-
+            save_data(PALKKAENNUSTE_FILE, {"palkkatavoite": tavoite_float,"veroprosentti": veroprosentti_int})
             st.success("Veroprosentti ja palkkatavoite tallennettu.")
         except ValueError:
             st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
 
     # Palkkalaskelmat
     try:
-        tavoitepalkka = float(st.session_state["tavoite_palkka"]) if st.session_state["tavoite_palkka"].strip() else 0
-    except Exception:
-        tavoitepalkka = 0
+        tavoitepalkka = float(st.session_state.get("tavoite_palkka", 0))
+        vero_prosentti = int(st.session_state.get("veroprosentti", 25))
 
     kokonaismyynti = total_sopimus / 12
     bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
@@ -370,7 +364,8 @@ with tab3:
 
     st.markdown(f"**Nettopalkka-arvio:** {nettopalkka:.2f} € / kk")
     st.markdown(f"**Myyntikuilu (vuositasolla):** {myyntikuilu:.2f} €")
-
+except Exception as e:
+    st.warning(f"Virhe palkkalaskennassa: {e}")
 
 # Tulokset näkyviin
     st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)

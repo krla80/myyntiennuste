@@ -46,7 +46,7 @@ with tab1:
 
     st.write(f" <span style='color:red; font-style: italic;'>Jos sopimus on päättynyt, näkyy se allaolevassa listassa punaisella. Poista sopimus listasta tai uusi sopimus ja vaihda uusi päättymispäivä.</span>", unsafe_allow_html=True)
 
-    st.write(f" <span style='color:red; font-style: italic;'>Laskuri laskee mukaan vain voimassaolevat sopimukset. Jos sopimus jatkuu, vaihda sopimuksen päättymispäivä.</span>", unsafe_allow_html=True)
+    st.write(f" <span style='color:red; font-style: italic;'>Laskuri laskee mukaan vain voimassaolevat sopimukset. Jos päättynyt sopimus jatkuu, vaihda sopimuksen päättymispäivä tulevaisuuteen.</span>", unsafe_allow_html=True)
 
     st.subheader("Lisää sopimus")
     with st.form("uusi_asiakas_sopimus"):
@@ -258,7 +258,7 @@ with tab2:
 
 with tab3:
 
-    st.write("Täytä yrityskulut (ilman ALV:tä) syöttämällä á-hinta ja kappalemäärä kullekin valmiiksi nimetylle kululle. Voit myös lisätä puuttuvan kulun.")
+    st.write("Syötä yrityskulut (ilman ALV:tä) valmiiksi nimetylle kululle. Voit myös lisätä summata puuttuvat kulut viimeiselle riville "Muut kulut".")
 
     vakio_kulut = [
         "Kirjanpito",
@@ -374,7 +374,7 @@ with tab3:
 # Tulokset näkyviin
     st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)
     st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa: {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)
-    st.markdown(f"<h2 style='color:red;'>Myyntikuilu vuodessa: {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color:red;'>Näin paljon sinun pitää myydä jo tehtyjen sopimusten lisäksi saavuttaaksesi tavoitepalkkasi: {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
     #st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
 
 with tab_summary:
@@ -404,16 +404,16 @@ with tab_summary:
     viesti= "Tilannetta ei ole vielä arvioitu"
       
     if myyntikuilu <= 0:
-        viesti = "Tavoite saavutettu! Ei myyntikuilua."
+        viesti = "Mikäli saavutat asettamasi myyntitavoitteet, saavutat tavoitepalkkasi!"
         vari = "green"
     elif total_ennuste >= myyntikuilu:
-        viesti = "Myyntiennuste kattaa myyntikuilun!"
+        viesti = "Mikäli saavutat asettamasi myyntitavoitteet, saavutat tavoitepalkkasi!"
         vari = "green"
     elif total_ennuste >= 0.75 * myyntikuilu:
-        viesti = "Myyntiennuste on lähellä kattamaan myyntikuilun."
+        viesti = "Myyntitavoitteesi ei ihan riitä kattamaan asettamaasi tavoitepalkkaa."
         vari = "yellow"
     else:
-        viesti = "Myyntiennuste ei riitä kattamaan myyntikuilua."
+        viesti = "Myyntitavoitteesi ei riitä kattamaan asettamaasi tavoitepalkkaa."
         vari = "red"
 
     st.markdown(f"<h3 style='color:{vari};'>{viesti}</h3>", unsafe_allow_html=True)

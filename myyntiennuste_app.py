@@ -356,8 +356,8 @@ if st.button("Tallenna veroprosentti ja palkkatavoite"):
         verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
         nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
         myyntikuilu = total_sopimus - (kulut_yhteensa + tavoitepalkka * 12 / (1 - vero_prosentti / 100))
-	    
-	st.markdown(f"**Nettopalkka-arvio:** {nettopalkka:.2f} € / kk")
+        
+        st.markdown(f"**Nettopalkka-arvio:** {nettopalkka:.2f} € / kk")
         st.markdown(f"**Myyntikuilu (vuositasolla):** {myyntikuilu:.2f} €")
 	    
     except ZeroDivisionError:

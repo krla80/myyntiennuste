@@ -333,18 +333,13 @@ with tab3:
 vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
 
 # Tavoitepalkka (varmistetaan että merkkijono)
-tavoitepalkka_str = str(st.session_state.get("tavoite_palkka", ""))
-tavoitepalkka_input = st.text_input("Nettopalkka tavoite (€ / kk)", value=tavoitepalkka_str)
+tavoitepalkka_oletus = st.session_state.get("tavoite_palkka", "2500")
+tavoitepalkka_input = st.text_input("Nettopalkka tavoite (€ / kk)", value=str(tavoitepalkka_oletus)
 
-# Tallennusnappi
 # Tallennusnappi
 if st.button("Tallenna veroprosentti ja palkkatavoite"):
     try:
-        if tavoitepalkka_input.strip():
-            tavoite_float = float(tavoitepalkka_input.replace(",", "."))
-        else:
-            tavoite_float = 0.0
-
+        tavoite_float = float(tavoitepalkka_input.replace(",", "."))
         veroprosentti_int = int(vero_prosentti)
 
         # Tallennetaan merkkijonona, jotta käyttö text_inputissa ei kaadu

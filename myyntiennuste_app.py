@@ -334,17 +334,17 @@ vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=
 tavoitepalkka_input = st.text_input("Nettopalkka tavoite (€ / kk)", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka_input")
 
 # Tallennusnappi
-    if st.button("Tallenna veroprosentti ja palkkatavoite"):
-        try:
-            tavoite_float = float(tavoitepalkka_input.replace(",", "."))
-            veroprosentti_int = int(vero_prosentti)
+if st.button("Tallenna veroprosentti ja palkkatavoite"):
+    try:
+        tavoite_float = float(tavoitepalkka_input.replace(",", "."))
+        veroprosentti_int = int(vero_prosentti)
 
-            st.session_state["tavoite_palkka"] = tavoite_float
-            st.session_state["veroprosentti"] = veroprosentti_int
-            save_data(PALKKAENNUSTE_FILE, {"palkkatavoite": tavoite_float,"veroprosentti": veroprosentti_int})
-            st.success("Veroprosentti ja palkkatavoite tallennettu.")
-        except ValueError:
-            st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
+        st.session_state["tavoite_palkka"] = tavoite_float
+        st.session_state["veroprosentti"] = veroprosentti_int
+        save_data(PALKKAENNUSTE_FILE, {"palkkatavoite": tavoite_float,"veroprosentti": veroprosentti_int})
+        st.success("Veroprosentti ja palkkatavoite tallennettu.")
+except ValueError:
+        st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
 
     # Palkkalaskelmat
     try:

@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 import json
@@ -7,59 +6,6 @@ import os
 from datetime import date
 query_params = st.query_params
 user_id = query_params.get("user", ["default_user"])[0]
-
-passwords_plain = ["1234", "5678", "2345"]
-hashed_passwords = [stauth.generate_password_hash(p) for p in passwords_plain]
-
-names = ["Testaaja Yksi", "Testaaja Kaksi", "Testaaja Kolme"]
-usernames = ["testaaja1", "testaaja2", "testaaja3"]
-
-credentials = {
-    "usernames": {
-        usernames[i]: {"name": names[i], "password": hashed_passwords[i]}
-        for i in range(len(usernames))
-    }
-}
-
-authenticator = stauth.Authenticate(credentials, "some_cookie_name", "some_signature_key", cookie_expiry_days=1)
-
-# --- Kirjautuminen ---
-name, authentication_status, username = authenticator.login("Kirjaudu sisään", "main")
-
-if authentication_status:
-    st.write(f"Tervetuloa, {name}!")
-elif authentication_status is False:
-    st.error("Virheellinen käyttäjätunnus tai salasana")
-else:
-    st.info("Kirjaudu sisään jatkaaksesi")
-
-# Esimerkki käyttäjäkohtaisesta tiedon tallennuksesta tiedostoon
-filename = f"data_{username}.json"
-
-    # Lataa käyttäjän data jos olemassa
-if os.path.exists(filename):
-    with open(filename, "r", encoding="utf-8") as f:
-        user_data = json.load(f)
-else:
-    user_data = {}
-
-    # Syötä tietoa
-uusi_arvo = st.text_input("Syötä jotain tietoa tallennettavaksi", value=user_data.get("input", ""))
-
-if st.button("Tallenna"):
-    user_data["input"] = uusi_arvo
-    with open(filename, "w", encoding="utf-8") as f:
-        json.dump(user_data, f, ensure_ascii=False, indent=4)
-    st.success("Tiedot tallennettu!")
-
-st.write("Tallennetut tiedot:", user_data.get("input", "Ei tallennettuja tietoja"))
-
-if authentication_status is False:
-    st.error("Virheellinen käyttäjätunnus tai salasana")
-elif authentication_status is None:
-    st.info("Kirjaudu sisään jatkaaksesi")
-else:
-    st.write(f"Tervetuloa, {name}!")
 
 # Polut tiedostoille
 SOPIMUKSET_FILE = f"{user_id}_asiakkaat_sopimus.json"

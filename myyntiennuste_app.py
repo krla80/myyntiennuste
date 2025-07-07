@@ -44,7 +44,7 @@ with tab1:
 
     st.write(f" <span style='color:red; font-style: italic;'>Jos sopimus on päättynyt, näkyy se allaolevassa listassa punaisella. Poista sopimus listasta tai uusi sopimus ja vaihda uusi päättymispäivä.</span>", unsafe_allow_html=True)
 
-    st.write(f" <span style='color:red; font-style: italic;'>Laskuri laskee mukaan kaikki listalle tallennetut sopimukset, vaikka sopimus olisikin päättynyt.</span>", unsafe_allow_html=True)
+    st.write(f" <span style='color:red; font-style: italic;'>Laskuri laskee mukaan vain voimassaolevat sopimukset. Jos sopimus jatkuu, vaihda sopimuksen päättymispäivä.</span>", unsafe_allow_html=True)
 
     st.subheader("Lisää sopimus")
     with st.form("uusi_asiakas_sopimus"):

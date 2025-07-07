@@ -359,11 +359,10 @@ if st.button("Tallenna veroprosentti ja palkkatavoite"):
     # Myyntikuilu (paljonko pitäisi vielä myydä vuodessa)
     try:
         myyntikuilu = total_sopimus - (kulut_yhteensa + tavoitepalkka * 12 / (1 - vero_prosentti / 100))
+	st.markdown(f"**Nettopalkka-arvio:** {nettopalkka:.2f} € / kk")
+        st.markdown(f"**Myyntikuilu (vuositasolla):** {myyntikuilu:.2f} €")
     except ZeroDivisionError:
-        myyntikuilu = 0
-
-    st.markdown(f"**Nettopalkka-arvio:** {nettopalkka:.2f} € / kk")
-    st.markdown(f"**Myyntikuilu (vuositasolla):** {myyntikuilu:.2f} €")
+        st.warning("Veroprosentti ei voi olla 100 %. Tarkista syöte.")
     except Exception as e:
     st.warning(f"Virhe palkkalaskennassa: {e}")
 

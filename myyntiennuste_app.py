@@ -79,7 +79,7 @@ with tab1:
         for a in st.session_state.asiakkaat_sopimus:
             loppupvm = datetime.fromisoformat(a['sopimus']).date()
             if loppupvm <= date.today():
-                st.markdown(f"- <span style='color: red;'> {a['nimi']} (sopimus päättyy {a['sopimus']}): {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €</span>", unsafe_allow_html=True)
+                st.markdown(f"- <span style='color: red;'> {a['nimi']} (sopimus päättyy {a['sopimus']}): {a['tuote']:.2f}: {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €</span>", unsafe_allow_html=True)
 
             else:
                 st.write(f"- {a['nimi']} (sopimus päättyy {a['sopimus']}): {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €")

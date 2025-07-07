@@ -1,0 +1,14 @@
+#Ohjeet Appin käyttöön"
+
+Komentokehote: CMD-->cd "C:\Users\kristina.lamberg\OneDrive\Yrityksen asiat\Myynninsuunnittelu-verkkokurssi"
+
+--> streamlit run myyntiennuste_app.py (avaa appin, jossa voi syöttää kulut ennalta määritelyihin kenttiin)
+
+AVAA uusi välilehti
+
+Komentokehote: CMD-->cd "C:\Users\kristina.lamberg\OneDrive\Yrityksen asiat\Myynninsuunnittelu-verkkokurssi"
+
+--> streamlit run myyntiennuste_kulujensyottoyksittain_app.py (avaa appin, jossa voi syöttää kulut itsemääritellen.)
+
+
+JOS HALUAT MUUTTAA KOODIA--> GIT HUB

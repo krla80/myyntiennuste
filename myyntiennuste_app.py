@@ -362,7 +362,7 @@ with tab3:
         nettopalkka = bruttopalkka - verot*1.019 if bruttopalkka > 0 else 0
         myyntikuilu = total_sopimus - (kulut_yhteensa + tavoitepalkka * 12 / (1 - vero_prosentti / 100))
         
-        st.markdown(f"**Nettopalkka-arvio:** {nettopalkka:.2f} € / kk")
+        st.markdown(f"**Nettopalkka-arvio (tämä näyttää 0.0€, mikäli nykyiset sopimukset eivät riitä kattamaan kuluja):** {nettopalkka:.2f} € / kk")
 	    
     except ZeroDivisionError:
         st.warning("Veroprosentti ei voi olla 100 %. Tarkista syöte.")

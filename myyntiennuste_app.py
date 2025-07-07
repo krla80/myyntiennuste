@@ -399,23 +399,23 @@ with tab_summary:
  
   # Myyntikuilun ja ennusteen vertailu
 
-vari= "black"
-viesti= "Tilannetta ei ole vielä arvioitu"
+    vari= "black"
+    viesti= "Tilannetta ei ole vielä arvioitu"
       
-if myyntikuilu <= 0:
-    viesti = "Tavoite saavutettu! Ei myyntikuilua."
-    vari = "green"
-elif total_ennuste >= myyntikuilu:
-    viesti = "Myyntiennuste kattaa myyntikuilun!"
-    vari = "green"
-elif total_ennuste >= 0.75 * myyntikuilu:
-    viesti = "Myyntiennuste on lähellä kattamaan myyntikuilun."
-    vari = "yellow"
-else:
-    viesti = "Myyntiennuste ei riitä kattamaan myyntikuilua."
-    vari = "red"
+    if myyntikuilu <= 0:
+        viesti = "Tavoite saavutettu! Ei myyntikuilua."
+        vari = "green"
+    elif total_ennuste >= myyntikuilu:
+        viesti = "Myyntiennuste kattaa myyntikuilun!"
+        vari = "green"
+    elif total_ennuste >= 0.75 * myyntikuilu:
+        viesti = "Myyntiennuste on lähellä kattamaan myyntikuilun."
+        vari = "yellow"
+    else:
+        viesti = "Myyntiennuste ei riitä kattamaan myyntikuilua."
+        vari = "red"
 
-st.markdown(f"<h3 style='color:{vari};'>{viesti}</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='color:{vari};'>{viesti}</h3>", unsafe_allow_html=True)
  
         
 

@@ -143,7 +143,7 @@ with tab1:
     
 
     # Summa
-    total_sopimus = sum(a["kokonaisarvo"] for a in st.session_state.asiakkaat_sopimus) if st.session_state.asiakkaat_sopimus else 0
+    total_sopimus = sum(a["kokonaisarvo"] for a in st.session_state.asiakkaat_sopimus if datetime.fromisoformat(a["sopimus"]).date() >= date.today()) if st.session_state.asiakkaat_sopimus else 0
     st.write(f"<h3 style='color:#4EA72E;'>Jo tehtyjen sopimusten arvo yhteensä:{total_sopimus:.2f} €</h3>", unsafe_allow_html=True)
 
 with tab2:

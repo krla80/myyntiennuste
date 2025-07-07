@@ -44,7 +44,7 @@ else:
     st.info("Kirjaudu sisään jatkaaksesi")
 
 # Esimerkki käyttäjäkohtaisesta tiedon tallennuksesta tiedostoon
-    filename = f"data_{username}.json"
+filename = f"data_{username}.json"
 
     # Lataa käyttäjän data jos olemassa
     if os.path.exists(filename):

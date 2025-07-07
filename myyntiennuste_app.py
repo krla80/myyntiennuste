@@ -32,7 +32,7 @@ if "asiakkaat_palkkaennuste" not in st.session_state:
 st.set_page_config(page_title="Myyntiennuste", layout="centered")
 st.markdown('<h1 style="color:#4EA72E;">Myyntiennuste ja sopimusten hallinta</h1>', unsafe_allow_html=True)
 
-tab1, tab3, tab2, tab_summary = st.tabs(["Sopimukset", "Arvio tulevasta palkasta", "Myyntiennuste",  "Yhteenveto keskeisistä luvuista"])
+tab1, tab3, tab2, tab_summary = st.tabs(["Kirjaa sopimukset", "Tunne yrityksesi kulut ja  aseta palkkatoive", "Aseta myyntitavoitteet",  "Yhteenveto keskeisistä luvuista"])
 
 from datetime import date, datetime
 
@@ -42,7 +42,7 @@ voimassa_olevat_sopimukset = [
 ]
 
 with tab1:
-    st.write("Syötä asiakkaat, joiden kanssa sinulla on jo sopimus. Voit antaa jokaiselle asiakkaalle oman hinnan ja kappalemäärän tilikautena.")
+    st.write("Syötä asiakkaat, joiden kanssa sinulla on jo sopimus. Voit antaa jokaiselle asiakkaalle oman hinnan ja kappalemäärän tilikautena. Kirjaa hinnat ilman ALV:a.")
 
     st.write(f" <span style='color:red; font-style: italic;'>Jos sopimus on päättynyt, näkyy se allaolevassa listassa punaisella. Poista sopimus listasta tai uusi sopimus ja vaihda uusi päättymispäivä.</span>", unsafe_allow_html=True)
 
@@ -150,9 +150,9 @@ with tab1:
     st.write(f"<h3 style='color:#4EA72E;'>Jo tehtyjen sopimusten arvo yhteensä:{total_sopimus:.2f} €</h3>", unsafe_allow_html=True)
 
 with tab2:
-    st.write("Ennusta ja suunnittele tähän tilikautesi tulevat asiakkaat, palvelut ja tuotteet. Suunnittele siis tarvittava lisämyynti!")
+    st.write("Ennusta ja suunnittele tähän tilikautesi tuleva lisämyynti. Äsken asettamasi yrityksen kulut ja nettopalkkatavoite ohjaa, kuinka paljon liäsmyyntiä olemassa olevien sopimusten rinnalle tarvitaan.")
 
-    st.write("Voit suunnitella kenelle aiot myydä, mitä palveluita tai tuotteita aiot myydä. Ennustetut myynnit siirtyvät suoraan Arvio tulevasta palkka lehdestä, jolloin näet tavoitemyyntisi vaikutuksen kuukausipalkkaan.")
+    st.write("Voit suunnitella kenelle aiot myydä, mitä palveluita tai tuotteita aiot myydä. Tee suunnitelmastasi riittävän yksityiskohtainen, jolloin sen ohjaa myyntiponnistelujasi")
 
     st.markdown("<span style='color:red; font-style: italic;'>Jos ennustettu myyntisi ei ole aktiivinen, ei ennustetta lasketa jo tehtyjen sopimusten ja ennustetun myynnin kokonaisarvoon. Voit siis valintasi mukaan jättää \"hävityn\" kaupan listalle ei-aktiiviseksi tai poistaa sen kokonaan. Ei aktiiviset ennusteet näkyvät punaisella allaolevalla listalla.</span>", unsafe_allow_html=True)
 
@@ -258,7 +258,7 @@ with tab2:
 
 with tab3:
 
-    st.write('Syötä yrityskulut (ilman ALV:tä) valmiiksi nimetylle kululle. Voit myös lisätä summata puuttuvat kulut viimeiselle riville "Muut kulut".')
+    st.write('Syötä yrityskulut (ilman ALV:a) valmiiksi nimetylle riville. Voit myös lisätä summata puuttuvat kulut viimeiselle riville "Muut kulut".')
 
     vakio_kulut = [
         "Kirjanpito",

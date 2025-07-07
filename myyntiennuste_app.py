@@ -400,8 +400,8 @@ with tab_summary:
  
   # Myyntikuilun ja ennusteen vertailu
 
-  vari= "black"
-  viesti= "Tilannetta ei ole vielä arvioitu"
+vari= "black"
+viesti= "Tilannetta ei ole vielä arvioitu"
       
     if myyntikuilu <= 0:
         viesti = "Tavoite saavutettu! Ei myyntikuilua."

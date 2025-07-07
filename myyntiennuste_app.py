@@ -309,7 +309,9 @@ with tab3:
                     "kokonaisarvo": summa
                 })
 
-        st.form_submit_button("Tallenna kulut")
+	submit = st.form_submit_button("Tallenna kulut")
+
+    if submit: 
         st.session_state.asiakkaat_palkkaennuste = kulutiedot
         save_data(PALKKAENNUSTE_FILE, kulutiedot)
         st.success("Kulut tallennettu onnistuneesti.")

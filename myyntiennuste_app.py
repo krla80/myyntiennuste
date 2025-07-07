@@ -54,20 +54,20 @@ else:
     user_data = {}
 
     # Syötä tietoa
-    uusi_arvo = st.text_input("Syötä jotain tietoa tallennettavaksi", value=user_data.get("input", ""))
+uusi_arvo = st.text_input("Syötä jotain tietoa tallennettavaksi", value=user_data.get("input", ""))
 
-    if st.button("Tallenna"):
-        user_data["input"] = uusi_arvo
-        with open(filename, "w", encoding="utf-8") as f:
-            json.dump(user_data, f, ensure_ascii=False, indent=4)
-        st.success("Tiedot tallennettu!")
+if st.button("Tallenna"):
+    user_data["input"] = uusi_arvo
+    with open(filename, "w", encoding="utf-8") as f:
+        json.dump(user_data, f, ensure_ascii=False, indent=4)
+    st.success("Tiedot tallennettu!")
 
-    st.write("Tallennetut tiedot:", user_data.get("input", "Ei tallennettuja tietoja"))
+st.write("Tallennetut tiedot:", user_data.get("input", "Ei tallennettuja tietoja"))
 
-    elif authentication_status is False:
-        st.error("Virheellinen käyttäjätunnus tai salasana")
-    else authentication_status is None:
-        st.info("Kirjaudu sisään jatkaaksesi")
+if authentication_status is False:
+    st.error("Virheellinen käyttäjätunnus tai salasana")
+else authentication_status is None:
+    st.info("Kirjaudu sisään jatkaaksesi")
 
 # Polut tiedostoille
 SOPIMUKSET_FILE = f"{user_id}_asiakkaat_sopimus.json"

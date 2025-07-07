@@ -1,9 +1,66 @@
 import streamlit as st
+import streamlit_authenticator as stauth
+import yaml
+from yaml.loader import SafeLoader
 import json
 import os
 from datetime import date
 query_params = st.query_params
 user_id = query_params.get("user", ["default_user"])[0]
+
+users = {
+    "usernames": {
+        "testaaja1": {"name": "Testaaja Yksi", "password": "salasana1"},
+        "testaaja2": {"name": "Testaaja Kaksi", "password": "salasana2"},
+        "testaaja3": {"name": "Testaaja Kolme", "password": "salasana3"},
+    }
+}
+
+import hashlib
+def hash_password(password):
+    import bcrypt
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode(), salt).decode()
+
+# --- Luo autentikaattori ---
+names = [users["usernames"][u]["name"] for u in users["usernames"]]
+usernames = list(users["usernames"].keys())
+passwords = [users["usernames"][u]["password"] for u in users["usernames"]]
+
+authenticator = stauth.Authenticate(names, usernames, passwords,
+                                    "some_cookie_name", "some_signature_key", cookie_expiry_days=1)
+
+# --- Kirjautuminen ---
+name, authentication_status, username = authenticator.login("Kirjaudu sisään", "main")
+
+if authentication_status:
+    st.write(f"Tervetuloa, {name}!")
+
+# Esimerkki käyttäjäkohtaisesta tiedon tallennuksesta tiedostoon
+    filename = f"data_{username}.json"
+
+    # Lataa käyttäjän data jos olemassa
+    if os.path.exists(filename):
+        with open(filename, "r", encoding="utf-8") as f:
+            user_data = json.load(f)
+    else:
+        user_data = {}
+
+    # Syötä tietoa
+    uusi_arvo = st.text_input("Syötä jotain tietoa tallennettavaksi", value=user_data.get("input", ""))
+
+    if st.button("Tallenna"):
+        user_data["input"] = uusi_arvo
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(user_data, f, ensure_ascii=False, indent=4)
+        st.success("Tiedot tallennettu!")
+
+    st.write("Tallennetut tiedot:", user_data.get("input", "Ei tallennettuja tietoja"))
+
+elif authentication_status is False:
+    st.error("Virheellinen käyttäjätunnus tai salasana")
+elif authentication_status is None:
+    st.info("Kirjaudu sisään jatkaaksesi")
 
 # Polut tiedostoille
 SOPIMUKSET_FILE = f"{user_id}_asiakkaat_sopimus.json"

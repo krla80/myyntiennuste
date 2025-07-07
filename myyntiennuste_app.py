@@ -154,7 +154,7 @@ with tab2:
 
     st.write("Voit suunnitella kenelle aiot myydä, mitä palveluita tai tuotteita aiot myydä. Tee suunnitelmastasi riittävän yksityiskohtainen, jolloin sen ohjaa myyntiponnistelujasi")
 
-    st.markdown("<span style='color:red; font-style: italic;'>Jos ennustettu myyntisi ei ole aktiivinen, ei ennustetta lasketa jo tehtyjen sopimusten ja ennustetun myynnin kokonaisarvoon. Voit siis valintasi mukaan jättää \"hävityn\" kaupan listalle ei-aktiiviseksi tai poistaa sen kokonaan. Ei aktiiviset ennusteet näkyvät punaisella allaolevalla listalla.</span>", unsafe_allow_html=True)
+    st.markdown("<span style='color:red; font-style: italic;'>Jos ennustettu myyntisi ei ole aktiivinen, ei ennustetta lasketa ennustettuun myyntiin ja jo tehtyjen sopimusten ja ennustetun myynnin kokonaisarvoon. Voit siis valintasi mukaan jättää \"hävityn\" kaupan listalle ei-aktiiviseksi tai poistaa sen kokonaan. Ei aktiiviset ennusteet näkyvät punaisella allaolevalla listalla.</span>", unsafe_allow_html=True)
 
     st.subheader("Lisää uusi ennuste")
     with st.form("uusi_asiakas_ennuste"):

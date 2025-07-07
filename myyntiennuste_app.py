@@ -66,7 +66,7 @@ else:
 
 elif authentication_status is False:
     st.error("Virheellinen käyttäjätunnus tai salasana")
-elif authentication_status is None:
+else authentication_status is None:
     st.info("Kirjaudu sisään jatkaaksesi")
 
 # Polut tiedostoille

@@ -372,10 +372,9 @@ with tab3:
 
 # Tulokset näkyviin
     st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)
-    st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
     st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa: {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)
     st.markdown(f"<h2 style='color:red;'>Myyntikuilu vuodessa: {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
-
+    #st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
 with tab_summary:
     st.header("Yhteenveto keskeisistä luvuista")
 
@@ -390,10 +389,10 @@ with tab_summary:
         overflow-x: auto; */">
         <h3 style='color:#4EA72E;'>Sopimusten kokonaisarvo yhteensä: {total_sopimus:.2f} €</h3>
         <h3 style='color:#4EA72E;'>Myyntiennusteen kokonaisarvo yhteensä: {total_ennuste:.2f} €</h3>
-        <h3 style='color:#4EA72E;'>Kokonaisarvo (sopimukset + myyntiennuste): {total_sopimus + total_ennuste:.2f} €</h3>
         <h3 style='color:#4EA72E;'>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h3>
         <h3 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa: {nettopalkka:.2f} €</h3>
 	<h3 style='color:#D94D4D;'>Myyntikuilu (vuositasolla): {myyntikuilu:.2f} €</h3>
+        #<h3 style='color:#4EA72E;'>Kokonaisarvo (sopimukset + myyntiennuste): {total_sopimus + total_ennuste:.2f} €</h3>
 
 </div>
 """, unsafe_allow_html=True)

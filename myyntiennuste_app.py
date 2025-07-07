@@ -258,7 +258,7 @@ with tab2:
 
 with tab3:
 
-    st.write("Syötä yrityskulut (ilman ALV:tä) valmiiksi nimetylle kululle. Voit myös lisätä summata puuttuvat kulut viimeiselle riville "Muut kulut".")
+    st.write('Syötä yrityskulut (ilman ALV:tä) valmiiksi nimetylle kululle. Voit myös lisätä summata puuttuvat kulut viimeiselle riville "Muut kulut".')
 
     vakio_kulut = [
         "Kirjanpito",

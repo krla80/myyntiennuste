@@ -339,7 +339,7 @@ with tab3:
                 "veroprosentti": veroprosentti_int
             })
 
-        st.success("Veroprosentti ja palkkatavoite tallennettu.")
+            st.success("Veroprosentti ja palkkatavoite tallennettu.")
         except ValueError:
             st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
 

@@ -329,31 +329,27 @@ with tab3:
     )
     st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
 
-# Veroprosentti ja palkkatavoite
-vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
+	# Veroprosentti ja palkkatavoite
+    vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
 
 # Tavoitepalkka (varmistetaan että merkkijono)
-tavoitepalkka_oletus = st.session_state.get("tavoite_palkka", "2500")
-tavoitepalkka_input = st.text_input("Nettopalkka tavoite (€ / kk)", value=str(tavoitepalkka_oletus))
+    tavoitepalkka_oletus = st.session_state.get("tavoite_palkka", "2500")
+    tavoitepalkka_input = st.text_input("Nettopalkka tavoite (€ / kk)", value=str(tavoitepalkka_oletus))
 
 # Tallennusnappi
-if st.button("Tallenna veroprosentti ja palkkatavoite"):
-    try:
-        tavoite_float = float(tavoitepalkka_input.replace(",", "."))
-        veroprosentti_int = int(vero_prosentti)
+    if st.button("Tallenna veroprosentti ja palkkatavoite"):
+        try:
+            tavoite_float = float(tavoitepalkka_input.replace(",", "."))
+            veroprosentti_int = int(vero_prosentti)
 
-        # Tallennetaan merkkijonona, jotta käyttö text_inputissa ei kaadu
-        st.session_state["tavoite_palkka"] = str(tavoite_float)
-        st.session_state["veroprosentti"] = veroprosentti_int
+            # Tallennetaan merkkijonona, jotta käyttö text_inputissa ei kaadu
+            st.session_state["tavoite_palkka"] = str(tavoite_float)
+            st.session_state["veroprosentti"] = veroprosentti_int
 
-        save_data(PALKKAENNUSTE_FILE, {
-            "palkkatavoite": tavoite_float,
-            "veroprosentti": veroprosentti_int
-        })
-
-        st.success("Veroprosentti ja palkkatavoite tallennettu.")
-    except ValueError:
-        st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
+            save_data(PALKKAENNUSTE_FILE, {"palkkatavoite": tavoite_float, "veroprosentti": veroprosentti_int})
+            st.success("Veroprosentti ja palkkatavoite tallennettu.")
+        except ValueError:
+            st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
 
     # Palkkalaskelmat
     try:

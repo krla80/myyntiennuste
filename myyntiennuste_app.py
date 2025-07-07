@@ -51,7 +51,7 @@ with tab1:
     st.subheader("Lisää sopimus")
     with st.form("uusi_asiakas_sopimus"):
         nimi = st.text_input("Asiakkaan nimi", value=st.session_state.get("nimi_sopimus", ""), key="nimi_sopimus")
-        tuote = st.text_input("Tuote", value=st.session_state.get("tuote_sopimus", ""), key="tuote_sopimus")
+        tuote = st.text_input("Yksilöivä palvelun nimi tai sopimuksen tunnus", value=st.session_state.get("tuote_sopimus", ""), key="tuote_sopimus")
         sopimus = st.date_input("Sopimuksen päättymispäivä", value=st.session_state.get("sopimus_sopimus", date.today()), key="sopimus_sopimus")
         sijainti = st.text_input("Sopimuksen sijainti (onedrive-osoite, verkkolevy tms.)", value=st.session_state.get("sijainti_sopimus", ""), key="sijainti_sopimus")
         a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_sopimus", 0.0), key="a_hinta_sopimus")

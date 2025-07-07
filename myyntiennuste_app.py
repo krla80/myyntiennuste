@@ -66,8 +66,10 @@ st.write("Tallennetut tiedot:", user_data.get("input", "Ei tallennettuja tietoja
 
 if authentication_status is False:
     st.error("Virheellinen käyttäjätunnus tai salasana")
-else authentication_status is None:
+elif authentication_status is None:
     st.info("Kirjaudu sisään jatkaaksesi")
+else:
+    st.write(f"Tervetuloa, {name}!")
 
 # Polut tiedostoille
 SOPIMUKSET_FILE = f"{user_id}_asiakkaat_sopimus.json"

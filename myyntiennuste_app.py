@@ -343,7 +343,7 @@ if st.button("Tallenna veroprosentti ja palkkatavoite"):
         st.session_state["veroprosentti"] = veroprosentti_int
         save_data(PALKKAENNUSTE_FILE, {"palkkatavoite": tavoite_float,"veroprosentti": veroprosentti_int})
         st.success("Veroprosentti ja palkkatavoite tallennettu.")
-except ValueError:
+    except ValueError:
         st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
 
     # Palkkalaskelmat

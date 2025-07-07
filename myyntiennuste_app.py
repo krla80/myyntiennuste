@@ -329,6 +329,7 @@ with tab3:
 	    for k in st.session_state.asiakkaat_palkkaennuste
     )
     st.markdown(f"<h4>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h4>", unsafe_allow_html=True)
+    st.markdown(f"**Liiketoiminnan kulut yhteensä kuukaudessa: {kulut_yhteensa/12:.2f} €**", unsafe_allow_html=True)
 
 	# Veroprosentti ja palkkatavoite
     vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))

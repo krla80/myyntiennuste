@@ -396,6 +396,10 @@ with tab_summary:
 	<h3 style='color:#D94D4D;'>Myyntikuilu (vuositasolla): {myyntikuilu:.2f} €</h3>
  
   # Myyntikuilun ja ennusteen vertailu
+
+  vari= "black"
+  viesti= "Tilannetta ei ole vielä arvioitu"
+      
     if myyntikuilu <= 0:
         viesti = "Tavoite saavutettu! Ei myyntikuilua."
         vari = "green"

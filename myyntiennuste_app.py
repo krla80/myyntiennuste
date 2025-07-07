@@ -362,9 +362,7 @@ with tab3:
         verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
         nettopalkka = bruttopalkka - verot*1.019 if bruttopalkka > 0 else 0
         myyntikuilu = total_sopimus - (kulut_yhteensa + tavoitepalkka * 12 / (1 - vero_prosentti / 100))
-        
-        st.markdown(f"**Nettopalkka-arvio (tämä näyttää 0.00€, mikäli nykyiset sopimukset eivät riitä kattamaan kuluja):** {nettopalkka:.2f} € / kk")
-	    
+            
     except ZeroDivisionError:
         st.warning("Veroprosentti ei voi olla 100 %. Tarkista syöte.")
     except Exception as e:
@@ -373,7 +371,7 @@ with tab3:
 # Tulokset näkyviin
     st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)
     st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa kulujen ja verojen jälkeen: {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)
-    st.markdown(f"<h2 style='color:red;'>Näin paljon sinun pitää myydä jo tehtyjen sopimusten lisäksi saavuttaaksesi tavoitepalkkasi: {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color:red;'>Näin paljon sinun pitää myydä jo tehtyjen sopimusten tällä tilikaudella lisäksi saavuttaaksesi tavoitepalkkasi: {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
     #st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
 
 with tab_summary:

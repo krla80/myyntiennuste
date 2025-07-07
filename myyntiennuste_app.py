@@ -34,6 +34,11 @@ tab1, tab3, tab2, tab_summary = st.tabs(["Sopimukset", "Arvio tulevasta palkasta
 
 from datetime import date, datetime
 
+voimassa_olevat_sopimukset = [
+    a for a in st.session_state.asiakkaat_sopimus
+    if datetime.fromisoformat(a["sopimus"]).date() >= date.today()
+]
+
 with tab1:
     st.write("Syötä asiakkaat, joiden kanssa sinulla on jo sopimus. Voit antaa jokaiselle asiakkaalle oman hinnan ja kappalemäärän tilikautena.")
 

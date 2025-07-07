@@ -323,21 +323,45 @@ with tab3:
 
 # Veroprosentti
     vero_prosentti = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=st.session_state.get("veroprosentti", 25))
+    tavoitepalkka_input = st.text_input("Nettopalkka tavoite (€ / kk)", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka")
+
+# Tallennusnappi
+    if st.button("Tallenna veroprosentti ja palkkatavoite"):
+        try:
+            tavoite_float = float(tavoitepalkka_input.replace(",", "."))
+            veroprosentti_int = int(vero_prosentti)
+
+            st.session_state["tavoite_palkka"] = str(tavoite_float)
+            st.session_state["veroprosentti"] = veroprosentti_int
+
+            save_data(PALKKAENNUSTE_FILE, {
+                "palkkatavoite": tavoite_float,
+                "veroprosentti": veroprosentti_int
+            })
+
+        st.success("Veroprosentti ja palkkatavoite tallennettu.")
+    except ValueError:
+        st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
 
     # Palkkalaskelmat
-    kokonaismyynti = (total_sopimus) / 12
+    try:
+        tavoitepalkka = float(st.session_state["tavoite_palkka"]) if st.session_state["tavoite_palkka"].strip() else 0
+    except Exception:
+        tavoitepalkka = 0
+
+    kokonaismyynti = total_sopimus / 12
     bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
     verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
     nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
-    tavoitepalkka = st.text_input("Nettopalkka tavoite", value=st.session_state.get("tavoite_palkka", ""), key="tavoite_palkka")
 
+    # Myyntikuilu (paljonko pitäisi vielä myydä vuodessa)
     try:
-        tavoitepalkka = float(st.session_state["tavoite_palkka"]) if st.session_state["tavoite_palkka"].strip() else 0
-    except ValueError:
-            st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
-            tavoitepalkka = 0
+        myyntikuilu = total_sopimus - (kulut_yhteensa + tavoitepalkka * 12 / (1 - vero_prosentti / 100))
+    except ZeroDivisionError:
+        myyntikuilu = 0
 
-    myyntikuilu = total_sopimus-(kulut_yhteensa+tavoitepalkka*12/(1-vero_prosentti))
+    st.markdown(f"**Nettopalkka-arvio:** {nettopalkka:.2f} € / kk")
+    st.markdown(f"**Myyntikuilu (vuositasolla):** {myyntikuilu:.2f} €")
 
 
 # Tulokset näkyviin

@@ -366,7 +366,7 @@ with tab3:
         if myyntikuilu < 0:
             st.markdown(f"<h2 style='color:red;'>Näin paljon sinun pitää myydä jo tehtyjen sopimusten tällä tilikaudella lisäksi saavuttaaksesi tavoitepalkkasi:<br> {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
         else:
-            st.markdown("<h2 style='color:green;'>Olet saavuttanut Nettopalkka tavoitteesi!</h2>", unsafe_allow_html=True)
+            st.markdown("<h2 style='color:green;'>Olet saavuttanut tai ylittänyt nettopalkkatavoitteesi, upeaa!</h2>", unsafe_allow_html=True)
             
     except ZeroDivisionError:
         st.warning("Veroprosentti ei voi olla 100 %. Tarkista syöte.")

@@ -272,7 +272,7 @@ with tab3:
         "Toimisto- ja työtarvikkeet",
         "Edustusmenot",
         "YEL",
-        "Koulutumenot",
+        "Koulutusmenot",
         "Sijoitus",
         "Jäsenmaksut",
         "Kulukorvaukset tai autoetu",
@@ -356,7 +356,6 @@ with tab3:
     try:
         tavoitepalkka = float(st.session_state.get("tavoite_palkka", 0))
         vero_prosentti = int(st.session_state.get("veroprosentti", 25))
-
         kokonaismyynti = total_sopimus / 12
         bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
         verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
@@ -364,7 +363,6 @@ with tab3:
         myyntikuilu = total_sopimus - (kulut_yhteensa + tavoitepalkka * 12 / (1 - vero_prosentti / 100))
         
         st.markdown(f"**Nettopalkka-arvio:** {nettopalkka:.2f} € / kk")
-        st.markdown(f"**Myyntikuilu (vuositasolla):** {myyntikuilu:.2f} €")
 	    
     except ZeroDivisionError:
         st.warning("Veroprosentti ei voi olla 100 %. Tarkista syöte.")
@@ -373,7 +371,7 @@ with tab3:
 
 # Tulokset näkyviin
     st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)
-    st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu palkka kuukaudessa kulujen ja verojen jälkeen: {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu palkka kuukaudessa kulujen ja verojen jälkeen (nettopalkka): {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)
     st.markdown(f"<h2 style='color:red;'>Näin paljon sinun pitää myydä jo tehtyjen sopimusten lisäksi saavuttaaksesi tavoitepalkkasi: {myyntikuilu:.2f} €</h2>", unsafe_allow_html=True)
     #st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
 
@@ -390,8 +388,8 @@ with tab_summary:
         white-space: nowrap;
         overflow-x: auto; */">
         <h3 style='color:#4EA72E;'>Sopimusten kokonaisarvo yhteensä: {total_sopimus:.2f} €</h3>
-        <h3 style='color:#4EA72E;'>Myyntiennusteen kokonaisarvo yhteensä: {total_ennuste:.2f} €</h3>
-	<h3 style='color:#4EA72E;'>Kokonaisarvo (sopimukset + myyntiennuste): {total_sopimus + total_ennuste:.2f} €</h3>
+        <h3 style='color:#4EA72E;'>Myyntitavoitteiden kokonaisarvo yhteensä: {total_ennuste:.2f} €</h3>
+	<h3 style='color:#4EA72E;'>Kokonaisarvo (sopimukset + myyntitavoitteet): {total_sopimus + total_ennuste:.2f} €</h3>
         <h3 style='color:#4EA72E;'>Liiketoiminnan kulut yhteensä: {kulut_yhteensa:.2f} €</h3>
         <h3 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa sopimusten perusteella: {nettopalkka:.2f} €</h3>
 	

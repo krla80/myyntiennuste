@@ -363,7 +363,7 @@ if st.button("Tallenna veroprosentti ja palkkatavoite"):
     except ZeroDivisionError:
         st.warning("Veroprosentti ei voi olla 100 %. Tarkista syöte.")
     except Exception as e:
-    st.warning(f"Virhe palkkalaskennassa: {e}")
+        st.warning(f"Virhe palkkalaskennassa: {e}")
 
 # Tulokset näkyviin
     st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)

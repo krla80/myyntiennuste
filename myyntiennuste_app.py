@@ -47,11 +47,11 @@ else:
 filename = f"data_{username}.json"
 
     # Lataa käyttäjän data jos olemassa
-    if os.path.exists(filename):
-        with open(filename, "r", encoding="utf-8") as f:
-            user_data = json.load(f)
-    else:
-        user_data = {}
+if os.path.exists(filename):
+    with open(filename, "r", encoding="utf-8") as f:
+        user_data = json.load(f)
+else:
+    user_data = {}
 
     # Syötä tietoa
     uusi_arvo = st.text_input("Syötä jotain tietoa tallennettavaksi", value=user_data.get("input", ""))

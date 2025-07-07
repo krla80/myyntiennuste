@@ -296,7 +296,7 @@ with tab3:
             with col2:
                 a_hinta = st.number_input("á-hinta (€)", min_value=0.0, step=1.0, format="%.2f", key=f"{kulunimi}_hinta")
             with col3:
-                maara = st.number_input("kpl/vuodessa", min_value=0, step=1, key=f"{kulunimi}_maara")
+                maara = st.number_input("kpl/vuodessa", min_value=0, step=1, value=12, key=f"{kulunimi}_maara")
             with col4:
                 summa = a_hinta * maara
                 st.markdown(f"<div style='margin-top: 0.5em; font-weight: bold'>{summa:.2f} €</div>", unsafe_allow_html=True)

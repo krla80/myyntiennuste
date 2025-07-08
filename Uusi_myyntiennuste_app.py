@@ -6,6 +6,7 @@ import os
 from datetime import date
 
 # Polut tiedostoille
+BASE_DIR = os.path.dirname(_file_)
 SOPIMUKSET_FILE = "asiakkaat_sopimus.json"
 ENNUSTE_FILE = "asiakkaat_ennuste.json"
 PALKKAENNUSTE_FILE = "asiakkaat_palkkaennuste.json"

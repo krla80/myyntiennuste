@@ -401,11 +401,16 @@ with tab3:
             tavoite_float = float(tavoitepalkka_input.replace(",", "."))
             veroprosentti_int = int(vero_prosentti)
 
-            # Tallennetaan merkkijonona, jotta käyttö text_inputissa ei kaadu
             st.session_state["tavoite_palkka"] = str(tavoite_float)
             st.session_state["veroprosentti"] = veroprosentti_int
 
-            data = load_data(PALKKAENNUSTE_FILE) or {}
+            raw = load_data(PALKKAENNUSTE_FILE)
+            if isinstance(raw, dict):
+		data = raw
+	    else:
+		data = {
+                    "kulut": raw if isinstance(raw, list) else st.session_state.get("asiakkaat_palkkaennuste", []),
+                }
             kulut_lista = data.get("kulut", st.session_state.get("asiakkaat_palkkaennuste", []))
 
             data.update({

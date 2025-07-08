@@ -42,17 +42,12 @@ for a in st.session_state.asiakkaat_sopimus:
     except Exception:
         continue
 
-try:
-    total_sopimus = sum(
-        a.get("kokonaisarvo", 0)
-        for a in st.session_state.asiakkaat_sopimus
-        if "sopimus" in a
-        and isinstance(a.get("sopimus", ""), str)
-        and a.get("sopimus")
-        and datetime.fromisoformat(a["sopimus"]).date() >= date.today()
-)
-except Exception:
-    total_sopimus = 0
+total_sopimus = 0
+for a in voimassa_olevat_sopimukset:
+    try:
+        total_sopimus += float(a.get("kokonaisarvo", 0))
+    except Exception:
+        continue
 
 tab1, tab3, tab2, tab_summary = st.tabs(["Kirjaa sopimukset", "Tunne yrityksesi kulut ja  aseta palkkatavoite", "Aseta myyntitavoitteet",  "Yhteenveto keskeisistä luvuista"])
 

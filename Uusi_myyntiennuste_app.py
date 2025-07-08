@@ -48,7 +48,9 @@ kulut_yhteensa = sum(k["kokonaisarvo"] for k in st.session_state.asiakkaat_palkk
 tavoite        = float(st.session_state.get("tavoite_palkka", 0))
 vero           = st.session_state.get("veroprosentti", 25) / 100
 total_sopimus  = sum(
-    a["arvo"] for a in st.session_state.asiakkaat_sopimus
+    a.get("arvo", 0) 
+    for a in st.session_state.asiakkaat_sopimus
+    a.get("sopimus")
     if datetime.fromisoformat(a["sopimus"]).date() >= date.today()
 )
 

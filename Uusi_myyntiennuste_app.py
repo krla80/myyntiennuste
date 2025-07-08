@@ -310,7 +310,7 @@ with tab2:
     # Summa
     total_ennuste = sum(a["kokonaisarvo"] for a in st.session_state.asiakkaat_ennuste if a.get("aktiivinen", True))
     mk = abs(st.session_state["myyntikuilu"])
-    st.markdown(f"<h3 style='color:red;'>Tavoitepalkan vaatima lisämyynti: {mk:.2f} €</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='color:red;'>Tavoitepalkan vaatima lisämyynti: {mk:.0f} €</h3>", unsafe_allow_html=True)
     st.write(f"<h3>Aktiivisten ennustettujen myyntien arvo yhteensä: {total_ennuste:.2f} €</h3>", unsafe_allow_html=True)
     st.write(f"<h3 style='color:#4EA72E;'> Kokonaisarvo (sopimukset + myyntiennuste): {total_sopimus + total_ennuste:.2f} €</h3>", unsafe_allow_html=True)
 
@@ -459,13 +459,13 @@ with tab3:
 
     # Palkkalaskelmat
     try:
-        tavoitepalkka = float(st.session_state.get("tavoite_palkka", 0))
+        tavoite_palkka = float(st.session_state.get("tavoite_palkka", 0))
         vero_prosentti = int(st.session_state.get("veroprosentti", 25))
         kokonaismyynti = total_sopimus / 12
         bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
         verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
         nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
-        myyntikuilu = total_sopimus - (kulut_yhteensa + tavoitepalkka * 12 / (1 - vero_prosentti / 100))
+        myyntikuilu = total_sopimus - (kulut_yhteensa + tavoite_palkka * 12 / (1 - vero_prosentti / 100))
             
     except ZeroDivisionError:
         st.warning("Veroprosentti ei voi olla 100 %. Tarkista syöte.")

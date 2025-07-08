@@ -112,19 +112,31 @@ with tab1:
     # Asiakaslistan näyttö ja poisto
     st.subheader("Poista olemassa oleva sopimus")
     if st.session_state.asiakkaat_sopimus:
-        poistettavat = ["- Valitse sopimus -"] + [f'{a["nimi"]} ({a["tuote"]})' for a in st.session_state.asiakkaat_sopimus]
-        poistettava = st.selectbox("Valitse poistettava sopimus", poistettavat, index=0)
+        poistettavat = ["- Valitse sopimus -"] + [
+            f"{a['nimi']} ({a['tuote']})" for a in st.session_state.asiakkaat_sopimus
+        ]
+        poistettava = st.selectbox("Valitse poistettava sopimus", poistettavat)
+
         if poistettava != "- Valitse sopimus -":
-            nimi, tuote = parse_poistettava(poistettava)
-            if nimi and tuote:
-                if st.button("Poista valittu sopimus"):
-                    alkuperainen_pituus = len(st.session_state.asiakkaat_sopimus)
-                    st.session_state.asiakkaat_sopimus = [a for a in st.session_state.asiakkaat_sopimus if not (a["nimi"] == nimi and a["tuote"] == tuote)]
-                    if len(st.session_state.asiakkaat_sopimus) < alkuperainen_pituus:
-                        save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
-                        st.success(f"Sopimus '{poistettava}' poistettu.")
-                    else:
-                        st.warning("Sopimusta ei löytynyt tai se on jo poistettu.")
+            if st.button("Poista valittu sopimus"):
+                try:
+                    nimi, tuote = poistettava[:-1].split(" (")
+                except ValueError:
+                    st.error("Sopimuksen poistaminen epäonnistui – tarkista muoto.")
+                    st.stop()
+
+                alkuperainen_pituus = len(st.session_state.asiakkaat_sopimus)
+                st.session_state.asiakkaat_sopimus = [
+                    a for a in st.session_state.asiakkaat_sopimus
+                    if not (a["nimi"] == nimi and a["tuote"] == tuote)
+                ]
+
+                if len(st.session_state.asiakkaat_sopimus) < alkuperainen_pituus:
+                    save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
+                    st.success(f"Sopimus '{poistettava}' poistettu.")
+                    st.rerun()
+                else:
+                    st.warning("Sopimusta ei löytynyt tai se on jo poistettu.")
     
     # Lomake olemassa olevan sopimuksen muokkaamiseksi
 

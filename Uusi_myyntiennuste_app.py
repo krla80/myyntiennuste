@@ -38,6 +38,9 @@ for a in st.session_state.asiakkaat_sopimus:
         if "sopimus" in a and datetime.fromisoformat(a["sopimus"]).date() >= date.today():
             voimassa_olevat_sopimukset.append(a)
     except Exception:
+        pass).date() >= date.today():
+            voimassa_olevat_sopimukset.append(a)
+    except Exception:
         pass).date() >= date.today()
 ]
 

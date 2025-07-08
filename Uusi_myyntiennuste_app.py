@@ -112,7 +112,7 @@ with tab1:
                 save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
                 st.success(f"Sopimus '{poistettava}' poistettu.")
                 st.rerun()
-	    else:
+            else:
                 st.warning("Sopimusta ei löytynyt tai se on jo poistettu.")
     
     # Lomake olemassa olevan sopimuksen muokkaamiseksi

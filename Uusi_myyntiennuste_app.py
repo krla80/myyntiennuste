@@ -102,7 +102,7 @@ with tab1:
                 else:
                     st.error("Sopimuksen poistaminen epäonnistui - tarkista muoto.")
                     st.stop()
-	    except ValueError:
+            except ValueError:
                 st.error("Sopimuksen poistaminen epäonnistui - tarkista muoto.")
                 st.stop()
                     

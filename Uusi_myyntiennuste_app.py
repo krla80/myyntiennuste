@@ -405,7 +405,16 @@ with tab3:
             st.session_state["tavoite_palkka"] = str(tavoite_float)
             st.session_state["veroprosentti"] = veroprosentti_int
 
-            save_data(PALKKAENNUSTE_FILE, {"palkkatavoite": tavoite_float, "veroprosentti": veroprosentti_int})
+            data = load_data(PALKKAENNUSTE_FILE) or {}
+            kulut_lista = data.get("kulut", st.session_state.get("asiakkaat_palkkaennuste", []))
+
+            data.update({
+                "kulut": kulut_lista,
+                "palkkatavoite": tavoite_float,
+                "veroprosentti": veroprosentti_int
+            })
+
+            save_data(PALKKAENNUSTE_FILE, data)
             st.success("Veroprosentti ja palkkatavoite tallennettu.")
         except ValueError:
             st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")

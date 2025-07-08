@@ -95,18 +95,21 @@ with tab1:
         poistettava = st.selectbox("Valitse poistettava sopimus", poistettavat)
 
         if poistettava != "- Valitse sopimus -":
-            if st.button("Poista valittu sopimus"):
-                try:
-                    nimi, tuote = poistettava.split("(")
-                    tuote = tuote.rstrip(")")
-                except ValueError:
-                        st.error("Sopimuksen poistaminen epäonnistui - tarkista muoto.")
-                        st.stop()
-			
-                alkuperainen_pituus = len(st.session_state.asiakkaat_sopimus)
-			
-                st.session_state.asiakkaat_sopimus = [
-                    a for a in st.session_state.asiakkaat_sopimus if not (a["nimi"] == nimi and a["tuote"] == tuote)
+            try:
+                match = poistettava.strip()
+                if match.endswith(")"):
+                    nimi, tuote = match[:-1].rsplit(" (", 1)
+		else:
+                    st.error("Sopimuksen poistaminen epäonnistui - tarkista muoto.")
+                    st.stop()
+	    except ValueError:
+                st.error("Sopimuksen poistaminen epäonnistui - tarkista muoto.")
+                st.stop()
+                    
+            alkuperainen_pituus = len(st.session_state.asiakkaat_sopimus)
+            st.session_state.asiakkaat_sopimus = [
+                a for a in st.session_state.asiakkaat_sopimus 
+                if not (a["nimi"] == nimi and a["tuote"] == tuote)
             ]
             if len(st.session_state.asiakkaat_sopimus) < alkuperainen_pituus:
                 save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)

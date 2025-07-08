@@ -25,7 +25,7 @@ def save_data(file, data):
 if "asiakkaat_sopimus" not in st.session_state:
     st.session_state.asiakkaat_sopimus = load_data(SOPIMUKSET_FILE)
     st.write("Sopimus-tiedosto:", os.path.abspath(SOPIMUKSET_FILE))
-    st.write("JSON-sisältö ennen latausta:", load_data(SOPIMUKSET_FILE)
+    st.write("JSON-sisältö ennen latausta:", load_data(SOPIMUKSET_FILE))
 if "asiakkaat_ennuste" not in st.session_state:
     st.session_state.asiakkaat_ennuste = load_data(ENNUSTE_FILE)
 if "asiakkaat_palkkaennuste" not in st.session_state:

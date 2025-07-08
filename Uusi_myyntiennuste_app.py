@@ -358,6 +358,7 @@ with tab3:
 
     if submit: 
         st.session_state.asiakkaat_palkkaennuste = kulutiedot
+        st.session_state.kululista = kulutiedot.copy()
         save_data(PALKKAENNUSTE_FILE, kulutiedot)
         st.success("Kulut tallennettu onnistuneesti.")
 

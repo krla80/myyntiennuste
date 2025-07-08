@@ -457,7 +457,7 @@ with tab3:
         tavoite = float(st.session_state.get("tavoite_palkka", 0))
         nettop = float(st.session_state.get("nettopalkka", 0))
         if nettop >= tavoite:
-            st.markdown("<h3 style='color:green;'>Hienoa, olet jo saavuttanut tai ylittänyt tavoitepalkkasi!</h3>", unsafe_allow_html=True)
+            st.markdown("<h3 style='color:#4EA72E;'>Hienoa, olet jo saavuttanut tai ylittänyt tavoitepalkkasi!</h3>", unsafe_allow_html=True)
         else:
             puuttuu = tavoite - nettop
             st.markdown(f"<h3 style='color:red;'>Sinun täytyy vielä saada {puuttuu:.2f} € lisämyyntiä tavoitepalkan saavuttamiseksi.</h3>", unsafe_allow_html=True)

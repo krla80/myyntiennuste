@@ -395,8 +395,8 @@ with tab3:
                 save_data(PALKKAENNUSTE_FILE, st.session_state.asiakkaat_palkkaennuste)
                 st.success("Kulu poistettu.")
                 st.rerun()
-        else:
-            st.info("Ei tallennettuja kuluja.")
+            else:
+                st.info("Ei tallennettuja kuluja.")
 
 # Lasketaan yhteissumma
     kulut_yhteensa = 0.0

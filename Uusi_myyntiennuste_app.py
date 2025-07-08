@@ -310,7 +310,14 @@ with tab2:
     # Summa
     total_ennuste = sum(a["kokonaisarvo"] for a in st.session_state.asiakkaat_ennuste if a.get("aktiivinen", True))
     mk = abs(st.session_state["myyntikuilu"])
-    st.markdown(f"<h3 style='color:red;'>Tavoitepalkan vaatima lisämyynti: {mk:.0f} €</h3>", unsafe_allow_html=True)
+    try:
+        # Käytetään nettopalkka- ja myyntikuilu-muuttujia, jotka on laskettu palkkalaskelmissa
+        if nettopalkka >= tavoitepalkka:
+            st.markdown("<h3 style='color:green;'>Hienoa, olet jo saavuttanut tai ylittänyt tavoitepalkkasi!</h3>", unsafe_allow_html=True)
+        else:
+            st.markdown(f"<h3 style='color:red;'>Sinun täytyy vielä saada {mk:.0f} € lisämyyntiä tavoitepalkan saavuttamiseksi.</h3>", unsafe_allow_html=True)
+    except Exception:
+        pass
     st.write(f"<h3>Aktiivisten ennustettujen myyntien arvo yhteensä: {total_ennuste:.2f} €</h3>", unsafe_allow_html=True)
     st.write(f"<h3 style='color:#4EA72E;'> Kokonaisarvo (sopimukset + myyntiennuste): {total_sopimus + total_ennuste:.2f} €</h3>", unsafe_allow_html=True)
 

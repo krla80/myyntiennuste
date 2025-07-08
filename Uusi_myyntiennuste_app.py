@@ -407,7 +407,7 @@ with tab3:
             raw = load_data(PALKKAENNUSTE_FILE)
             if isinstance(raw, dict):
                 data = raw
-	    else:
+            else:
 		data = {
                     "kulut": raw if isinstance(raw, list) else st.session_state.get("asiakkaat_palkkaennuste", []),
                 }

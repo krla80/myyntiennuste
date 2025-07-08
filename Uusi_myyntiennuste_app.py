@@ -88,6 +88,7 @@ with tab1:
 
     # Asiakaslistan näyttö ja poisto
     st.subheader("Poista olemassa oleva sopimus")
+	
     if st.session_state.asiakkaat_sopimus:
         poistettavat = ["- Valitse sopimus -"] + [f'{a["nimi"]} ({a["tuote"]})' for a in st.session_state.asiakkaat_sopimus
 	]
@@ -95,11 +96,18 @@ with tab1:
 
         if poistettava != "- Valitse sopimus -":
             if st.button("Poista valittu sopimus"):
+		try:
+		    nimi, tuote = poistettava.split("(")
+		    tuote = tuote.rstrip(")")
+		except ValueError:
+		    st.error("Sopimuksen poistaminen epäonnistui - tarkista muoto.")
+			st.stop()
                 st.session_state.asiakkaat_sopimus = [
                     a for a in st.session_state.asiakkaat_sopimus if a["nimi"] != poistettava
                 ]
                 save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
                 st.success(f"Sopimus '{poistettava}' poistettu.")
+		st.rerun()
     
     # Lomake olemassa olevan sopimuksen muokkaamiseksi
 

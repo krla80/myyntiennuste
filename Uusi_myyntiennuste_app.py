@@ -51,14 +51,6 @@ def parse_poistettava(valinta):
         return None, None
     return None, None
 
-# Poista sopimus - toimiva ja tallentava versio
-    # Painike kaikkien sopimusten tyhjentämiseen
-    if st.button("Tyhjennä kaikki sopimukset"):
-        st.session_state.asiakkaat_sopimus = []
-        save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
-        st.success("Kaikki sopimukset tyhjennetty ja JSON päivitetty.")
-        st.rerun()
-
 with tab1:
     st.write("Syötä asiakkaat, joiden kanssa sinulla on jo sopimus. Voit antaa jokaiselle asiakkaalle oman hinnan ja kappalemäärän tilikautena. Kirjaa hinnat ilman ALV:a.")
 
@@ -124,46 +116,29 @@ with tab1:
         ]
         poistettava = st.selectbox("Valitse poistettava sopimus", poistettavat)
 
-        if poistettava != "- Valitse sopimus -":
-            if st.button("Poista valittu sopimus"):
-                try:
-                    nimi, tuote = poistettava[:-1].split(" (")
-                except ValueError:
-                    st.error("Sopimuksen poistaminen epäonnistui – tarkista muoto.")
-                    st.stop()
-
-                alkuperainen_pituus = len(st.session_state.asiakkaat_sopimus)
-                st.session_state.asiakkaat_sopimus = [
-                    a for a in st.session_state.asiakkaat_sopimus
-                    if not (a["nimi"] == nimi and a["tuote"] == tuote)
-                ]
-
-                if len(st.session_state.asiakkaat_sopimus) < alkuperainen_pituus:
-                    save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
-                    st.success(f"Sopimus '{poistettava}' poistettu.")
-                    st.rerun()
-                else:
-                    st.warning("Sopimusta ei löytynyt tai se on jo poistettu.")
+        if poistettava != "- Valitse sopimus -" and st.button("Poista valittu sopimus"):
+            nimi, tuote = poistettava[:-1].split(" (")
+            alkuperainen_pituus = len(st.session_state.asiakkaat_sopimus)
+            st.session_state.asiakkaat_sopimus = [
+                a for a in st.session_state.asiakkaat_sopimus
+                if not (a["nimi"] == nimi and a["tuote"] == tuote)
+            ]
+            if len(st.session_state.asiakkaat_sopimus) < alkuperainen_pituus:
+                save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
+                st.success(f"Sopimus '{poistettava}' poistettu.")
+                st.rerun()
+            else:
+                st.warning("Sopimusta ei löytynyt tai se on jo poistettu.")
     
     # Lomake olemassa olevan sopimuksen muokkaamiseksi
 
     st.subheader("Muokkaa olemassa olevaa sopimusta")
-
     if st.session_state.asiakkaat_sopimus:
-        # Rakennetaan valintalistan vaihtoehdot: ensin tyhjä, sitten asiakkaat
-        valintaoptiot = ["- Valitse sopimus -"] + [
-            f"{a['nimi']} {a['tuote']} (sopimus päättyy {a['sopimus']})"
-            for a in st.session_state.asiakkaat_sopimus
-        ]
-        valittu = st.selectbox("Valitse sopimus", options=valintaoptiot)
-
-        # Tarkistetaan että käyttäjä on tehnyt valinnan
-        if valittu != "- Valitse sopimus -":
-            # Haetaan valitun asiakkaan indeksi ja tiedot
-            valittu_index = valintaoptiot.index(valittu) - 1  # koska ensimmäinen on tyhjä
+    valintaoptiot = ["- Valitse sopimus -"] + [f"{a['nimi']} {a['tuote']} (sopimus päättyy {a['sopimus']})"for a in st.session_state.asiakkaat_sopimus]
+    valittu = st.selectbox("Valitse sopimus", options=valintaoptiot)
+    if valittu != "- Valitse sopimus -":
+            valittu_index = valintaoptiot.index(valittu) - 1
             valittu_sopimus = st.session_state.asiakkaat_sopimus[valittu_index]
-
-            # Näytetään lomake valitun asiakkaan tietojen muokkaamiseksi
             with st.form("muokkaa_sopimus"):
                 nimi = st.text_input("Asiakkaan nimi", value=valittu_sopimus["nimi"])
                 tuote = st.text_input("Tuote", value=valittu_sopimus["tuote"])
@@ -172,8 +147,6 @@ with tab1:
                 a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=valittu_sopimus["a_hinta"])
                 maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=valittu_sopimus["maara"])
                 tallenna = st.form_submit_button("Tallenna muutokset")
-            
-            
             if tallenna:
                 st.session_state.asiakkaat_sopimus[valittu_index] = {
                     "nimi": nimi,
@@ -182,9 +155,7 @@ with tab1:
 	            "sijainti": sijainti,		
                     "a_hinta": a_hinta,
                     "maara": maara,
-                    "kokonaisarvo": a_hinta * maara,
-                    
-                }
+                    "kokonaisarvo": a_hinta * maara}
                 save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
                 st.success(f"Sopimus asiakkaalle '{nimi}' päivitetty onnistuneesti.")
                 st.rerun()

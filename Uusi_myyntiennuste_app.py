@@ -106,7 +106,7 @@ with tab1:
             if loppupvm and loppupvm <= date.today():
                 st.markdown(f"- <span style='color: red;'> {a['nimi']} (sopimus päättyy {a['sopimus']}): {a['tuote']}: {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €</span>", unsafe_allow_html=True)
             else:
-            st.write(f"- {a['nimi']} (sopimus päättyy {a['sopimus']}): {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €")
+                st.write(f"- {a['nimi']} (sopimus päättyy {a['sopimus']}): {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €")
     else:
         st.info("Ei vielä sopimuksia lisättynä.")
 

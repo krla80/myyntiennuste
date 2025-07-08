@@ -60,11 +60,6 @@ def parse_poistettava(valinta):
         return None, None
     return None, None
 
-voimassa_olevat_sopimukset = [
-    a for a in st.session_state.asiakkaat_sopimus
-    if "sopimus" in a and datetime.fromisoformat(a["sopimus"]).date() >= date.today()
-]
-
 with tab1:
     st.write("Syötä asiakkaat, joiden kanssa sinulla on jo sopimus. Voit antaa jokaiselle asiakkaalle oman hinnan ja kappalemäärän tilikautena. Kirjaa hinnat ilman ALV:a.")
 

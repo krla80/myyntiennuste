@@ -394,7 +394,7 @@ with tab3:
                 st.session_state.asiakkaat_palkkaennuste.pop(idx)
                 save_data(PALKKAENNUSTE_FILE, st.session_state.asiakkaat_palkkaennuste)
                 st.success("Kulu poistettu.")
-                st.experimental_rerun()
+                st.rerun()
         else:
             st.info("Ei tallennettuja kuluja.")
 

@@ -54,7 +54,7 @@ def parse_poistettava(valinta):
 
 voimassa_olevat_sopimukset = [
     a for a in st.session_state.asiakkaat_sopimus
-    if datetime.fromisoformat(a["sopimus"]).date() >= date.today()
+    if "sopimus" in a and datetime.fromisoformat(a["sopimus"]).date() >= date.today()
 ]
 
 with tab1:

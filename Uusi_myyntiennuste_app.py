@@ -76,6 +76,8 @@ with tab1:
 
     st.write(f" <span style='color:red; font-style: italic;'>Laskuri laskee mukaan vain voimassaolevat sopimukset. Jos päättynyt sopimus jatkuu, vaihda sopimuksen päättymispäivä tulevaisuuteen.</span>", unsafe_allow_html=True)
 
+    st.markdown(f"<h3 style='color:#4EA72E;'>Jo tehtyjen sopimusten arvo yhteensä: {total_sopimus:.2f} €</h3>", unsafe_allow_html=True)
+
     st.subheader("Lisää sopimus")
     with st.form("uusi_asiakas_sopimus"):
         nimi = st.text_input("Asiakkaan nimi", value=st.session_state.get("nimi_sopimus", ""), key="nimi_sopimus")

@@ -39,6 +39,7 @@ for a in st.session_state.asiakkaat_sopimus:
             voimassa_olevat_sopimukset.append(a)
     except Exception:
         pass).date() >= date.today()
+]
 
 tab1, tab3, tab2, tab_summary = st.tabs(["Kirjaa sopimukset", "Tunne yrityksesi kulut ja  aseta palkkatavoite", "Aseta myyntitavoitteet",  "Yhteenveto keskeisistä luvuista"])
 

@@ -453,19 +453,12 @@ with tab3:
     #st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
 
 # Ehdollinen palaute tavoitepalkasta
-    total_myynnit = sum(
-        a.get("kokonaisarvo", 0)
-        for a in st.session_state.asiakkaat_sopimus
-        if "sopimus" in a and datetime.fromisoformat(a["sopimus"]).date() >= date.today()
-    )
-    nettop = (total_myynnit - kulut_yhteensa) / 12
     try:
-        tavoite = float(st.session_state.get("tavoite_palkka", 0))
-        if nettop >= tavoite:
+        # Käytetään nettopalkka- ja myyntikuilu-muuttujia, jotka on laskettu palkkalaskelmissa
+        if nettopalkka >= tavoitepalkka:
             st.markdown("<h3 style='color:green;'>Hienoa, olet jo saavuttanut tai ylittänyt tavoitepalkkasi!</h3>", unsafe_allow_html=True)
         else:
-            puuttuu = tavoite - nettop
-            st.markdown(f"<h3 style='color:red;'>Sinun täytyy vielä saada {puuttuu:.2f} € lisämyyntiä tavoitepalkan saavuttamiseksi.</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='color:red;'>Sinun täytyy vielä saada {myyntikuilu:.2f} € lisämyyntiä tavoitepalkan saavuttamiseksi.</h3>", unsafe_allow_html=True)
     except Exception:
         pass
 

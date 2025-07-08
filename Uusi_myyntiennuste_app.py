@@ -50,8 +50,10 @@ vero           = st.session_state.get("veroprosentti", 25) / 100
 total_sopimus  = sum(
     a.get("arvo", 0) 
     for a in st.session_state.asiakkaat_sopimus
-    a.get("sopimus")
-    if datetime.fromisoformat(a["sopimus"]).date() >= date.today()
+    if (
+        a.get("sopimus")
+        and datetime.fromisoformat(a["sopimus"]).date() >= date.today()
+    )
 )
 
 # Laske myyntikuilu kerran ylhäällä

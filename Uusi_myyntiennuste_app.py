@@ -362,7 +362,11 @@ with tab3:
         st.success("Kulut tallennettu onnistuneesti.")
 
     if st.session_state.asiakkaat_palkkaennuste:
-        st.subheader("Tallennetut kulut ja muokkaus")
+        st.subheader("Tallennetut kulut")
+        for k in st.session_state.asiakkaat_palkkaennuste:
+            st. write(f"- {k['kulu']}: {k['a_hinta']:.2f} € × {k['maara']} kpl = {k['kokonaisarvo']:.2f} €")
+
+        st.subheader("Tallennettujen kulujen muokkaus")
         kulut_valinta = ["- Valitse kulu -"] + [
             f"{k['kulu']} ({k['a_hinta']:.2f} € × {k['maara']} kpl)"
             for k in st.session_state.asiakkaat_palkkaennuste
@@ -389,14 +393,12 @@ with tab3:
                 }
                 save_data(PALKKAENNUSTE_FILE, st.session_state.asiakkaat_palkkaennuste)
                 st.success(f"Kulu '{uusi_nimi}' päivitetty.")
-                st.experimental_rerun()
+                st.rerun()
             if poista:
                 st.session_state.asiakkaat_palkkaennuste.pop(idx)
                 save_data(PALKKAENNUSTE_FILE, st.session_state.asiakkaat_palkkaennuste)
                 st.success("Kulu poistettu.")
                 st.rerun()
-            else:
-                st.info("Ei tallennettuja kuluja.")
 
 # Lasketaan yhteissumma
     kulut_yhteensa = 0.0

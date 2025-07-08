@@ -97,9 +97,9 @@ with tab1:
         if poistettava != "- Valitse sopimus -":
             if st.button("Poista valittu sopimus"):
                 try:
-		    nimi, tuote = poistettava.split("(")
-		    tuote = tuote.rstrip(")")
-		except ValueError:
+                    nimi, tuote = poistettava.split("(")
+                    tuote = tuote.rstrip(")")
+                except ValueError:
 		    st.error("Sopimuksen poistaminen epäonnistui - tarkista muoto.")
 			st.stop()
                 st.session_state.asiakkaat_sopimus = [

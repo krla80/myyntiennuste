@@ -42,13 +42,6 @@ for a in st.session_state.asiakkaat_sopimus:
     except Exception:
         continue
 
-total_sopimus = 0
-for a in voimassa_olevat_sopimukset:
-    try:
-        total_sopimus += float(a.get("kokonaisarvo", 0))
-    except Exception:
-        continue
-
 tab1, tab3, tab2, tab_summary = st.tabs(["Kirjaa sopimukset", "Tunne yrityksesi kulut ja  aseta palkkatavoite", "Aseta myyntitavoitteet",  "Yhteenveto keskeisistä luvuista"])
 
 # Säilytetään valitut indeksit ilman st.rerun():ia
@@ -76,6 +69,12 @@ with tab1:
 
     st.write(f" <span style='color:red; font-style: italic;'>Laskuri laskee mukaan vain voimassaolevat sopimukset. Jos päättynyt sopimus jatkuu, vaihda sopimuksen päättymispäivä tulevaisuuteen.</span>", unsafe_allow_html=True)
 
+    total_sopimus = sum(
+        a.get("kokonaisarvo", 0)
+        for a in st.session_state.asiakkaat_sopimus
+        if "sopimus" in a and isinstance(a["sopimus"], str)
+        and a["sopimus"] and datetime.fromisoformat(a["sopimus"]).date() >= date.today()
+    )
     st.markdown(f"<h3 style='color:#4EA72E;'>Jo tehtyjen sopimusten arvo yhteensä: {total_sopimus:.2f} €</h3>", unsafe_allow_html=True)
 
     st.subheader("Lisää sopimus")

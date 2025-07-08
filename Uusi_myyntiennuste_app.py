@@ -151,6 +151,7 @@ with tab1:
                 }
                 save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
                 st.success(f"Sopimus asiakkaalle '{nimi}' päivitetty onnistuneesti.")
+                st.rerun()
     
 
     # Summa
@@ -211,9 +212,15 @@ with tab2:
 
         if poistettava != "- Valitse ennuste -":
             if st.button("Poista valittu ennuste", key="poista_ennuste"):
+                try:
+                    nimi,tuote = poistettava.split(")")
+                    tuote = tuote.rstrip(")")
+		except ValueError:
+                    st.error("Ennusteen poistaminen epäonnistui - tarkista muoto.")
+                    st.stop()
                 st.session_state.asiakkaat_ennuste = [a for a in st.session_state.asiakkaat_ennuste if a["nimi"] != poistettava]
                 save_data(ENNUSTE_FILE, st.session_state.asiakkaat_ennuste)
-                st.success(f"Asiakas '{poistettava}' poistettu myyntiennusteesta.")
+                st.success(f"Ennuste '{poistettava}' poistettu.")
 
      # Lomake olemassa olevan ennusteen muokkaamiseksi
 

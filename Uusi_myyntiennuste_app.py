@@ -41,8 +41,6 @@ voimassa_olevat_sopimukset = [
     if datetime.fromisoformat(a["sopimus"]).date() >= date.today()
 ]
 
-tab1, tab3, tab2, tab_summary = st.tabs(["Kirjaa sopimukset", "Tunne yrityksesi kulut ja  aseta palkkatavoite", "Aseta myyntitavoitteet",  "Yhteenveto keskeisistä luvuista"])
-
 # Parannettu sopimusten ja ennusteiden valintojen käsittely
 def parse_poistettava(valinta):
     try:

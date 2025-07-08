@@ -96,7 +96,7 @@ with tab1:
 
         if poistettava != "- Valitse sopimus -":
             if st.button("Poista valittu sopimus"):
-	        try:
+                try:
 		    nimi, tuote = poistettava.split("(")
 		    tuote = tuote.rstrip(")")
 		except ValueError:

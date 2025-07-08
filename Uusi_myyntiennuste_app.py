@@ -100,8 +100,8 @@ with tab1:
                     nimi, tuote = poistettava.split("(")
                     tuote = tuote.rstrip(")")
                 except ValueError:
-		    st.error("Sopimuksen poistaminen epäonnistui - tarkista muoto.")
-			st.stop()
+                        st.error("Sopimuksen poistaminen epäonnistui - tarkista muoto.")
+                        st.stop()
                 st.session_state.asiakkaat_sopimus = [
                     a for a in st.session_state.asiakkaat_sopimus if a["nimi"] != poistettava
                 ]

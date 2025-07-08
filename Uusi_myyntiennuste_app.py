@@ -32,13 +32,10 @@ if "asiakkaat_palkkaennuste" not in st.session_state:
 st.set_page_config(page_title="Myyntiennuste", layout="centered")
 st.markdown('<h1 style="color:#4EA72E;">Myyntiennuste ja sopimusten hallinta</h1>', unsafe_allow_html=True)
 
-voimassa_olevat_sopimukset = []
-for a in st.session_state.asiakkaat_sopimus:
-    try:
-        if "sopimus" in a and datetime.fromisoformat(a["sopimus"]).date() >= date.today():
-            voimassa_olevat_sopimukset.append(a)
-    except Exception:
-        pass
+voimassa_olevat_sopimukset = [
+    a for a in st.session_state.asiakkaat_sopimus
+    if "sopimus" in a and datetime.fromisoformat(a["sopimus"]).date() >= date.today()
+]
 
 tab1, tab3, tab2, tab_summary = st.tabs(["Kirjaa sopimukset", "Tunne yrityksesi kulut ja  aseta palkkatavoite", "Aseta myyntitavoitteet",  "Yhteenveto keskeisistä luvuista"])
 

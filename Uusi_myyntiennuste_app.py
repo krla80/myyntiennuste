@@ -122,7 +122,7 @@ with tab1:
     if st.session_state.asiakkaat_sopimus:
         # Rakennetaan valintalistan vaihtoehdot: ensin tyhjä, sitten asiakkaat
         valintaoptiot = ["- Valitse sopimus -"] + [
-            f"{a['nimi']} {a["tuote"]} (sopimus päättyy {a['sopimus']})"
+            f"{a['nimi']} {a['tuote']} (sopimus päättyy {a['sopimus']})"
             for a in st.session_state.asiakkaat_sopimus
         ]
         valittu = st.selectbox("Valitse sopimus", options=valintaoptiot)
@@ -217,16 +217,17 @@ with tab2:
         )
 
         if poistettava != "- Valitse ennuste -":
-            if st.button("Poista valittu ennuste", key="poista_ennuste"):
-                try:
-                    nimi,tuote = poistettava.split(")")
-                    tuote = tuote.rstrip(")")
-                except ValueError:
-                    st.error("Ennusteen poistaminen epäonnistui - tarkista muoto.")
-                    st.stop()
-                st.session_state.asiakkaat_ennuste = [a for a in st.session_state.asiakkaat_ennuste if a["nimi"] != poistettava]
+            nimi, tuote = poistettava.split(" (tuote ")
+            tuote = tuote.rstrip(")")
+            alkuperainen_pituus = len(st.session_state.asiakkaat_ennuste)
+            st.session_state.asiakkaat_ennuste = [
+                a for a in st.session_state.asiakkaat_ennuste
+                if not (a["nimi"] == nimi and a["tuote"] == tuote)
+            ]
+            if len(st.session_state.asiakkaat_ennuste) < alkuperainen_pituus:
                 save_data(ENNUSTE_FILE, st.session_state.asiakkaat_ennuste)
                 st.success(f"Ennuste '{poistettava}' poistettu.")
+                st.rerun()
 
      # Lomake olemassa olevan ennusteen muokkaamiseksi
 
@@ -269,7 +270,7 @@ with tab2:
                     "aktiivinen": aktiivinen
                     
             }
-            save_data(ENNUSTE_FILE, st.session_state.asiakkaat_sopimus)
+            save_data(ENNUSTE_FILE, st.session_state.asiakkaat_ennuste)
             st.success(f"Ennuste '{nimi}' (tuote {a['tuote']}) päivitetty onnistuneesti.")
 
     # Summa

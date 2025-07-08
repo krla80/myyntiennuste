@@ -35,14 +35,12 @@ st.markdown('<h1 style="color:#4EA72E;">Myyntiennuste ja sopimusten hallinta</h1
 voimassa_olevat_sopimukset = []
 for a in st.session_state.asiakkaat_sopimus:
     try:
-        if "sopimus" in a and datetime.fromisoformat(a["sopimus"]).date() >= date.today():
-            voimassa_olevat_sopimukset.append(a)
+        if "sopimus" in a:
+            pvm = datetime.fromisoformat(a["sopimus"]).date()
+            if pvm >= date.today():
+                voimassa_olevat_sopimukset.append(a)
     except Exception:
-        pass).date() >= date.today():
-            voimassa_olevat_sopimukset.append(a)
-    except Exception:
-        pass).date() >= date.today()
-]
+        continue
 
 tab1, tab3, tab2, tab_summary = st.tabs(["Kirjaa sopimukset", "Tunne yrityksesi kulut ja  aseta palkkatavoite", "Aseta myyntitavoitteet",  "Yhteenveto keskeisistä luvuista"])
 

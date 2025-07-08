@@ -447,7 +447,7 @@ with tab3:
         kokonaismyynti = total_sopimus / 12
         bruttopalkka = kokonaismyynti - (kulut_yhteensa / 12)
         verot = bruttopalkka * (vero_prosentti / 100) if bruttopalkka > 0 else 0
-        nettopalkka = bruttopalkka - verot* if bruttopalkka > 0 else 0
+        nettopalkka = bruttopalkka - verot if bruttopalkka > 0 else 0
         myyntikuilu = total_sopimus - (kulut_yhteensa + tavoitepalkka * 12 / (1 - vero_prosentti / 100))
             
     except ZeroDivisionError:

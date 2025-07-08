@@ -58,6 +58,7 @@ total_sopimus  = sum(
 
 # Laske myyntikuilu kerran ylhäällä
 myyntikuilu = total_sopimus - (kulut_yhteensa + tavoite * 12 / (1 - vero))
+st.session_state["myyntikuilu"] = myyntikuilu
 
 st.set_page_config(page_title="Myyntiennuste", layout="centered")
 st.markdown('<h1 style="color:#4EA72E;">Myyntiennuste ja sopimusten hallinta</h1>', unsafe_allow_html=True)

@@ -362,6 +362,10 @@ with tab3:
         save_data(PALKKAENNUSTE_FILE, kulutiedot)
         st.success("Kulut tallennettu onnistuneesti.")
 
+        st.subheader("Tallennetut kulut:")
+        for k in st.session_state.asiakkaat_palkkaennuste:
+            st.write(f"- {k['kulu']}: {k['a_hinta']:.2f} € × {k['maara']} kpl = {k['kokonaisarvo']:.2f} €")
+
         # Muokkaa tai poista yksittäinen kulu
         st.subheader("Muokkaa tai poista tallennettuja kuluja")
         if st.session_state.asiakkaat_palkkaennuste:

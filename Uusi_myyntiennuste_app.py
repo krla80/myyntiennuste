@@ -382,13 +382,6 @@ with tab3:
         else:
             st.info("Ei tallennettuja kuluja.")
 
-        st.subheader("Tallennetut kulut:")
-        if st.session_state.asiakkaat_palkkaennuste:
-            for k in st.session_state.asiakkaat_palkkaennuste:
-                st.write(f"- {k['kulu']}: {k['a_hinta']:.2f} € × {k['maara']} kpl = {k['kokonaisarvo']:.2f} €")
-        else:
-            st.info("Ei tallennettuja kuluja.")
-
 # Lasketaan yhteissumma
     kulut_yhteensa = 0.0
     if st.session_state.get("asiakkaat_palkkaennuste"):

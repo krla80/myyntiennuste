@@ -27,6 +27,20 @@ if "asiakkaat_sopimus" not in st.session_state:
 if "asiakkaat_ennuste" not in st.session_state:
     st.session_state.asiakkaat_ennuste = load_data(ENNUSTE_FILE)
 raw = load_data(PALKKAENNUSTE_FILE)
+
+if isinstance(raw, list):
+    kulut_list    = raw
+    palkkatavoite = 0.0
+    veroprosentti = 25
+elif isinstance(raw, dict):
+    kulut_list    = raw.get("kulut", [])
+    palkkatavoite = raw.get("palkkatavoite", 0.0)
+    veroprosentti = raw.get("veroprosentti", 25)
+else:
+    kulut_list    = []
+    palkkatavoite = 0.0
+    veroprosentti = 25
+	
 st.session_state.setdefault("asiakkaat_palkkaennuste", kulut_list)
 st.session_state.setdefault("tavoite_palkka",        str(palkkatavoite))
 st.session_state.setdefault("veroprosentti",         veroprosentti)

@@ -26,8 +26,11 @@ if "asiakkaat_sopimus" not in st.session_state:
     st.session_state.asiakkaat_sopimus = load_data(SOPIMUKSET_FILE)
 if "asiakkaat_ennuste" not in st.session_state:
     st.session_state.asiakkaat_ennuste = load_data(ENNUSTE_FILE)
-if "asiakkaat_palkkaennuste" not in st.session_state:
-    st.session_state.asiakkaat_palkkaennuste = load_data(PALKKAENNUSTE_FILE)
+raw = load_data(PALKKAENNUSTE_FILE)
+…
+st.session_state.setdefault("asiakkaat_palkkaennuste", kulut_list)
+st.session_state.setdefault("tavoite_palkka",        str(palkkatavoite))
+st.session_state.setdefault("veroprosentti",         veroprosentti)
 
 st.set_page_config(page_title="Myyntiennuste", layout="centered")
 st.markdown('<h1 style="color:#4EA72E;">Myyntiennuste ja sopimusten hallinta</h1>', unsafe_allow_html=True)

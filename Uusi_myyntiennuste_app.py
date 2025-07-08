@@ -408,7 +408,7 @@ with tab3:
             if isinstance(raw, dict):
                 data = raw
             else:
-		data = {
+                data = {
                     "kulut": raw if isinstance(raw, list) else st.session_state.get("asiakkaat_palkkaennuste", []),
                 }
             kulut_lista = data.get("kulut", st.session_state.get("asiakkaat_palkkaennuste", []))

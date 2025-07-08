@@ -34,7 +34,23 @@ st.markdown('<h1 style="color:#4EA72E;">Myyntiennuste ja sopimusten hallinta</h1
 
 tab1, tab3, tab2, tab_summary = st.tabs(["Kirjaa sopimukset", "Tunne yrityksesi kulut ja  aseta palkkatavoite", "Aseta myyntitavoitteet",  "Yhteenveto keskeisistä luvuista"])
 
-from datetime import date, datetime
+# Säilytetään valitut indeksit ilman st.rerun():ia
+if "valittu_sopimus_index" not in st.session_state:
+    st.session_state.valittu_sopimus_index = None
+if "valittu_ennuste_index" not in st.session_state:
+    st.session_state.valittu_ennuste_index = None
+if "valittu_kulu_index" not in st.session_state:
+    st.session_state.valittu_kulu_index = None
+
+# Parannettu sopimusten ja ennusteiden valintojen käsittely
+def parse_poistettava(valinta):
+    try:
+        if valinta.endswith(")"):
+            nimi, tuote = valinta[:-1].rsplit(" (", 1)
+            return nimi.strip(), tuote.strip()
+    except Exception:
+        return None, None
+    return None, None
 
 voimassa_olevat_sopimukset = [
     a for a in st.session_state.asiakkaat_sopimus
@@ -88,35 +104,20 @@ with tab1:
 
     # Asiakaslistan näyttö ja poisto
     st.subheader("Poista olemassa oleva sopimus")
-	
     if st.session_state.asiakkaat_sopimus:
-        poistettavat = ["- Valitse sopimus -"] + [f'{a["nimi"]} ({a["tuote"]})' for a in st.session_state.asiakkaat_sopimus
-	]
-        poistettava = st.selectbox("Valitse poistettava sopimus", poistettavat)
-
+        poistettavat = ["- Valitse sopimus -"] + [f'{a["nimi"]} ({a["tuote"]})' for a in st.session_state.asiakkaat_sopimus]
+        poistettava = st.selectbox("Valitse poistettava sopimus", poistettavat, index=0)
         if poistettava != "- Valitse sopimus -":
-            try:
-                match = poistettava.strip()
-                if match.endswith(")"):
-                    nimi, tuote = match[:-1].rsplit(" (", 1)
-                else:
-                    st.error("Sopimuksen poistaminen epäonnistui - tarkista muoto.")
-                    st.stop()
-            except ValueError:
-                st.error("Sopimuksen poistaminen epäonnistui - tarkista muoto.")
-                st.stop()
-                    
-            alkuperainen_pituus = len(st.session_state.asiakkaat_sopimus)
-            st.session_state.asiakkaat_sopimus = [
-                a for a in st.session_state.asiakkaat_sopimus 
-                if not (a["nimi"] == nimi and a["tuote"] == tuote)
-            ]
-            if len(st.session_state.asiakkaat_sopimus) < alkuperainen_pituus:
-                save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
-                st.success(f"Sopimus '{poistettava}' poistettu.")
-                st.rerun()
-            else:
-                st.warning("Sopimusta ei löytynyt tai se on jo poistettu.")
+            nimi, tuote = parse_poistettava(poistettava)
+            if nimi and tuote:
+                if st.button("Poista valittu sopimus"):
+                    alkuperainen_pituus = len(st.session_state.asiakkaat_sopimus)
+                    st.session_state.asiakkaat_sopimus = [a for a in st.session_state.asiakkaat_sopimus if not (a["nimi"] == nimi and a["tuote"] == tuote)]
+                    if len(st.session_state.asiakkaat_sopimus) < alkuperainen_pituus:
+                        save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
+                        st.success(f"Sopimus '{poistettava}' poistettu.")
+                    else:
+                        st.warning("Sopimusta ei löytynyt tai se on jo poistettu.")
     
     # Lomake olemassa olevan sopimuksen muokkaamiseksi
 
@@ -216,21 +217,17 @@ with tab2:
     # Asiakaslistan poisto
     st.subheader("Poista olemassa oleva ennuste")
     if st.session_state.asiakkaat_ennuste:
-        poistettava = st.selectbox("Valitse poistettava ennuste", ["- Valitse ennuste -"] + [f"{a['nimi']} (tuote {a['tuote']})" for a in st.session_state.asiakkaat_ennuste], index=0
-        )
-
+        poistettava = st.selectbox("Valitse poistettava ennuste", ["- Valitse ennuste -"] + [f"{a['nimi']} (tuote {a['tuote']})" for a in st.session_state.asiakkaat_ennuste], index=0)
         if poistettava != "- Valitse ennuste -":
-            nimi, tuote = poistettava.split(" (tuote ")
-            tuote = tuote.rstrip(")")
-            alkuperainen_pituus = len(st.session_state.asiakkaat_ennuste)
-            st.session_state.asiakkaat_ennuste = [
-                a for a in st.session_state.asiakkaat_ennuste
-                if not (a["nimi"] == nimi and a["tuote"] == tuote)
-            ]
-            if len(st.session_state.asiakkaat_ennuste) < alkuperainen_pituus:
-                save_data(ENNUSTE_FILE, st.session_state.asiakkaat_ennuste)
-                st.success(f"Ennuste '{poistettava}' poistettu.")
-                st.rerun()
+            nimi, tuote = parse_poistettava(poistettava.replace("tuote ", ""))
+            if nimi and tuote:
+                alkuperainen_pituus = len(st.session_state.asiakkaat_ennuste)
+                st.session_state.asiakkaat_ennuste = [a for a in st.session_state.asiakkaat_ennuste if not (a["nimi"] == nimi and a["tuote"] == tuote)]
+                if len(st.session_state.asiakkaat_ennuste) < alkuperainen_pituus:
+                    save_data(ENNUSTE_FILE, st.session_state.asiakkaat_ennuste)
+                    st.success(f"Ennuste '{poistettava}' poistettu.")
+                else:
+                    st.warning("Ennustetta ei löytynyt tai se on jo poistettu.")
 
      # Lomake olemassa olevan ennusteen muokkaamiseksi
 

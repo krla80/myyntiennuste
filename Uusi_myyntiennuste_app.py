@@ -43,14 +43,6 @@ voimassa_olevat_sopimukset = [
 
 tab1, tab3, tab2, tab_summary = st.tabs(["Kirjaa sopimukset", "Tunne yrityksesi kulut ja  aseta palkkatavoite", "Aseta myyntitavoitteet",  "Yhteenveto keskeisistä luvuista"])
 
-# Säilytetään valitut indeksit ilman st.rerun():ia
-if "valittu_sopimus_index" not in st.session_state:
-    st.session_state.valittu_sopimus_index = None
-if "valittu_ennuste_index" not in st.session_state:
-    st.session_state.valittu_ennuste_index = None
-if "valittu_kulu_index" not in st.session_state:
-    st.session_state.valittu_kulu_index = None
-
 # Parannettu sopimusten ja ennusteiden valintojen käsittely
 def parse_poistettava(valinta):
     try:

@@ -98,14 +98,14 @@ with tab1:
     if "asiakkaat_sopimus" in st.session_state:
         st.write("### Sopimukset ja myynnit:")
         for a in st.session_state.asiakkaat_sopimus:
-        try:
-            loppupvm = datetime.fromisoformat(a.get('sopimus', '')).date()
-        except Exception:
-            loppupvm = None
+            try:
+                loppupvm = datetime.fromisoformat(a.get('sopimus', '')).date()
+            except Exception:
+                loppupvm = None
 
-        if loppupvm and loppupvm <= date.today():
-            st.markdown(f"- <span style='color: red;'> {a['nimi']} (sopimus päättyy {a['sopimus']}): {a['tuote']}: {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €</span>", unsafe_allow_html=True)
-        else:
+            if loppupvm and loppupvm <= date.today():
+                st.markdown(f"- <span style='color: red;'> {a['nimi']} (sopimus päättyy {a['sopimus']}): {a['tuote']}: {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €</span>", unsafe_allow_html=True)
+            else:
             st.write(f"- {a['nimi']} (sopimus päättyy {a['sopimus']}): {a['a_hinta']:.2f} € × {a['maara']} kpl = {a['kokonaisarvo']:.2f} €")
     else:
         st.info("Ei vielä sopimuksia lisättynä.")

@@ -361,7 +361,7 @@ with tab3:
         save_data(PALKKAENNUSTE_FILE, kulutiedot)
         st.success("Kulut tallennettu onnistuneesti.")
 
-   if st.session_state.asiakkaat_palkkaennuste:
+    if st.session_state.asiakkaat_palkkaennuste:
         st.subheader("Tallennetut kulut ja muokkaus")
         kulut_valinta = ["- Valitse kulu -"] + [
             f"{k['kulu']} ({k['a_hinta']:.2f} € × {k['maara']} kpl)"

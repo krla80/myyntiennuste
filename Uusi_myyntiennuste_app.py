@@ -45,8 +45,8 @@ st.session_state.setdefault("tavoite_palkka",        str(palkkatavoite))
 st.session_state.setdefault("veroprosentti",         veroprosentti)
 
 kulut_yhteensa = sum(k["kokonaisarvo"] for k in st.session_state.asiakkaat_palkkaennuste)
-tavoite        = float(st.session_state.get("tavoite_palkka", 0))
-vero           = st.session_state.get("veroprosentti", 25) / 100
+tavoite-palkka        = float(st.session_state.get("tavoite_palkka", 0))
+vero_prosentti           = st.session_state.get("veroprosentti", 25) / 100
 total_sopimus  = sum(
     a.get("arvo", 0) 
     for a in st.session_state.asiakkaat_sopimus
@@ -57,7 +57,7 @@ total_sopimus  = sum(
 )
 
 # Laske myyntikuilu kerran ylhäällä
-myyntikuilu = total_sopimus - (kulut_yhteensa + tavoite * 12 / (1 - vero / 100))
+myyntikuilu = total_sopimus - (kulut_yhteensa + tavoite_palkka * 12 / (1 - vero_prosentti / 100))
 st.session_state["myyntikuilu"] = myyntikuilu
 
 st.set_page_config(page_title="Myyntiennuste", layout="centered")

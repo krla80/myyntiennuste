@@ -33,13 +33,23 @@ st.set_page_config(page_title="Myyntiennuste", layout="centered")
 st.markdown('<h1 style="color:#4EA72E;">Myyntiennuste ja sopimusten hallinta</h1>', unsafe_allow_html=True)
 
 voimassa_olevat_sopimukset = []
-total_sopimus=0
 for a in st.session_state.asiakkaat_sopimus:
     try:
         if "sopimus" in a:
             pvm = datetime.fromisoformat(a["sopimus"]).date()
             if pvm >= date.today():
                 voimassa_olevat_sopimukset.append(a)
+    except Exception:
+        continue
+
+total_sopimus = sum(
+    a.get("kokonaisarvo", 0)
+    for a in st.session_state.asiakkaat_sopimus
+    if "sopimus" in a
+    and isinstance(a.get("sopimus", ""), str)
+    and a.get("sopimus")
+    and datetime.fromisoformat(a["sopimus"]).date() >= date.today()
+)
     except Exception:
         continue
 

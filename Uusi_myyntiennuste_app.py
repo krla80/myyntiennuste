@@ -318,7 +318,7 @@ with tab2:
                 st.markdown("<h3 style='color:green;'>Hienoa, olet jo saavuttanut tai ylittänyt tavoitepalkkasi!</h3>", unsafe_allow_html=True)
             else:
                 st.markdown(f"<h3 style='color:red;'>Sinun täytyy vielä saada {mk:.0f} € lisämyyntiä tavoitepalkan saavuttamiseksi.</h3>", unsafe_allow_html=True)
-        except Exception:
+            except Exception:
         pass
 with tab3:
 

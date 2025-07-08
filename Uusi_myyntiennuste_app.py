@@ -460,7 +460,7 @@ with tab3:
             st.markdown("<h3 style='color:#4EA72E;'>Hienoa, olet jo saavuttanut tai ylittänyt tavoitepalkkasi!</h3>", unsafe_allow_html=True)
         else:
             puuttuu = tavoite - nettop
-            st.markdown(f"<h3 style='color:red;'>Sinun täytyy vielä saada {puuttuu:.2f} € lisämyyntiä tavoitepalkan saavuttamiseksi.</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='color:red;'>Sinun täytyy vielä saada {myyntikuilu:.2f} € lisämyyntiä tavoitepalkan saavuttamiseksi.</h3>", unsafe_allow_html=True)
     except Exception:
         pass
 

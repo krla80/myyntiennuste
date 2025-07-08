@@ -47,7 +47,8 @@ st.session_state.setdefault("veroprosentti",         veroprosentti)
 kulut_yhteensa = sum(k["kokonaisarvo"] for k in st.session_state.asiakkaat_palkkaennuste)
 tavoite        = float(st.session_state.get("tavoite_palkka", 0))
 vero           = st.session_state.get("veroprosentti", 25) / 100
-total_sopimus  = sum(a["arvo"] for a in st.session_state.asiakkaat_sopimus if)
+total_sopimus  = sum(a["arvo"] for a in st.session_state.asiakkaat_sopimus
+if datetime.fromisoformat(a["sopimus"]).date() >= date.today()
 
 # Laske myyntikuilu kerran ylhäällä
 myyntikuilu = total_sopimus - (kulut_yhteensa + tavoite * 12 / (1 - vero))

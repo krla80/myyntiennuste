@@ -3,7 +3,7 @@ import yaml
 from yaml.loader import SafeLoader
 import json
 import os
-from datetime import date
+from datetime import date, datetime
 
 # Polut tiedostoille
 SOPIMUKSET_FILE = "asiakkaat_sopimus.json"

@@ -99,7 +99,7 @@ with tab1:
                 match = poistettava.strip()
                 if match.endswith(")"):
                     nimi, tuote = match[:-1].rsplit(" (", 1)
-		else:
+                else:
                     st.error("Sopimuksen poistaminen epäonnistui - tarkista muoto.")
                     st.stop()
 	    except ValueError:

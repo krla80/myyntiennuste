@@ -107,7 +107,7 @@ with tab1:
                 ]
                 save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
                 st.success(f"Sopimus '{poistettava}' poistettu.")
-		st.rerun()
+                st.rerun()
     
     # Lomake olemassa olevan sopimuksen muokkaamiseksi
 

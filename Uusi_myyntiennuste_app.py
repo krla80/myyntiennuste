@@ -24,6 +24,8 @@ def save_data(file, data):
 # Ladataan tiedot sessioon tai tiedostosta
 if "asiakkaat_sopimus" not in st.session_state:
     st.session_state.asiakkaat_sopimus = load_data(SOPIMUKSET_FILE)
+    st.write("Sopimus-tiedosto:", os.path.abspath(SOPIMUKSET_FILE))
+    st.write("JSON-sisältö ennen latausta:", load_data(SOPIMUKSET_FILE)
 if "asiakkaat_ennuste" not in st.session_state:
     st.session_state.asiakkaat_ennuste = load_data(ENNUSTE_FILE)
 if "asiakkaat_palkkaennuste" not in st.session_state:
@@ -50,6 +52,14 @@ def parse_poistettava(valinta):
     except Exception:
         return None, None
     return None, None
+
+# Poista sopimus - toimiva ja tallentava versio
+    # Painike kaikkien sopimusten tyhjentämiseen
+    if st.button("Tyhjennä kaikki sopimukset"):
+        st.session_state.asiakkaat_sopimus = []
+        save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
+        st.success("Kaikki sopimukset tyhjennetty ja JSON päivitetty.")
+        st.rerun()
 
 with tab1:
     st.write("Syötä asiakkaat, joiden kanssa sinulla on jo sopimus. Voit antaa jokaiselle asiakkaalle oman hinnan ja kappalemäärän tilikautena. Kirjaa hinnat ilman ALV:a.")

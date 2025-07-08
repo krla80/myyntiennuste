@@ -44,6 +44,14 @@ st.session_state.setdefault("asiakkaat_palkkaennuste", kulut_list)
 st.session_state.setdefault("tavoite_palkka",        str(palkkatavoite))
 st.session_state.setdefault("veroprosentti",         veroprosentti)
 
+kulut_yhteensa = sum(k["kokonaisarvo"] for k in st.session_state.asiakkaat_palkkaennuste)
+tavoite        = float(st.session_state.get("tavoite_palkka", 0))
+vero           = st.session_state.get("veroprosentti", 25) / 100
+total_sopimus  = sum(a["arvo"] for a in st.session_state.asiakkaat_sopimus if …)
+
+# Laske myyntikuilu kerran ylhäällä
+myyntikuilu = total_sopimus - (kulut_yhteensa + tavoite * 12 / (1 - vero))
+
 st.set_page_config(page_title="Myyntiennuste", layout="centered")
 st.markdown('<h1 style="color:#4EA72E;">Myyntiennuste ja sopimusten hallinta</h1>', unsafe_allow_html=True)
 

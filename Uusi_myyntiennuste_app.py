@@ -357,54 +357,44 @@ with tab3:
         submit = st.form_submit_button("Tallenna kulut")
 
     if submit: 
-        st.session_state.asiakkaat_palkkaennuste = kulutiedot
-        st.session_state.kululista = kulutiedot.copy()
+        st.session_state.asiakkaat_palkkaennuste = kulutiedot.copy()
         save_data(PALKKAENNUSTE_FILE, kulutiedot)
         st.success("Kulut tallennettu onnistuneesti.")
 
-        st.subheader("Tallennetut kulut:")
-        for k in st.session_state.asiakkaat_palkkaennuste:
-            st.write(f"- {k['kulu']}: {k['a_hinta']:.2f} € × {k['maara']} kpl = {k['kokonaisarvo']:.2f} €")
-
-        # Muokkaa tai poista yksittäinen kulu
-        st.subheader("Muokkaa tai poista tallennettuja kuluja")
-        if st.session_state.asiakkaat_palkkaennuste:
-            kulut_valinta = ["- Valitse kulu -"] + [
-                f"{k['kulu']} ({k['a_hinta']:.2f} € × {k['maara']} kpl = {k['kokonaisarvo']:.2f} €)"
-                for k in st.session_state.asiakkaat_palkkaennuste
-    ]
-            valittu_kulu = st.selectbox("Valitse muokattava tai poistettava kulu", kulut_valinta)
-
-            if valittu_kulu != "- Valitse kulu -":
-                index = kulut_valinta.index(valittu_kulu) - 1
-                valittu = st.session_state.asiakkaat_palkkaennuste[index]
-
-                with st.form("muokkaa_kulu"):
-                    uusi_nimi = st.text_input("Kulun nimi", value=valittu["kulu"])
-                    uusi_hinta = st.number_input("á-hinta (€)", min_value=0.0, step=1.0, format="%.2f", value=valittu["a_hinta"])
-                    uusi_maara = st.number_input("kpl/vuodessa", min_value=0, step=1, value=valittu["maara"])
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        tallenna = st.form_submit_button("Tallenna muutokset")
-                    with col2:
-                        poista = st.form_submit_button("Poista kulu")
-
-                if tallenna:
-                    st.session_state.asiakkaat_palkkaennuste[index] = {
-                        "kulu": uusi_nimi,
-                        "a_hinta": uusi_hinta,
-                        "maara": uusi_maara,
-                        "kokonaisarvo": uusi_hinta * uusi_maara,
-                    }
-                    save_data(PALKKAENNUSTE_FILE, st.session_state.asiakkaat_palkkaennuste)
-                    st.success(f"Kulu '{uusi_nimi}' päivitetty.")
-                    st.rerun()
-
-                if poista:
-                    del st.session_state.asiakkaat_palkkaennuste[index]
-                    save_data(PALKKAENNUSTE_FILE, st.session_state.asiakkaat_palkkaennuste)
-                    st.success("Kulu poistettu.")
-                    st.rerun()
+   if st.session_state.asiakkaat_palkkaennuste:
+        st.subheader("Tallennetut kulut ja muokkaus")
+        kulut_valinta = ["- Valitse kulu -"] + [
+            f"{k['kulu']} ({k['a_hinta']:.2f} € × {k['maara']} kpl)"
+            for k in st.session_state.asiakkaat_palkkaennuste
+        ]
+        valittu = st.selectbox("Valitse muokattava tai poistettava kulu", kulut_valinta)
+        if valittu != "- Valitse kulu -":
+            idx = kulut_valinta.index(valittu) - 1
+            item = st.session_state.asiakkaat_palkkaennuste[idx]
+            with st.form("muokkaa_kulu_form"):
+                uusi_nimi = st.text_input("Kulun nimi", value=item["kulu"])
+                uusi_hinta = st.number_input("á-hinta (€)", min_value=0.0, step=1.0, format="%.2f", value=item["a_hinta"])
+                uusi_maara = st.number_input("kpl/vuodessa", min_value=0, step=1, value=item["maara"])
+                col1, col2 = st.columns(2)
+                with col1:
+                    tallenna = st.form_submit_button("Tallenna muutokset")
+                with col2:
+                    poista = st.form_submit_button("Poista kulu")
+            if tallenna:
+                st.session_state.asiakkaat_palkkaennuste[idx] = {
+                    "kulu": uusi_nimi,
+                    "a_hinta": uusi_hinta,
+                    "maara": uusi_maara,
+                    "kokonaisarvo": uusi_hinta * uusi_maara
+                }
+                save_data(PALKKAENNUSTE_FILE, st.session_state.asiakkaat_palkkaennuste)
+                st.success(f"Kulu '{uusi_nimi}' päivitetty.")
+                st.experimental_rerun()
+            if poista:
+                st.session_state.asiakkaat_palkkaennuste.pop(idx)
+                save_data(PALKKAENNUSTE_FILE, st.session_state.asiakkaat_palkkaennuste)
+                st.success("Kulu poistettu.")
+                st.experimental_rerun()
         else:
             st.info("Ei tallennettuja kuluja.")
 

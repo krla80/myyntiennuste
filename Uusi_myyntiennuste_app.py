@@ -45,7 +45,7 @@ st.session_state.setdefault("tavoite_palkka",        str(palkkatavoite))
 st.session_state.setdefault("veroprosentti",         veroprosentti)
 
 kulut_yhteensa = sum(k["kokonaisarvo"] for k in st.session_state.asiakkaat_palkkaennuste)
-tavoite-palkka        = float(st.session_state.get("tavoite_palkka", 0))
+tavoite_palkka        = float(st.session_state.get("tavoite_palkka", 0))
 vero_prosentti           = st.session_state.get("veroprosentti", 25) / 100
 total_sopimus  = sum(
     a.get("arvo", 0) 

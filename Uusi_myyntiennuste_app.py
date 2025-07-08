@@ -396,7 +396,7 @@ with tab3:
     tavoitepalkka_input = st.text_input("Nettopalkka tavoite (€ / kk)", value=str(tavoitepalkka_oletus))
 
 # Tallennusnappi
-    if st.button("Tallenna veroprosentti ja palkkatavoite"):
+    if st.button("Tallenna veroprosentti ja palkkatavoite aina tullessasi sivulle"):
         try:
             tavoite_float = float(tavoitepalkka_input.replace(",", "."))
             veroprosentti_int = int(vero_prosentti)

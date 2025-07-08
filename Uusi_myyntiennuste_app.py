@@ -76,12 +76,12 @@ with tab1:
 
     st.subheader("Lisää sopimus")
     with st.form("uusi_asiakas_sopimus"):
-        nimi = st.text_input("Asiakkaan nimi", value=st.session_state.get("nimi_sopimus", ""), key="nimi_sopimus")
-        tuote = st.text_input("Yksilöivä palvelun nimi tai sopimuksen tunnus", value=st.session_state.get("tuote_sopimus", ""), key="tuote_sopimus")
-        sopimus = st.date_input("Sopimuksen päättymispäivä", value=st.session_state.get("sopimus_sopimus", date.today()), key="sopimus_sopimus")
-        sijainti = st.text_input("Sopimuksen sijainti (onedrive-osoite, verkkolevy tms.)", value=st.session_state.get("sijainti_sopimus", ""), key="sijainti_sopimus")
-        a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", value=st.session_state.get("a_hinta_sopimus", 0.0), key="a_hinta_sopimus")
-        maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, value=st.session_state.get("maara_sopimus", 1), key="maara_sopimus")
+        nimi = st.text_input("Asiakkaan nimi", key="nimi_sopimus")
+        tuote = st.text_input("Yksilöivä palvelun nimi tai sopimuksen tunnus", key="tuote_sopimus")
+        sopimus = st.date_input("Sopimuksen päättymispäivä", key="sopimus_sopimus")
+        sijainti = st.text_input("Sopimuksen sijainti (onedrive-osoite, verkkolevy tms.)", key="sijainti_sopimus")
+        a_hinta = st.number_input("Tuotteen/palvelun á-hinta (ilman alv., €)", min_value=0.0, step=1.0, format="%.2f", key="a_hinta_sopimus")
+        maara = st.number_input("Myyntimäärä tilikautena (kpl)", min_value=1, step=1, key="maara_sopimus")
         lisaus = st.form_submit_button("Lisää asiakas")
 
     if lisaus and nimi:
@@ -98,6 +98,7 @@ with tab1:
         st.session_state.asiakkaat_sopimus.append(uusi_asiakas)
         save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
         st.success(f"Asiakas '{nimi}' lisätty sopimuksiin.")
+        st.rerun()
 
 
     if "asiakkaat_sopimus" in st.session_state:

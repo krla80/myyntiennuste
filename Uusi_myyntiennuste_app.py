@@ -407,6 +407,7 @@ with tab3:
 
             save_data(PALKKAENNUSTE_FILE, {"palkkatavoite": tavoite_float, "veroprosentti": veroprosentti_int})
             st.success("Veroprosentti ja palkkatavoite tallennettu.")
+            st.rerun()
         except ValueError:
             st.error("Syötä kelvollinen numero nettopalkkatavoitteeksi.")
 

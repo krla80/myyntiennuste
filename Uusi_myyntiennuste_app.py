@@ -102,12 +102,18 @@ with tab1:
                 except ValueError:
                         st.error("Sopimuksen poistaminen epäonnistui - tarkista muoto.")
                         st.stop()
+			
+                alkuperainen_pituus = len(st.session_state.asiakkaat_sopimus)
+			
                 st.session_state.asiakkaat_sopimus = [
-                    a for a in st.session_state.asiakkaat_sopimus if a["nimi"] != poistettava
-                ]
+                    a for a in st.session_state.asiakkaat_sopimus if not (a["nimi"] == nimi and a["tuote"] == tuote)
+            ]
+            if len(st.session_state.asiakkaat_sopimus) < alkuperainen_pituus:
                 save_data(SOPIMUKSET_FILE, st.session_state.asiakkaat_sopimus)
                 st.success(f"Sopimus '{poistettava}' poistettu.")
                 st.rerun()
+	    else:
+                st.warning("Sopimusta ei löytynyt tai se on jo poistettu.")
     
     # Lomake olemassa olevan sopimuksen muokkaamiseksi
 

@@ -215,7 +215,7 @@ with tab2:
                 try:
                     nimi,tuote = poistettava.split(")")
                     tuote = tuote.rstrip(")")
-		except ValueError:
+                except ValueError:
                     st.error("Ennusteen poistaminen epäonnistui - tarkista muoto.")
                     st.stop()
                 st.session_state.asiakkaat_ennuste = [a for a in st.session_state.asiakkaat_ennuste if a["nimi"] != poistettava]

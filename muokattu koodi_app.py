@@ -481,7 +481,7 @@ with tab3:
     # Summa
     total_ennuste = sum(a["kokonaisarvo"] for a in st.session_state.asiakkaat_ennuste if a.get("aktiivinen", True))
     st.write(f"<h3>Ennustettu lisämyynti yhteensä: {total_ennuste:.2f} €</h3>", unsafe_allow_html=True)
-    st.markdown(f"<h3 style='color:red;'>TAvoitepalkkasi edellyttämä lisämyynti: {abs(myyntikuilu):.0f} €</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='color:red;'>Tavoitepalkkasi edellyttämä lisämyynti: {abs(myyntikuilu):.0f} €</h3>", unsafe_allow_html=True)
     #st.write(f"<h3 style='color:#4EA72E;'> Kokonaisarvo (sopimukset + myyntiennuste): {total_sopimus + total_ennuste:.2f} €</h3>", unsafe_allow_html=True)
     try:
             # Käytetään nettopalkka- ja myyntikuilu-muuttujia, jotka on laskettu palkkalaskelmissa

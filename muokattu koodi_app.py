@@ -373,7 +373,6 @@ with tab2:
         pass
 
 
-
 with tab3:
     st.write("Ennusta ja suunnittele tähän tilikautesi tuleva lisämyynti. Äsken asettamasi yrityksen kulut ja nettopalkkatavoite ohjaa, kuinka paljon liäsmyyntiä olemassa olevien sopimusten rinnalle tarvitaan.")
 
@@ -482,7 +481,8 @@ with tab3:
     # Summa
     total_ennuste = sum(a["kokonaisarvo"] for a in st.session_state.asiakkaat_ennuste if a.get("aktiivinen", True))
     st.write(f"<h3>Aktiivisten ennustettujen myyntien arvo yhteensä: {total_ennuste:.2f} €</h3>", unsafe_allow_html=True)
-    st.write(f"<h3 style='color:#4EA72E;'> Kokonaisarvo (sopimukset + myyntiennuste): {total_sopimus + total_ennuste:.2f} €</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color:red;'>Näin paljon sinun pitää myydä jo tehtyjen sopimusten tällä tilikaudella lisäksi saavuttaaksesi tavoitepalkkasi: {abs(myyntikuilu):.0f} €</h2>", unsafe_allow_html=True)
+    #st.write(f"<h3 style='color:#4EA72E;'> Kokonaisarvo (sopimukset + myyntiennuste): {total_sopimus + total_ennuste:.2f} €</h3>", unsafe_allow_html=True)
     try:
             # Käytetään nettopalkka- ja myyntikuilu-muuttujia, jotka on laskettu palkkalaskelmissa
             if nettopalkka >= tavoitepalkka:

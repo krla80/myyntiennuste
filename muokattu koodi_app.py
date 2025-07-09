@@ -357,10 +357,9 @@ with tab2:
         st.warning(f"Virhe palkkalaskennassa: {e}")
 
 # Tulokset näkyviin
-    mk = abs(st.session_state["myyntikuilu"])
     st.markdown(f"<h4>Liikevaihto kuukaudessa perustuen toteutuneeseen myyntiin: {kokonaismyynti:.2f} €</h4>", unsafe_allow_html=True)
     st.markdown(f"<h2 style='color:#4EA72E;'>Arvioitu nettopalkka kuukaudessa kulujen ja verojen jälkeen: {nettopalkka:.2f} €</h2>", unsafe_allow_html=True)
-    #st.markdown(f"<h2 style='color:red;'>Näin paljon sinun pitää myydä jo tehtyjen sopimusten tällä tilikaudella lisäksi saavuttaaksesi tavoitepalkkasi: {mk:.0f} €</h2>", unsafe_allow_html=True)
+    #st.markdown(f"<h2 style='color:red;'>Näin paljon sinun pitää myydä jo tehtyjen sopimusten tällä tilikaudella lisäksi saavuttaaksesi tavoitepalkkasi: {myyntikuilu:.0f} €</h2>", unsafe_allow_html=True)
     #st.markdown(f"<h4>Arvioitu bruttopalkka kuukaudessa: {bruttopalkka:.2f} €</h4>", unsafe_allow_html=True)
 
 # Ehdollinen palaute tavoitepalkasta

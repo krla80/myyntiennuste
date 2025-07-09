@@ -515,21 +515,21 @@ with tab_summary:
  
   # Myyntikuilun ja ennusteen vertailu
 
-    vari= "black"
-    viesti= "Tilannetta ei ole vielä arvioitu"
+    #vari= "black"
+    #viesti= "Tilannetta ei ole vielä arvioitu"
       
-    if myyntikuilu <= 0:
-        viesti = "Mikäli saavutat asettamasi myyntitavoitteet, saavutat tavoitepalkkasi!"
-        vari = "green"
-    elif total_ennuste >= myyntikuilu:
-        viesti = "Mikäli saavutat asettamasi myyntitavoitteet, saavutat tavoitepalkkasi!"
-        vari = "green"
-    elif total_ennuste >= 0.75 * myyntikuilu:
-        viesti = "Myyntitavoitteesi ei ihan riitä kattamaan asettamaasi tavoitepalkkaa."
-        vari = "yellow"
-    else:
-        viesti = "Myyntitavoitteesi ei riitä kattamaan asettamaasi tavoitepalkkaa."
-        vari = "red"
+    #if myyntikuilu <= 0:
+        #viesti = "Mikäli saavutat asettamasi myyntitavoitteet, saavutat tavoitepalkkasi!"
+        #vari = "green"
+    #elif total_ennuste >= myyntikuilu:
+        #viesti = "Mikäli saavutat asettamasi myyntitavoitteet, saavutat tavoitepalkkasi!"
+        #vari = "green"
+    #elif total_ennuste >= 0.75 * myyntikuilu:
+        #viesti = "Myyntitavoitteesi ei ihan riitä kattamaan asettamaasi tavoitepalkkaa."
+        #vari = "yellow"
+    #else:
+        #viesti = "Myyntitavoitteesi ei riitä kattamaan asettamaasi tavoitepalkkaa."
+        #vari = "red"
 
-    st.markdown(f"<h3 style='color:{vari};'>{viesti}</h3>", unsafe_allow_html=True)
+    #st.markdown(f"<h3 style='color:{vari};'>{viesti}</h3>", unsafe_allow_html=True)
 

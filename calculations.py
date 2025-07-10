@@ -26,7 +26,7 @@ def laske_palkka_metrics(total_sopimukset: float, kulut: float, vero_pct: int, t
     verot = max(brutto, 0) * (vero_pct / 100)
     netto = max(brutto, 0) - verot
     # Myyntikuilu verrattuna vuosittaiseen tavoite_nettoon
-    myyntikuilu = total_sopimukset - (kulut + tavoite_netto * 12 / (1 - vero_pct / 100))
+    myyntikuilu = (kulut + tavoite_netto * 12 / (1 - vero_pct / 100))-total_sopimukset
     return {
         'kuukausi_myynnit': kuukausi_myynnit,
         'brutto': brutto,

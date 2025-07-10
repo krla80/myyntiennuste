@@ -264,7 +264,7 @@ def render_kulut_tab():
     st.markdown("---")
     st.markdown(f"<h3 style='color:green;'>Arvioitu nettopalkka: {metrics['netto']:.2f} €/ kk</h3>", unsafe_allow_html=True)
     gap = metrics['myyntikuilu']
-    if gap < 0:
+    if gap > 0:
         st.markdown(f"<h3 style='color:red;'>Tarvitset {abs(gap):.2f} € lisämyyntiä saavuttaaksesi tavoitteen.</h3>", unsafe_allow_html=True)
     else:
         st.markdown("**Hienoa! Olet jo saavuttanut tavoitepalkkasi.**", unsafe_allow_html=True)
@@ -299,7 +299,7 @@ def render_ennuste_tab():
     metrics = laske_palkka_metrics(sopimus_total, total_kulut, veroprosentti, palkkatavoite)
 
     gap = metrics['myyntikuilu']
-    if gap < 0:
+    if gap > 0:
         st.markdown(f"<h3 style='color:red;'>Tarvitset jo ennustetun lisämyynnin lisäksi {abs(gap+total_enn):.2f} € lisämyyntiä saavuttaaksesi palkkatavoitteesi.</h3>", unsafe_allow_html=True)
     else:
         st.markdown("**Periaatteessa sinun ei tarvitse myydä enempää saavuttaaksesi tavoitepalkkasi.**", unsafe_allow_html=True)

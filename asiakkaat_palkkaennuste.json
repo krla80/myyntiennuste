@@ -1,14 +1,12 @@
-[
-  {
-    "kulu": "Tilavuokra",
-    "a_hinta": 150.0,
-    "maara": 12,
-    "kokonaisarvo": 1800.0
-  },
-  {
-    "kulu": "Seuraavalle tilikaudelle siirtyvä kassa",
-    "a_hinta": 5000.0,
-    "maara": 1,
-    "kokonaisarvo": 5000.0
-  }
-]
+{
+  "kulut": [
+    {
+      "kulu": "Kirjanpito",
+      "a_hinta": 100.0,
+      "maara": 10,
+      "kokonaisarvo": 1000.0
+    }
+  ],
+  "veroprosentti": 22,
+  "palkkatavoite": 2000.0
+}

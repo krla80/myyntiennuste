@@ -1,19 +1,11 @@
 [
   {
-    "nimi": "Oma Häme",
-    "tuote": "Ryhmätyönohjaus",
-    "sopimus": "2026-06-30",
-    "a_hinta": 660.0,
-    "maara": 7,
-    "kokonaisarvo": 4620.0
-  },
-  {
-    "nimi": "fikghsdilhf",
-    "tuote": "afjghliud",
-    "sopimus": "2026-06-30",
-    "sijainti": "C:\\Users\\kristina.lamberg\\OneDrive\\Yrityksen asiat",
-    "a_hinta": 660.0,
-    "maara": 110,
-    "kokonaisarvo": 72600.0
+    "nimi": "oma",
+    "tuote": "oma",
+    "sopimus": "2025-07-31",
+    "sijainti": "",
+    "a_hinta": 100.0,
+    "maara": 100,
+    "kokonaisarvo": 10000.0
   }
 ]

@@ -1,0 +1,53 @@
+Ohjeet koodin commitoimiseen ja GitHubiin viemiseen
+
+1. Avaa terminaali (tai komentorivikäyttöliittymä).
+2. Siirry projektihakemistoon:
+   ```
+   cd /polku/projektiisi
+   ```
+3. Alusta Git-repositorio (jos et ole jo alustanut):
+   ```
+   git init
+   ```
+4. Lisää tiedostot staging-alueelle:
+   ```
+   git add .
+   ```
+5. Tee ensimmäinen commit selkeällä viestillä:
+   ```
+   git commit -m "Initial commit"
+   ```
+6. Luo tyhjä repository GitHubissa:
+   - Mene GitHubiin: https://github.com
+   - Klikkaa "+ New repository"
+   - Anna repolle nimi ja valitse julkinen (public) tai yksityinen (private)
+   - Älä generoi README-tiedostoa, jos käytät olemassa olevaa projektia
+7. Lisää GitHub-repositorio etäkohteeksi (korvaa oma käyttäjänimi ja reposi nimi):
+   ```
+   git remote add origin git@github.com:käyttäjänimi/reposi_nimi.git
+   ```
+8. Varmista, että päähaaran nimi on "main" (vaihtoehtoisesti "master"):
+   ```
+   git branch -M main
+   ```
+9. Työnnä (push) paikalliset commitit GitHubiin:
+   ```
+   git push -u origin main
+   ```
+10. Jatkossa:
+    - Tee muutokset koodiin
+    - Lisää muutokset `git add`
+    - Commitoi `git commit -m "kuvaava viesti"`
+    - Työnnä `git push`
+
+Lisävinkkejä:
+- Lisää `.gitignore`-tiedosto estämään väliaikaistiedostojen seuraaminen.
+- Käytä haaroja (branches) ominaisuuksien kehitykseen:
+  ```
+  git checkout -b feature-uusi-ominaisuus
+  ```
+- Kun ominaisuus valmis, palaa päähaaraan ja yhdistä:
+  ```
+  git checkout main
+  git merge feature-uusi-ominaisuus
+  ```

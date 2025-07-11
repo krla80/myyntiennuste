@@ -1,17 +1,11 @@
 [
   {
-    "nimi": "JSGVLHUJH",
-    "tuote": "gjhlfhS",
-    "a_hinta": 320.0,
-    "maara": 1,
-    "kokonaisarvo": 320.0
-  },
-  {
     "nimi": "Oma häme",
     "tuote": "RTH",
-    "a_hinta": 700.0,
+    "a_hinta": 600.0,
     "maara": 10,
-    "kokonaisarvo": 7000.0,
+    "sijainti": null,
+    "kokonaisarvo": 6000.0,
     "aktiivinen": true
   },
   {
@@ -21,5 +15,32 @@
     "maara": 10,
     "kokonaisarvo": 7000.0,
     "aktiivinen": false
+  },
+  {
+    "nimi": "fhabsa",
+    "tuote": "<dfnhzdg",
+    "a_hinta": 600.0,
+    "maara": 10,
+    "sijainti": "",
+    "kokonaisarvo": 6000.0,
+    "aktiivinen": true
+  },
+  {
+    "nimi": "g",
+    "tuote": "g",
+    "a_hinta": 1000.0,
+    "maara": 1,
+    "sijainti": "",
+    "kokonaisarvo": 1000.0,
+    "aktiivinen": true
+  },
+  {
+    "nimi": "a",
+    "tuote": "b",
+    "a_hinta": 1000.0,
+    "maara": 12,
+    "sijainti": "",
+    "kokonaisarvo": 12000.0,
+    "aktiivinen": true
   }
 ]

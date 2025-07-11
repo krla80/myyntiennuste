@@ -1,10 +1,28 @@
 {
   "kulut": [
     {
-      "kulu": "Kirjanpito",
+      "kulu": "Toimisto- ja työtarvikkeet",
+      "a_hinta": 30.0,
+      "maara": 12,
+      "kokonaisarvo": 360.0
+    },
+    {
+      "kulu": "Ennakkoverot",
+      "a_hinta": 400.0,
+      "maara": 4,
+      "kokonaisarvo": 1600.0
+    },
+    {
+      "kulu": "Siirto seuraavalle tilikaudelle",
       "a_hinta": 100.0,
-      "maara": 10,
-      "kokonaisarvo": 1000.0
+      "maara": 12,
+      "kokonaisarvo": 1200.0
+    },
+    {
+      "kulu": "ahdhb",
+      "a_hinta": 300.0,
+      "maara": 12,
+      "kokonaisarvo": 3600.0
     }
   ],
   "veroprosentti": 22,

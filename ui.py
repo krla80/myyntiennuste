@@ -1,7 +1,7 @@
 import streamlit as st
 from data_access import load_json, save_json
 from calculations import sum_sopimukset, sum_kulut, laske_palkka_metrics
-from datetime import datetime
+from datetime import datetime, date
 import texts
 
 SOPIMUS_FILE = 'asiakkaat_sopimus.json'
@@ -13,9 +13,21 @@ def render_sopimus_tab():
     st.header(texts.TAB1)
     st.markdown(texts.SOPIMUS_INTRO)
     st.markdown(texts.SOPIMUS_WARNINGS, unsafe_allow_html=True)
-    sopimukset = load_json(SOPIMUS_FILE, default=[])
-    total = sum_sopimukset(sopimukset)
-    st.markdown(f"<h3 style='color:green;'>Jo tehtyjen sopimusten arvo yhteensä: {total:.2f} €</h3>", unsafe_allow_html=True)
+    sopimukset = load_json(SOPIMUS_FILE) or []
+
+    today = date.today()
+    aktiiviset = []
+    vanhentuneet = []
+    for s in sopimukset:
+        loppu = datetime.fromisoformat(s['sopimus']).date()
+        if loppu <= today:
+            vanhentuneet.append(s)
+        else:
+            aktiiviset.append(s)
+
+
+    total = sum_sopimukset(aktiiviset)
+    st.markdown(f"<h3 style='color:green;'>Jo tehtyjen aktiivisten sopimusten arvo yhteensä: {total:.2f} €</h3>", unsafe_allow_html=True)
 
     # Lisää uusi sopimus
     st.subheader("Lisää sopimus")
@@ -42,14 +54,20 @@ def render_sopimus_tab():
     st.subheader("Tallennetut sopimukset")
     if sopimukset:
         for s in sopimukset:
-            st.markdown(
-                f"- **{s['nimi']}**: {s['tuote']} – {s['a_hinta']:.2f} € × {s['maara']} kpl = {s['kokonaisarvo']:.2f} € "
+            loppu = datetime.fromisoformat(s['sopimus']).date()
+            teksti = (
+                f"**{s['nimi']}**: {s['tuote']} – {s['a_hinta']:.2f} € × {s['maara']} kpl = {s['kokonaisarvo']:.2f} € "
                 f"(päättyy {s['sopimus']}, sijainti: {s['sijainti']})"
             )
+            if loppu <= today:
+                st.markdown(f"<span style='color:red;'>{teksti}</span>", unsafe_allow_html=True)
+            else:
+                st.markdown(teksti)
     else:
         st.info("Ei tallennettuja sopimuksia.")
 
     # Poista / muokkaa sopimus
+    st.markdown("---")
     st.subheader("Muokkaa / poista sopimus")
     if sopimukset:
         opts = ["- Valitse sopimus -"] + [f"{s['nimi']} ({s['tuote']})" for s in sopimukset]
@@ -101,8 +119,8 @@ def render_kulut_tab():
     tallennetut = raw['kulut']
 
     # Lomake vakio- ja omille kuluille sekä verot ja tavoite
+    st.subheader("Syötä tilikauden kulut")
     with st.form("kulut_lomake"):
-        st.markdown("#### Syötä tilikauden kulut")
         uusi_kulut = []
         # Käydään läpi vakio-kulut
         for nimi in vakio_kulut:
@@ -172,6 +190,7 @@ def render_kulut_tab():
         # Muokkaa / poista kulu
     # Muokkaa / poista kulu - nyt osana samaa lomaketta
     st.subheader("Muokkaa / poista kulu")
+    save = load_json(PALKKA_FILE, default={'kulut': []})['kulut']
     if uusi_kulut:
         opts = ["- Valitse kulu -"] + [f"{k['kulu']} ({k['a_hinta']:.2f}€×{k['maara']})" for k in uusi_kulut]
         sel_k = st.selectbox("Valitse muokattava tai poistettava kulu", opts, key="sel_kulu")
@@ -181,9 +200,8 @@ def render_kulut_tab():
             k_nimi = st.text_input("Kulun nimi", value=orig_k["kulu"], key="edit_kulu_nimi")
             k_ah   = st.number_input("Á-hinta (€)", min_value=0.0, format="%.2f", value=orig_k["a_hinta"], key="edit_kulu_ah")
             k_m    = st.number_input("kpl/tilikausi (vuosi)", min_value=1, step=1, value=orig_k["maara"], key="edit_kulu_m")
-            save_k = st.form_submit_button("Tallenna muutokset")
-            del_k  = st.form_submit_button("Poista kulu")
-            if save_k:
+            
+            if st.button("Tallenna muutokset"):
                 uusi_kulut[idx_k] = {
                     "kulu": k_nimi,
                     "a_hinta": k_ah,
@@ -197,7 +215,8 @@ def render_kulut_tab():
                 })
                 st.success("Kulu päivitetty.")
                 st.rerun()
-            if del_k:
+
+            if st.button("Poista kulu"):
                 uusi_kulut.pop(idx_k)
                 save_json(PALKKA_FILE, {
                     "kulut": uusi_kulut,
@@ -299,10 +318,11 @@ def render_ennuste_tab():
     metrics = laske_palkka_metrics(sopimus_total, total_kulut, veroprosentti, palkkatavoite)
 
     gap = metrics['myyntikuilu']
-    if gap > 0:
+    if gap < 0:
         st.markdown(f"<h3 style='color:red;'>Tarvitset jo ennustetun lisämyynnin lisäksi {abs(gap+total_enn):.2f} € lisämyyntiä saavuttaaksesi palkkatavoitteesi.</h3>", unsafe_allow_html=True)
     else:
         st.markdown("**Periaatteessa sinun ei tarvitse myydä enempää saavuttaaksesi tavoitepalkkasi.**", unsafe_allow_html=True)
+    
     st.markdown(f"<h3 style='color:green;'>Ennustettu lisämyynti tilikaudella: {total_enn:.2f} €</h3>", unsafe_allow_html=True)
 
     # Lisää ennuste
@@ -319,7 +339,7 @@ def render_ennuste_tab():
         ennuste.append({'nimi': e_nimi, 'tuote': e_tuote, 'a_hinta': e_a_h, 'maara': e_m, 'sijainti': e_sij, 'kokonaisarvo': e_a_h * e_m, 'aktiivinen': e_akt})
         save_json(ENNUS_FILE, ennuste)
         st.success("Ennuste lisätty.")
-        st.experimental_rerun()  # type: ignore
+        st.rerun()  # type: ignore
 
     # Muokkaa / poista ennuste
     st.subheader("Muokkaa / poista ennuste")
@@ -334,7 +354,7 @@ def render_ennuste_tab():
                 tuote_m = st.text_input("Tuote", value=orig['tuote'])
                 a_h_m = st.number_input("á-hinta (€)", min_value=0.0, format="%.2f", value=orig['a_hinta'])
                 m_m = st.number_input("kpl/vuodessa", min_value=1, step=1, value=orig['maara'])
-                sij_m = st.text_input("Sijainti", value=orig['sijainti'])
+                sij_m = st.text_input("Sijainti", value=orig.get('sijainti'))
                 akt_m = st.checkbox("Aktiivinen", value=orig.get('aktiivinen', True))
                 save_b = st.form_submit_button("Tallenna")
                 del_b = st.form_submit_button("Poista")
@@ -342,12 +362,12 @@ def render_ennuste_tab():
                 ennuste[idx] = {'nimi': nimi_m, 'tuote': tuote_m, 'a_hinta': a_h_m, 'maara': m_m, 'sijainti': sij_m, 'kokonaisarvo': a_h_m * m_m, 'aktiivinen': akt_m}
                 save_json(ENNUS_FILE, ennuste)
                 st.success("Ennuste päivitetty.")
-                st.experimental_rerun()  # type: ignore
+                st.rerun()  # type: ignore
             if del_b:
                 ennuste.pop(idx)
                 save_json(ENNUS_FILE, ennuste)
                 st.success("Ennuste poistettu.")
-                st.experimental_rerun()  # type: ignore
+                st.rerun()  # type: ignore
     st.subheader("Tallennetut ennusteet")
     if ennuste:
         for e in ennuste:

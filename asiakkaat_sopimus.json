@@ -7,5 +7,32 @@
     "a_hinta": 100.0,
     "maara": 100,
     "kokonaisarvo": 10000.0
+  },
+  {
+    "nimi": "muu",
+    "tuote": "muu2",
+    "sopimus": "2025-07-11",
+    "sijainti": "c",
+    "a_hinta": 300.0,
+    "maara": 100,
+    "kokonaisarvo": 30000.0
+  },
+  {
+    "nimi": "b",
+    "tuote": "c",
+    "sopimus": "2025-07-31",
+    "sijainti": "d",
+    "a_hinta": 200.0,
+    "maara": 10,
+    "kokonaisarvo": 2000.0
+  },
+  {
+    "nimi": "ab",
+    "tuote": "cd",
+    "sopimus": "2025-07-01",
+    "sijainti": "v",
+    "a_hinta": 300.0,
+    "maara": 10,
+    "kokonaisarvo": 3000.0
   }
 ]

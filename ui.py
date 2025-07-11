@@ -218,27 +218,27 @@ def render_kulut_tab():
         st.write(f"- {k['kulu']}: {k['a_hinta']:.2f} € × {k['maara']} kpl = {k['kokonaisarvo']:.2f} €")
     
 
-        st.markdown("---")
-        st.markdown("### Verotus ja palkkatavoite")
-        with st.form("vero_palkka_form"):
-            verop = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=raw.get('veroprosentti', 25))
-            tavoitestr = st.text_input("Nettopalkkatavoite (€ / kk)", value=str(raw.get('palkkatavoite', 0.0)), key="tavoite")
-            st.markdown("**Huom!** Nettopalkkatavoite on palkka, jonka haluat jäävän sinulle verojen jälkeen. Veroprosentti vaikuttaa laskentaan.")
-            save = st.form_submit_button("Tallenna")
+    st.markdown("---")
+    st.markdown("### Verotus ja palkkatavoite")
+    with st.form("vero_palkka_form"):
+        verop = st.slider("Arvioitu veroprosentti (%)", min_value=0, max_value=55, value=raw.get('veroprosentti', 25))
+        tavoitestr = st.text_input("Nettopalkkatavoite (€ / kk)", value=str(raw.get('palkkatavoite', 0.0)), key="tavoite")
+        st.markdown("**Huom!** Nettopalkkatavoite on palkka, jonka haluat jäävän sinulle verojen jälkeen. Veroprosentti vaikuttaa laskentaan.")
+        save = st.form_submit_button("Tallenna")
 
-        if save:
-            try:
-                tavoite = float(tavoitestr.replace(',', '.'))
-            except ValueError:
-                st.error("Syötä kelvollinen nettopalkkatavoite")
-                return
-            save_json(PALKKA_FILE, {'kulut': uusi_kulut, 'veroprosentti': verop, 'palkkatavoite': tavoite})
-            st.success("Kulut ja palkkatavoite tallennettu.")
-            # Yritä uudelleenladata sivu, jos funktio on saatavilla
-            try:
-                st.rerun()
-            except Exception:
-                pass
+    if save:
+        try:
+            tavoite = float(tavoitestr.replace(',', '.'))
+        except ValueError:
+            st.error("Syötä kelvollinen nettopalkkatavoite")
+            return
+        save_json(PALKKA_FILE, {'kulut': uusi_kulut, 'veroprosentti': verop, 'palkkatavoite': tavoite})
+        st.success("Kulut ja palkkatavoite tallennettu.")
+        # Yritä uudelleenladata sivu, jos funktio on saatavilla
+        try:
+            st.rerun()
+        except Exception:
+            pass
 
 
     # Lasketaan metrics ennen käyttöä

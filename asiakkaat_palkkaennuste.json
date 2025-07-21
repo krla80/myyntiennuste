@@ -1,12 +1,6 @@
 {
   "kulut": [
     {
-      "kulu": "Toimisto- ja työtarvikkeet",
-      "a_hinta": 30.0,
-      "maara": 12,
-      "kokonaisarvo": 360.0
-    },
-    {
       "kulu": "Ennakkoverot",
       "a_hinta": 400.0,
       "maara": 4,

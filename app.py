@@ -4,7 +4,18 @@ from ui import (
     render_kulut_tab,
     render_ennuste_tab,
     render_summary_tab,
+    render_header
 )
+def main():
+    # Piirrä header (logon + otsikon lohko)
+    render_header(app_title="Datasta kassavirtaan", logo_path="logo.png")
+    
+    # Tähän loppusisältö halutessasi, esim.
+    #st.write("Sovelluksen pääsisältö tässä…")
+
+if __name__ == "__main__":
+    main()
+
 import texts
 
 st.set_page_config(page_title=texts.PAGE_TITLE, layout='centered')

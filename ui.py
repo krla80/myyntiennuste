@@ -8,9 +8,29 @@ SOPIMUS_FILE = 'asiakkaat_sopimus.json'
 ENNUS_FILE   = 'asiakkaat_ennuste.json'
 PALKKA_FILE  = 'asiakkaat_palkkaennuste.json'
 
+def render_header(app_title: str = "Datasta kassavirtaan", logo_path: str = "logo.png"):
+    """
+    Piirtää pienen logon ja otsikon sivun yläreunaan.
+    - app_title: Sovelluksen nimen teksti
+    - logo_path: Polku logotiedostoon
+    """
+    # Säädetään sivuasetukset (voi kutsua vain kerran sovelluksessa)
+    st.set_page_config(page_title=app_title, layout="wide")
+    
+    # Jaa rivi lohkoihin logolle ja otsikolle
+    col_logo, col_title = st.columns([0.2, 0.8], gap="small")
+    with col_logo:
+        st.image(logo_path, width=150)
+    with col_title:
+        st.markdown(
+            f"<h2 style='margin: 0; line-height: 1.2;color: #254643;'>{app_title}</h2>",
+            unsafe_allow_html=True
+        )
+
 
 def render_sopimus_tab():
-    st.header(texts.TAB1)
+    #st.header(texts.TAB1)
+    st.markdown(f"<h2 style=color:#254643;'>{texts.TAB1}</h2>",unsafe_allow_html=True)
     st.markdown(texts.SOPIMUS_INTRO)
     st.markdown(texts.SOPIMUS_WARNINGS, unsafe_allow_html=True)
     sopimukset = load_json(SOPIMUS_FILE) or []
@@ -27,7 +47,7 @@ def render_sopimus_tab():
 
 
     total = sum_sopimukset(aktiiviset)
-    st.markdown(f"<h3 style='color:green;'>Jo tehtyjen aktiivisten sopimusten arvo yhteensä: {total:.2f} €</h3>", unsafe_allow_html=True)
+    #st.markdown(f"<h3 style='color:green;'>Voimassa olevien sopimusten arvo yhteensä: {total:.2f} €</h3>", unsafe_allow_html=True)
 
     # Lisää uusi sopimus
     st.subheader("Lisää sopimus")
@@ -71,7 +91,7 @@ def render_sopimus_tab():
     st.subheader("Muokkaa / poista sopimus")
     if sopimukset:
         opts = ["- Valitse sopimus -"] + [f"{s['nimi']} ({s['tuote']})" for s in sopimukset]
-        sel = st.selectbox("Valitse sopimus", opts)
+        sel = st.selectbox("Valitse sopimus", opts, key="select_sopimus")
         if sel != opts[0]:
             idx = opts.index(sel) - 1
             orig = sopimukset[idx]
@@ -92,16 +112,19 @@ def render_sopimus_tab():
                 }
                 save_json(SOPIMUS_FILE, sopimukset)
                 st.success("Sopimus päivitetty.")
+                st.session_state.sel_sopimus = opts[0]
                 st.rerun()  # type: ignore
             if del_b:
                 sopimukset.pop(idx)
                 save_json(SOPIMUS_FILE, sopimukset)
                 st.success("Sopimus poistettu.")
+                st.session_state.sel_sopimus = opts[0]
                 st.rerun()  # type: ignore
-    st.markdown(f"<h3 style='color:green;'>Jo tehtyjen sopimusten arvo yhteensä: {total:.2f} €</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='color:green;'>Voimassa olevien sopimusten arvo yhteensä: {total:.2f} €</h3>", unsafe_allow_html=True)
 
 def render_kulut_tab():
-    st.header(texts.TAB2)
+    #st.header(texts.TAB2)
+    st.markdown(f"<h2 style=color:#254643;'>{texts.TAB2}</h2>",unsafe_allow_html=True)
     st.markdown(texts.KULUT_INTRO)
 
     # Vakio-kulut
@@ -281,16 +304,18 @@ def render_kulut_tab():
     metrics = laske_palkka_metrics(sopimus_total, total_kulut, veroprosentti, palkkatavoite)
 
     st.markdown("---")
-    st.markdown(f"<h3 style='color:green;'>Arvioitu nettopalkka: {metrics['netto']:.2f} €/ kk</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='color:green;'>Arvioitu nettopalkka perustuen voimassa oleviin sopimuksiin: {metrics['netto']:.2f} €/ kk</h3>", unsafe_allow_html=True)
     gap = metrics['myyntikuilu']
     if gap > 0:
-        st.markdown(f"<h3 style='color:red;'>Tarvitset {abs(gap):.2f} € lisämyyntiä saavuttaaksesi tavoitteen.</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='color:red;'>Tarvitset {abs(gap):.2f} € lisämyyntiä saavuttaaksesi tavoitepalkkasi.</h3>", unsafe_allow_html=True)
     else:
         st.markdown("**Hienoa! Olet jo saavuttanut tavoitepalkkasi.**", unsafe_allow_html=True)
 
 def render_ennuste_tab():
-    st.header(texts.TAB3)
+    #st.header(texts.TAB3)
+    st.markdown(f"<h2 style=color:#254643;'>{texts.TAB3}</h2>",unsafe_allow_html=True)
     st.markdown(texts.ENNUSTE_INTRO)
+    st.markdown(texts.ENNUSTE_WARNINGS, unsafe_allow_html=True)
     ennuste = load_json(ENNUS_FILE, default=[])
     total_enn = sum(a.get('kokonaisarvo', 0) for a in ennuste if a.get('aktiivinen', True))
 
@@ -318,12 +343,12 @@ def render_ennuste_tab():
     metrics = laske_palkka_metrics(sopimus_total, total_kulut, veroprosentti, palkkatavoite)
 
     gap = metrics['myyntikuilu']
-    if gap < 0:
-        st.markdown(f"<h3 style='color:red;'>Tarvitset jo ennustetun lisämyynnin lisäksi {abs(gap+total_enn):.2f} € lisämyyntiä saavuttaaksesi palkkatavoitteesi.</h3>", unsafe_allow_html=True)
-    else:
-        st.markdown("**Periaatteessa sinun ei tarvitse myydä enempää saavuttaaksesi tavoitepalkkasi.**", unsafe_allow_html=True)
-    
     st.markdown(f"<h3 style='color:green;'>Ennustettu lisämyynti tilikaudella: {total_enn:.2f} €</h3>", unsafe_allow_html=True)
+    if gap > 0:
+        st.markdown(f"<h3 style='color:red;'>Tarvitset jo ennustetun lisämyynnin lisäksi {abs(gap-total_enn):.2f} € lisämyyntiä saavuttaaksesi tavoitepalkkasi.</h3>", unsafe_allow_html=True)
+    else:
+        st.markdown(f"<h3 style= color:green;'>Periaatteessa sinun ei tarvitse myydä enempää saavuttaaksesi tavoitepalkkasi😊.</h3>", unsafe_allow_html=True)
+
 
     # Lisää ennuste
     st.subheader("Lisää ennuste")
@@ -371,16 +396,23 @@ def render_ennuste_tab():
     st.subheader("Tallennetut ennusteet")
     if ennuste:
         for e in ennuste:
+            status = (
+                "<span style='color:red;'>(ei aktiivinen)</span>"
+                if not e.get("aktiivinen", True)
+             else "(aktiivinen)"
+            )
+
             # Voit muokata ulkoasua haluamallasi tavalla
             st.markdown(
-                f"- **{e['nimi']}**: {e['tuote']} – {e['a_hinta']:.2f} € × {e['maara']} kpl = {e['kokonaisarvo']:.2f} € "
-                f"{'(aktiivinen)' if e.get('aktiivinen', True) else '(ei aktiivinen)'}"
-            )
+                f"- **{e['nimi']}**: {e['tuote']} – {e['a_hinta']:.2f} € × {e['maara']} kpl = {e['kokonaisarvo']:.2f} € {status}",
+                unsafe_allow_html=True
+            ) 
     else:
         st.info("Ei tallennettuja ennusteita.")
 
 def render_summary_tab():
-    st.header(texts.TAB4)
+    #st.header(texts.TAB4)
+    st.markdown(f"<h2 style=color:#254643;'>{texts.TAB4}</h2>",unsafe_allow_html=True)
     st.markdown(texts.YHTEENVETO_INTRO)
     sop = sum_sopimukset(load_json(SOPIMUS_FILE, default=[]))
 
@@ -398,13 +430,14 @@ def render_summary_tab():
     total_enn = sum(a.get('kokonaisarvo', 0) for a in ennuste if a.get('aktiivinen', True))
     st.markdown(
         """
-        <div style='background-color:#d4edda; border-radius:12px; padding:18px; margin-bottom:16px;'>
-            <h4 style='color:green;'>Sopimusten ja ennusteiden kokonaisarvo: {total:.2f} €</h4>
-            <h4 style='color:green;'>Sopimusten kokonaisarvo: {sop:.2f} €</h4>
-            <h4 style='color:green;'>Ennusteiden kokonaisarvo: {enn:.2f} €</h4>
-            <h4 style='color:green;'>Liiketoiminnan kulut: {kul:.2f} €</h4>
-            <h4 style='color:green;'>Arvioitu nettopalkka kuukaudessa perustuen sovittuihin myynteihin: {netto:.2f} €</h4>
+        <div style='background-color:#edf6ee; border-radius:12px; padding:18px; margin-bottom:16px;'>
+            <h4 style='color:#254643;'>Sopimusten ja ennusteiden kokonaisarvo: {total:.2f} €</h4>
+            <h4 style='color:#254643;'>Sopimusten kokonaisarvo: {sop:.2f} €</h4>
+            <h4 style='color:#254643;'>Ennusteiden kokonaisarvo: {enn:.2f} €</h4>
             <h4 style='color:red;'>Tavoitepalkan edellyttämä lisämyynti tilikaudelle: {lisamyynti:.0f} €</h4>
+            <h4 style='color:#254643;'>Liiketoiminnan kulut: {kul:.2f} €</h4>
+            <h4 style='color:#254643;'>Arvioitu nettopalkka kuukaudessa perustuen voimassaoleviin myynteihin: {netto:.2f} €</h4>
+            
         </div>
         """.format(
             total=sop + total_enn,
